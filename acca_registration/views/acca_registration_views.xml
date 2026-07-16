@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Attachment Action helper -->
+    <record id="action_acca_registration_attachments" model="ir.actions.act_window">
+        <field name="name">Attachments</field>
+        <field name="res_model">ir.attachment</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">[('res_model', '=', 'acca.registration'), ('res_id', '=', active_id)]</field>
+        <field name="context">{'default_res_model': 'acca.registration', 'default_res_id': active_id}</field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_acca_registration_tree" model="ir.ui.view">
+        <field name="name">acca.registration.tree</field>
+        <field name="model">acca.registration</field>
+        <field name="arch" type="xml">
+            <tree string="ACCA Registrations">
+                <field name="name"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="highest_qualification"/>
+                <field name="city"/>
+                <field name="country"/>
+                <field name="initial_fees_paid" widget="boolean_toggle"/>
+                <field name="create_date" string="Registration Date"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_acca_registration_form" model="ir.ui.view">
+        <field name="name">acca.registration.form</field>
+        <field name="model">acca.registration</field>
+        <field name="arch" type="xml">
+            <form string="ACCA Registration">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="action" name="%(acca_registration.action_acca_registration_attachments)d" icon="fa-paperclip">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Documents</span>
+                            </div>
+                        </button>
+                    </div>
+                    
+                    <field name="image_file" widget="image" class="oe_avatar" options="{'zoom': true, 'preview_image': 'image_file'}"/>
+                    
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group string="Personal Information">
+                            <field name="first_name"/>
+                            <field name="last_name"/>
+                            <field name="dob"/>
+                            <field name="phone" widget="phone"/>
+                            <field name="email" widget="email"/>
+                            <field name="highest_qualification"/>
+                            <field name="initial_fees_paid"/>
+                        </group>
+                        <group string="Address Details">
+                            <field name="street"/>
+                            <field name="street2"/>
+                            <field name="city"/>
+                            <field name="state"/>
+                            <field name="zip_code"/>
+                            <field name="country"/>
+                            <field name="advance_payment"/>
+                        </group>
+                    </group>
+
+<!--                    <notebook>-->
+<!--                        <page string="Course / LMS Details">-->
+<!--                            <group>-->
+<!--                                <group string="Administrative IDs">-->
+<!--                                    <field name="wegyde_id"/>-->
+<!--                                    <field name="acca_id"/>-->
+<!--                                    <field name="course_pursuing"/>-->
+<!--                                    <field name="current_subject_level"/>-->
+<!--                                </group>-->
+<!--                                <group string="Key Dates &amp; Payments">-->
+<!--                                    <field name="course_purchase_date"/>-->
+<!--                                    <field name="course_expiry_date"/>-->
+<!--                                    <field name="advance_payment"/>-->
+<!--                                </group>-->
+<!--                            </group>-->
+<!--                            <group>-->
+<!--                                <group string="Course Extension Status">-->
+<!--                                    <field name="course_extended" widget="radio" options="{'horizontal': true}"/>-->
+<!--                                    <field name="extension_date" invisible="course_extended != 'yes'"/>-->
+<!--                                    <field name="free_extension_reason" invisible="course_extended != 'yes'"/>-->
+<!--                                </group>-->
+<!--                                <group string="Course Freeze Status">-->
+<!--                                    <field name="course_freeze" widget="radio" options="{'horizontal': true}"/>-->
+<!--                                    <field name="freeze_reason" invisible="course_freeze != 'yes'"/>-->
+<!--                                    <field name="unfreeze_date" invisible="course_freeze != 'yes'"/>-->
+<!--                                </group>-->
+<!--                            </group>-->
+<!--                            <group string="Academic History &amp; Marks">-->
+<!--                                <field name="past_subject_completed" placeholder="List subjects completed..."/>-->
+<!--                                <field name="marks_scored" placeholder="Marks scored details..."/>-->
+<!--                            </group>-->
+<!--                            <group string="Signed Agreement">-->
+<!--                                <field name="contract_filename" invisible="1"/>-->
+<!--                                <field name="contract_file" filename="contract_filename" widget="binary"/>-->
+<!--                            </group>-->
+<!--                        </page>-->
+<!--                    </notebook>-->
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_acca_registration_search" model="ir.ui.view">
+        <field name="name">acca.registration.search</field>
+        <field name="model">acca.registration</field>
+        <field name="arch" type="xml">
+            <search string="Search ACCA Registrations">
+                <field name="name"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="city"/>
+                <field name="country"/>
+                <field name="highest_qualification"/>
+                <separator/>
+                <filter string="Fees Paid" name="fees_paid" domain="[('initial_fees_paid', '=', True)]"/>
+                <filter string="Fees Unpaid" name="fees_unpaid" domain="[('initial_fees_paid', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Country" name="group_country" context="{'group_by': 'country'}"/>
+                    <filter string="City" name="group_city" context="{'group_by': 'city'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_acca_registration" model="ir.actions.act_window">
+        <field name="name">ACCA Registrations</field>
+        <field name="res_model">acca.registration</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_acca_registration_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Manage student registrations.
+            </p>
+            <p>
+                Student registrations submitted from the Zoho format web form will appear here.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menus -->
+    <menuitem id="menu_acca_root" name="ACCA Registration" sequence="10"/>
+    <menuitem id="menu_acca_registration" name="Registrations" parent="menu_acca_root" action="action_acca_registration" sequence="10"/>
+</odoo>

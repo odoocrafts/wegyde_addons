@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="wegyde_crm_custom_fields" model="ir.ui.view">
+        <field name="name">Crm Custom Fields</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="course"/>
+                <field name="subject"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

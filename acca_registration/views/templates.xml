@@ -1,0 +1,565 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="acca_register_form_template" name="ACCA Registration Form">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure oe_empty">
+                <!-- Premium glassmorphism design -->
+                <div class="container py-5">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-10 col-md-12">
+                            <div class="card border-0 shadow-lg"
+                                 style="border-radius: 16px; overflow: hidden; background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px);">
+                                <!-- Gradient Header -->
+                                <div class="card-header text-white py-4 text-center"
+                                     style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
+                                    <h2 class="mb-1 fw-bold" style="letter-spacing: 0.5px;">ACCA Registration Form</h2>
+                                    <!--                                    <p class="mb-0 text-white-50">Please fill out this form to complete your backend ACCA registration.</p>-->
+                                </div>
+                                <div class="card-body p-4 p-md-5">
+
+                                    <t t-if="error">
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            <span class="fa fa-exclamation-triangle me-2"/>
+                                            <t t-esc="error"/>
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                    </t>
+
+                                    <form action="/acca/register/submit" method="post" enctype="multipart/form-data"
+                                          class="needs-validation" id="acca_zoho_form" novalidate="novalidate">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                                        <!-- Form Section 1: Personal Details -->
+                                        <h4 class="mb-4 text-primary pb-2 border-bottom fw-bold"><span
+                                                class="fa fa-user me-2"/>Personal Details
+                                        </h4>
+                                        <div class="row g-3 mb-4">
+                                            <div class="col-md-6">
+                                                <label for="first_name" class="form-label fw-bold">First Name
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text" class="form-control form-control-lg border-2"
+                                                       id="first_name" name="first_name" required="required"
+                                                       placeholder="Enter first name"
+                                                       t-att-value="values.get('first_name') if values else ''"
+                                                       style="border-radius: 8px; font-size: 0.95rem;"/>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="last_name" class="form-label fw-bold">Last Name
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text" class="form-control form-control-lg border-2"
+                                                       id="last_name" name="last_name" required="required"
+                                                       placeholder="Enter last name"
+                                                       t-att-value="values.get('last_name') if values else ''"
+                                                       style="border-radius: 8px; font-size: 0.95rem;"/>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="phone" class="form-label fw-bold">Phone Number
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="tel" class="form-control form-control-lg border-2"
+                                                       id="phone" name="phone" required="required"
+                                                       placeholder="e.g. +91 9876543210"
+                                                       t-att-value="values.get('phone') if values else ''"
+                                                       style="border-radius: 8px; font-size: 0.95rem;"/>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="dob" class="form-label fw-bold">Date of Birth
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="date" class="form-control form-control-lg border-2"
+                                                       id="dob" name="dob" required="required"
+                                                       t-att-value="values.get('dob') if values else ''"
+                                                       style="border-radius: 8px; font-size: 0.95rem;"/>
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="email" class="form-label fw-bold">Email Address
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="email" class="form-control form-control-lg border-2"
+                                                       id="email" name="email" required="required"
+                                                       placeholder="yourname@domain.com"
+                                                       t-att-value="values.get('email') if values else ''"
+                                                       style="border-radius: 8px; font-size: 0.95rem;"/>
+                                            </div>
+                                        </div>
+
+                                        <!-- Form Section 2: KYC Profile Photo -->
+                                        <h4 class="mb-4 text-primary pb-2 border-bottom fw-bold"><span
+                                                class="fa fa-camera me-2"/>KYC Photo Upload
+                                        </h4>
+                                        <div class="row g-3 mb-4">
+                                            <div class="col-12">
+                                                <label for="image_file" class="form-label fw-bold">Image Upload
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="file" class="form-control border-2" id="image_file"
+                                                       name="image_file" accept="image/*" required="required"
+                                                       style="border-radius: 8px;"/>
+                                                <div class="form-text text-muted small mt-2 bg-light p-3 border"
+                                                     style="border-radius: 8px; line-height: 1.4;">
+                                                    <span class="fa fa-info-circle text-primary me-1"/>
+                                                    Please note that the photo is part of the KYC form. We will not use
+                                                    your photo for any social media promotion without your permission.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Form Section 3: Address Details -->
+                                        <h4 class="mb-4 text-primary pb-2 border-bottom fw-bold"><span
+                                                class="fa fa-map-marker-alt me-2"/>Address Details
+                                        </h4>
+                                        <div class="row g-3 mb-4">
+                                            <div class="col-12">
+                                                <label for="street" class="form-label fw-bold">Street Address
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text" class="form-control border-2" id="street"
+                                                       name="street" required="required" placeholder="Street Address"
+                                                       t-att-value="values.get('street') if values else ''"
+                                                       style="border-radius: 8px;"/>
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="street2" class="form-label fw-bold">Address Line 2</label>
+                                                <input type="text" class="form-control border-2" id="street2"
+                                                       name="street2"
+                                                       placeholder="Apartment, suite, unit, building, floor, etc."
+                                                       t-att-value="values.get('street2') if values else ''"
+                                                       style="border-radius: 8px;"/>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="city" class="form-label fw-bold">City
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text" class="form-control border-2" id="city" name="city"
+                                                       required="required" placeholder="City"
+                                                       t-att-value="values.get('city') if values else ''"
+                                                       style="border-radius: 8px;"/>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="state" class="form-label fw-bold">State / Region / Province
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text" class="form-control border-2" id="state" name="state"
+                                                       required="required" placeholder="State/Region"
+                                                       t-att-value="values.get('state') if values else ''"
+                                                       style="border-radius: 8px;"/>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="zip_code" class="form-label fw-bold">Postal / Zip Code
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text" class="form-control border-2" id="zip_code"
+                                                       name="zip_code" required="required" placeholder="Postal Code"
+                                                       t-att-value="values.get('zip_code') if values else ''"
+                                                       style="border-radius: 8px;"/>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="country" class="form-label fw-bold">Country
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                                <select class="form-select border-2" id="country" name="country"
+                                                        required="required" style="border-radius: 8px;">
+                                                    <option value="" disabled="disabled" selected="selected">Select
+                                                        Country
+                                                    </option>
+                                                    <option value="India">India</option>
+                                                    <option value="United Arab Emirates">United Arab Emirates</option>
+                                                    <option value="United Kingdom">United Kingdom</option>
+                                                    <option value="United States">United States</option>
+                                                    <option value="Oman">Oman</option>
+                                                    <option value="Saudi Arabia">Saudi Arabia</option>
+                                                    <option value="Bahrain">Bahrain</option>
+                                                    <option value="Qatar">Qatar</option>
+                                                    <option value="Kuwait">Kuwait</option>
+                                                    <option value="Singapore">Singapore</option>
+                                                    <option value="Malaysia">Malaysia</option>
+                                                    <option value="Nepal">Nepal</option>
+                                                    <option value="Sri Lanka">Sri Lanka</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- Form Section 4: Academic Information -->
+                                        <h4 class="mb-4 text-primary pb-2 border-bottom fw-bold"><span
+                                                class="fa fa-graduation-cap me-2"/>Highest Qualification
+                                        </h4>
+                                        <div class="mb-4">
+                                            <label class="form-label fw-bold">Select your completed qualifications in
+                                                order to claim exemptions for ACCA
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="form-text text-muted small mb-3 bg-light p-3 border"
+                                                 style="border-radius: 8px; line-height: 1.4;">
+                                                <span class="fa fa-info-circle text-primary me-1"/>
+                                                <strong>Please note:</strong>
+                                                <br/>
+                                                1. If you have completed CA &amp; pursuing CA Final, kindly select both.
+                                                <br/>
+                                                2. If you are pursuing B.Com, then select B.Com + 12th Pass.
+                                            </div>
+
+                                            <div class="row g-2 px-2" id="highest_qualification_group">
+                                                <div class="col-md-6">
+                                                    <div class="form-check p-2 border rounded"
+                                                         style="transition: background-color 0.2s;">
+                                                        <input class="form-check-input ms-1 me-2 qualification-cb"
+                                                               type="checkbox" name="highest_qualification" id="qual_1"
+                                                               value="12th Pass"/>
+                                                        <label class="form-check-label" for="qual_1">12th Pass</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-check p-2 border rounded"
+                                                         style="transition: background-color 0.2s;">
+                                                        <input class="form-check-input ms-1 me-2 qualification-cb"
+                                                               type="checkbox" name="highest_qualification" id="qual_2"
+                                                               value="Graduation Completed (BCOM/BBA etc)"/>
+                                                        <label class="form-check-label" for="qual_2">Graduation
+                                                            Completed (BCOM/BBA etc)
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-check p-2 border rounded"
+                                                         style="transition: background-color 0.2s;">
+                                                        <input class="form-check-input ms-1 me-2 qualification-cb"
+                                                               type="checkbox" name="highest_qualification" id="qual_3"
+                                                               value="B.Com Pursuing - Conditional Exemption"/>
+                                                        <label class="form-check-label" for="qual_3">B.Com Pursuing -
+                                                            Conditional Exemption
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-check p-2 border rounded"
+                                                         style="transition: background-color 0.2s;">
+                                                        <input class="form-check-input ms-1 me-2 qualification-cb"
+                                                               type="checkbox" name="highest_qualification" id="qual_4"
+                                                               value="B.Com Pursuing - Conditional Exemption(Standard)"/>
+                                                        <label class="form-check-label" for="qual_4">B.Com Pursuing -
+                                                            Conditional Exemption(Standard)
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-check p-2 border rounded"
+                                                         style="transition: background-color 0.2s;">
+                                                        <input class="form-check-input ms-1 me-2 qualification-cb"
+                                                               type="checkbox" name="highest_qualification" id="qual_5"
+                                                               value="CA IPCC"/>
+                                                        <label class="form-check-label" for="qual_5">CA IPCC</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-check p-2 border rounded"
+                                                         style="transition: background-color 0.2s;">
+                                                        <input class="form-check-input ms-1 me-2 qualification-cb"
+                                                               type="checkbox" name="highest_qualification" id="qual_6"
+                                                               value="CA Final"/>
+                                                        <label class="form-check-label" for="qual_6">CA Final</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-check p-2 border rounded"
+                                                         style="transition: background-color 0.2s;">
+                                                        <input class="form-check-input ms-1 me-2 qualification-cb"
+                                                               type="checkbox" name="highest_qualification" id="qual_7"
+                                                               value="ICAEW"/>
+                                                        <label class="form-check-label" for="qual_7">ICAEW</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-check p-2 border rounded"
+                                                         style="transition: background-color 0.2s;">
+                                                        <input class="form-check-input ms-1 me-2 qualification-cb"
+                                                               type="checkbox" name="highest_qualification" id="qual_8"
+                                                               value="CMA QUALIFIED"/>
+                                                        <label class="form-check-label" for="qual_8">CMA QUALIFIED
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="text-danger small mt-2 d-none" id="qual_error">Please select at
+                                                least one qualification.
+                                            </div>
+                                        </div>
+
+                                        <!-- Form Section 5: Document Uploads -->
+                                        <h4 class="mb-4 text-primary pb-2 border-bottom fw-bold"><span
+                                                class="fa fa-folder-open me-2"/>Required Documents
+                                        </h4>
+                                        <div class="row g-3 mb-4">
+                                            <div class="col-md-6">
+                                                <label for="id_proof_files" class="form-label fw-bold">Valid ID Proof
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="file" class="form-control border-2" id="id_proof_files"
+                                                       name="id_proof_files" accept=".pdf,image/*" multiple="multiple"
+                                                       required="required" style="border-radius: 8px;"/>
+                                                <div class="form-text text-muted small mt-1">Aadhar Card (with DOB),
+                                                    Driving License, or Passport. Max Size - 5MB (Upload up to 3 files).
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label for="entry_req_files" class="form-label fw-bold">Entry
+                                                    Requirement
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="file" class="form-control border-2" id="entry_req_files"
+                                                       name="entry_req_files" accept=".pdf,image/*" multiple="multiple"
+                                                       required="required" style="border-radius: 8px;"/>
+                                                <div class="form-text text-muted small mt-1">10th Marklist and 12th
+                                                    Marklist. Max Size - 5MB (Upload up to 2 files).
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label for="exemption_req_files" class="form-label fw-bold">Exemption
+                                                    Requirement
+                                                    <span class="text-muted">(Optional)</span>
+                                                </label>
+                                                <input type="file" class="form-control border-2"
+                                                       id="exemption_req_files" name="exemption_req_files"
+                                                       accept=".pdf,image/*" multiple="multiple"
+                                                       style="border-radius: 8px;"/>
+                                                <div class="form-text text-muted small mt-1">CA (IPCC) / CA (Final) /
+                                                    B.Com semesters marklists / CA Final Certificate. Max Size - 5MB (Up
+                                                    to 5 files).
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label for="other_doc_files" class="form-label fw-bold">Any other
+                                                    document
+                                                    <span class="text-muted">(Optional)</span>
+                                                </label>
+                                                <input type="file" class="form-control border-2" id="other_doc_files"
+                                                       name="other_doc_files" accept=".pdf,image/*" multiple="multiple"
+                                                       style="border-radius: 8px;"/>
+                                                <div class="form-text text-muted small mt-1">Any additional certificates
+                                                    or supporting letters. Max Size - 5MB (Up to 5 files).
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Form Section 6: Payment Details -->
+                                        <h4 class="mb-4 text-primary pb-2 border-bottom fw-bold"><span
+                                                class="fa fa-credit-card me-2"/>Payment Information
+                                        </h4>
+                                        <div class="card border-primary mb-5"
+                                             style="background: rgba(30, 60, 114, 0.02); border-radius: 12px;">
+                                            <div class="card-body p-4">
+                                                <h5 class="fw-bold text-primary mb-3">Pay Initial Registration Fees</h5>
+                                                <div class="row align-items-center">
+                                                    <div class="col-md-8">
+                                                        <p class="mb-2 text-muted">Please confirm your registration
+                                                            fees. Initial registration fee amounts are calculated based
+                                                            on your choices and eligibility waivers.
+                                                        </p>
+                                                        <div class="form-check mt-3">
+                                                            <input class="form-check-input border-primary border-2"
+                                                                   type="checkbox" id="initial_fees_paid"
+                                                                   name="initial_fees_paid" required="required"
+                                                                   style="width: 1.3em; height: 1.3em;"/>
+                                                            <label class="form-check-label fw-bold ms-2"
+                                                                   for="initial_fees_paid"
+                                                                   style="font-size: 1rem; color: #1e3c72;">
+                                                                I agree to pay the initial ACCA registration fees *
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 text-center mt-3 mt-md-0">
+                                                        <div class="bg-white p-3 border rounded shadow-sm border-2 border-primary d-inline-block">
+                                                            <span class="text-muted small d-block">INITIAL FEE</span>
+<!--                                                            <span class="h3 fw-bold text-primary">₹ 8,500</span>-->
+                                                            <span class="h3 fw-bold text-primary" id="fee_display">₹
+                                                                4,500
+                                                            </span>
+                                                            <input type="hidden" name="advance_payment"
+                                                                   id="advance_payment" value="4500"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Submit Button -->
+                                        <div class="text-center pt-2">
+                                            <button type="submit" class="btn btn-primary btn-lg px-5 py-3 shadow-lg"
+                                                    style="border-radius: 30px; font-weight: bold; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); border: none; letter-spacing: 0.5px; transition: transform 0.2s, box-shadow 0.2s;">
+                                                Submit Registration
+                                                <span class="fa fa-arrow-right ms-2"/>
+                                            </button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Custom Styling and JS script for validation -->
+                <style type="text/css">
+                    <![CDATA[
+                    .form-control:focus, .form-select:focus {
+                        border-color: #1e3c72;
+                        box-shadow: 0 0 0 0.25rem rgba(30, 60, 114, 0.25);
+                    }
+                    .form-check-input:checked {
+                        background-color: #1e3c72;
+                        border-color: #1e3c72;
+                    }
+                    .form-check:hover {
+                        background-color: rgba(30, 60, 114, 0.04);
+                    }
+                    button[type="submit"]:hover {
+                        transform: translateY(-2px);
+                        box-shadow: 0 8px 16px rgba(30, 60, 114, 0.4) !important;
+                    }
+                    ]]>
+                </style>
+
+                <script type="text/javascript">
+                    <![CDATA[
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const form = document.getElementById('acca_zoho_form');
+
+                        form.addEventListener('submit', function (event) {
+                            // Check qualifications checkboxes
+                            const checkboxes = document.querySelectorAll('.qualification-cb');
+                            let checkedCount = 0;
+                            checkboxes.forEach(cb => {
+                                if (cb.checked) checkedCount++;
+                            });
+
+                            const errorDiv = document.getElementById('qual_error');
+                            if (checkedCount === 0) {
+                                errorDiv.classList.remove('d-none');
+                                event.preventDefault();
+                                event.stopPropagation();
+                            } else {
+                                errorDiv.classList.add('d-none');
+                            }
+
+                            // Bootstrap validation check
+                            if (!form.checkValidity()) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                            }
+
+                            form.classList.add('was-validated');
+                        }, false);
+
+                        // Clear qualification error on click
+                        // Clear qualification error on click and update fee dynamically
+                        const checkboxes = document.querySelectorAll('.qualification-cb');
+                        const qual3 = document.getElementById('qual_3');
+                        const qual4 = document.getElementById('qual_4');
+                        const feeDisplay = document.getElementById('fee_display');
+                        const feeInput = document.getElementById('advance_payment');
+                        function updateFee() {
+                            if (qual3.checked || qual4.checked) {
+                                feeDisplay.textContent = '₹ 21,499';
+                                feeInput.value = '21499';
+                            } else {
+                                feeDisplay.textContent = '₹ 4,500';
+                                feeInput.value = '4500';
+                            }
+                        }
+                        checkboxes.forEach(cb => {
+                            cb.addEventListener('change', function () {
+                                const errorDiv = document.getElementById('qual_error');
+                                errorDiv.classList.add('d-none');
+                            });
+                        });
+                        if (qual3 && qual4) {
+                            qual3.addEventListener('change', updateFee);
+                            qual4.addEventListener('change', updateFee);
+                        }
+                    });
+                    ]]>
+                </script>
+            </div>
+        </t>
+    </template>
+
+    <template id="acca_register_success_template" name="Registration Successful">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure oe_empty">
+                <div class="container py-5 text-center">
+                    <div class="row justify-content-center py-5">
+                        <div class="col-md-8 col-lg-6">
+                            <div class="card border-0 shadow-lg py-5 px-4"
+                                 style="border-radius: 20px; background: #ffffff;">
+                                <div class="mb-4">
+                                    <span class="d-inline-flex align-items-center justify-content-center text-white bg-success rounded-circle"
+                                          style="width: 80px; height: 80px; font-size: 40px; box-shadow: 0 4px 10px rgba(40, 167, 69, 0.4);">
+                                        <span class="fa fa-check"/>
+                                    </span>
+                                </div>
+                                <h2 class="text-success mb-3 fw-bold">Registration Submitted!</h2>
+                                <p class="lead text-muted mb-4">Thank you,<strong t-esc="registration.name"/>! Your ACCA
+                                    Registration has been submitted successfully to the backend.
+                                </p>
+
+                                <div class="bg-light p-4 mb-4 border text-start" style="border-radius: 12px;">
+                                    <div class="row small text-muted mb-1 pb-1 border-bottom">
+                                        <div class="col-5">
+                                            <strong>Student Name:</strong>
+                                        </div>
+                                        <div class="col-7 text-dark">
+                                            <t t-esc="registration.name"/>
+                                        </div>
+                                    </div>
+                                    <div class="row small text-muted mb-1 pb-1 border-bottom">
+                                        <div class="col-5">
+                                            <strong>Email:</strong>
+                                        </div>
+                                        <div class="col-7 text-dark">
+                                            <t t-esc="registration.email"/>
+                                        </div>
+                                    </div>
+                                    <div class="row small text-muted mb-1 pb-1 border-bottom">
+                                        <div class="col-5">
+                                            <strong>Phone:</strong>
+                                        </div>
+                                        <div class="col-7 text-dark">
+                                            <t t-esc="registration.phone or 'N/A'"/>
+                                        </div>
+                                    </div>
+                                    <div class="row small text-muted">
+                                        <div class="col-5">
+                                            <strong>Highest Qualification:</strong>
+                                        </div>
+                                        <div class="col-7 text-dark">
+                                            <t t-esc="registration.highest_qualification or 'N/A'"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <p class="text-muted mb-5">Our academic support team will review your uploaded documents
+                                    and contact you soon.
+                                </p>
+                                <div>
+                                    <a href="/acca/register" class="btn btn-outline-primary px-4 py-2 me-2"
+                                       style="border-radius: 20px; font-weight: 500;">
+                                        Submit Another Form
+                                    </a>
+                                    <a href="/" class="btn btn-primary px-4 py-2"
+                                       style="border-radius: 20px; font-weight: 500; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); border: none;">
+                                        Back to Home
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

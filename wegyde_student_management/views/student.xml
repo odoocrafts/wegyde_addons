@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="wegyde_student_custom_fields" model="ir.ui.view">
+        <field name="name">Student Custom Fields</field>
+        <field name="model">student.student</field>
+        <field name="inherit_id" ref="student_management.view_student_form"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+
+                <page string="Course / LMS Details">
+                    <group>
+                        <group string="Administrative IDs">
+                            <field name="wegyde_id"/>
+                            <field name="acca_id"/>
+                            <field name="course_pursuing"/>
+                            <field name="current_subject_level"/>
+                        </group>
+                        <group string="Key Dates &amp; Payments">
+                            <field name="course_purchase_date"/>
+                            <field name="course_expiry_date"/>
+                            <field name="advance_payment"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Course Extension Status">
+                            <field name="course_extended" widget="radio" options="{'horizontal': true}"/>
+                            <field name="extension_date" invisible="course_extended != 'yes'"/>
+                            <field name="free_extension_reason" invisible="course_extended != 'yes'"/>
+                        </group>
+                        <group string="Course Freeze Status">
+                            <field name="course_freeze" widget="radio" options="{'horizontal': true}"/>
+                            <field name="freeze_reason" invisible="course_freeze != 'yes'"/>
+                            <field name="unfreeze_date" invisible="course_freeze != 'yes'"/>
+                        </group>
+                    </group>
+                    <group string="Academic History &amp; Marks">
+                        <field name="past_subject_completed" placeholder="List subjects completed..."/>
+                        <field name="marks_scored" placeholder="Marks scored details..."/>
+                    </group>
+                    <group string="Signed Agreement">
+                        <field name="contract_filename" invisible="1"/>
+                        <field name="contract_file" filename="contract_filename" widget="binary"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
