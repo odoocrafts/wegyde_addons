@@ -410,6 +410,12 @@
                 <!-- Custom Styling and JS script for validation -->
                 <style type="text/css">
                     <![CDATA[
+                    html, body {
+                        height: auto !important;
+                        overflow-y: auto !important;
+                        overflow-x: hidden !important;
+                        background-color: #f8f9fa;
+                    }
                     .form-control:focus, .form-select:focus {
                         border-color: #1e3c72;
                         box-shadow: 0 0 0 0.25rem rgba(30, 60, 114, 0.25);
@@ -497,8 +503,15 @@
             <t t-set="head">
                 <t t-call-assets="web.assets_frontend" t-js="false"/>
                 <t t-call-assets="web.assets_frontend" t-css="false"/>
+                <style type="text/css">
+                    html, body {
+                        height: auto !important;
+                        overflow-y: auto !important;
+                        background-color: #f8f9fa;
+                    }
+                </style>
             </t>
-            <div id="wrap" class="oe_structure oe_empty" style="min-height: 100vh; background-color: #f8f9fa;">
+            <div id="wrap" class="oe_structure oe_empty" style="min-height: 100vh;">
                 <div class="container py-5 text-center">
                     <div class="row justify-content-center py-5">
                         <div class="col-md-8 col-lg-6">
