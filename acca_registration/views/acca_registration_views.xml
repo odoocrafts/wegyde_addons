@@ -121,6 +121,6 @@
         </field>
     </record>
 
-    <menuitem id="menu_acca_root" name="ACCA Registration" sequence="10"/>
+    <menuitem id="menu_acca_root" name="ACCA Registration" sequence="10" web_icon="acca_registration,static/description/icon.png"/>
     <menuitem id="menu_acca_registration" name="Registrations" parent="menu_acca_root" action="action_acca_registration" sequence="10"/>
 </odoo>
