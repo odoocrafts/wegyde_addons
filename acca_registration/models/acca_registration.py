@@ -59,6 +59,12 @@ class AccaRegistration(models.Model):
     advance_payment = fields.Float(string='Total Advance Payment to be Made')
     contract_file = fields.Binary(string='Signed Contract')
     contract_filename = fields.Char(string='Contract File Name')
+    public_url = fields.Char(string='Public Registration URL', compute='_compute_public_url')
+
+    def _compute_public_url(self):
+        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url', default='')
+        for rec in self:
+            rec.public_url = f"{base_url}/acca/register"
 
     @api.depends('first_name', 'last_name')
     def _compute_name(self):

@@ -7,9 +7,9 @@
         This module manages ACCA registration requests submitted by students
         via a public website web form, and lists them in the Odoo backend.
     """,
-    'category': 'Website/Website',
+    'category': 'Uncategorized',
     'author': 'Antigravity AI',
-    'depends': ['base', 'website'],
+    'depends': ['base', 'web'],
     'data': [
         'security/ir.model.access.csv',
         'views/acca_registration_views.xml',

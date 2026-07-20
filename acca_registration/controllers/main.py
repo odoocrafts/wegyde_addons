@@ -5,12 +5,12 @@ from odoo.http import request
 
 class AccaController(http.Controller):
 
-    @http.route('/acca/register', type='http', auth='public', website=True, methods=['GET'])
+    @http.route('/acca/register', type='http', auth='public', methods=['GET'])
     def acca_register_form(self, **kwargs):
         """Render the ACCA registration web form."""
         return request.render('acca_registration.acca_register_form_template', {})
 
-    @http.route('/acca/register/submit', type='http', auth='public', website=True, methods=['POST'], csrf=True)
+    @http.route('/acca/register/submit', type='http', auth='public', methods=['POST'], csrf=True)
     def acca_register_submit(self, **post):
         """Process the registration form submission matching the Zoho format."""
         first_name = post.get('first_name')

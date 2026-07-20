@@ -42,6 +42,11 @@
                         </button>
                     </div>
                     
+                    <div class="alert alert-info" role="alert" style="margin-bottom: 10px;">
+                        <strong>Public Link:</strong>
+                        <field name="public_url" widget="CopyClipboardChar" readonly="1" class="ml-2"/>
+                    </div>
+                    
                     <field name="image_file" widget="image" class="oe_avatar" options="{'zoom': true, 'preview_image': 'image_file'}"/>
                     
                     <div class="oe_title">
