@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="acca_register_form_template" name="ACCA Registration Form">
-        <t t-call="web.login_layout">
+        <t t-call="web.frontend_layout">
             <div id="wrap" class="oe_structure oe_empty">
                 <!-- Premium glassmorphism design -->
                 <div class="container py-5">
@@ -489,7 +489,7 @@
     </template>
 
     <template id="acca_register_success_template" name="Registration Successful">
-        <t t-call="web.login_layout">
+        <t t-call="web.frontend_layout">
             <div id="wrap" class="oe_structure oe_empty">
                 <div class="container py-5 text-center">
                     <div class="row justify-content-center py-5">
