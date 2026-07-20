@@ -6,6 +6,9 @@
         <field name="inherit_id" ref="student_management.view_student_form"/>
         <field name="mode">primary</field>
         <field name="arch" type="xml">
+            <xpath expr="//page[@string='Personal Information']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
             <xpath expr="//notebook" position="inside">
 
                 <page string="Course / LMS Details">
