@@ -14,7 +14,7 @@
         <field name="name">acca.registration.tree</field>
         <field name="model">acca.registration</field>
         <field name="arch" type="xml">
-            <tree string="ACCA Registrations">
+            <tree string="ACCA Registrations" js_class="acca_registration_list">
                 <field name="name"/>
                 <field name="phone"/>
                 <field name="email"/>

@@ -15,6 +15,12 @@
         'views/acca_registration_views.xml',
         'views/templates.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'acca_registration/static/src/js/acca_list_controller.js',
+            'acca_registration/static/src/xml/acca_list_buttons.xml',
+        ],
+    },
     'installable': True,
     'application': True,
     'license': 'LGPL-3',
