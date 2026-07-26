@@ -9,6 +9,15 @@
             <xpath expr="//notebook/page[1]" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
+            <xpath expr="//button[@name='action_generate_form_link']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='act_send_welcome_email']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='branch']" position="attributes">
+                <attribute name="required">0</attribute>
+            </xpath>
             <xpath expr="//notebook/page[1]" position="before">
 
                 <page string="Course / LMS Details">

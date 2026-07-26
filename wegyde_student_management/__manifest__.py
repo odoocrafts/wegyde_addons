@@ -12,7 +12,7 @@
     """,
     'depends': ['crm', 'student_management', ],
     'data': [
-
+        'security/ir.model.access.csv',
         'views/student.xml',
         'views/crm.xml',
     ],

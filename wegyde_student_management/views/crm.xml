@@ -10,6 +10,64 @@
                 <field name="course"/>
                 <field name="subject"/>
             </xpath>
+            <xpath expr="//field[@name='day_close']" position="after">
+                <field name="student_created" invisible="is_won_stage == 0"/>
+            </xpath>
+
+            <xpath expr="//header" position="inside">
+                <field name="is_won_stage" invisible="1"/>
+
+                <button name="act_create_student"
+                        type="object"
+                        string="Create Student"
+                        class="btn-primary"
+                        invisible="not is_won_stage or student_created"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <field name="student_created" invisible="1"/>
+                <button name="action_open_student"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-user"
+                        invisible="not student_created">
+
+                    <field name="student_id" invisible="1"/>
+
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Student Profile</span>
+                    </div>
+
+                </button>
+
+            </xpath>
+
+        </field>
+    </record>
+    <record id="student_creation_wizard_view_form" model="ir.ui.view">
+        <field name="name">create.student.wizard.view.form</field>
+        <field name="model">create.student.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Create Student">
+                <sheet>
+                    <group>
+                        <field name="first_name"/>
+                        <field name="last_name"/>
+                        <field name="phone"/>
+                        <field name="email"/>
+                        <field name="course_id"/>
+                    </group>
+
+                    <footer>
+                        <button name="action_create_student"
+                                type="object"
+                                string="Create Student"
+                                class="btn-primary"/>
+
+                        <button string="Cancel"
+                                special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
         </field>
     </record>
 </odoo>

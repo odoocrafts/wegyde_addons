@@ -33,7 +33,7 @@ class AccaRegistration(models.Model):
     # Old administrative fields (kept for compatibility)
     wegyde_id = fields.Char(string='WeGyde ID')
     acca_id = fields.Char(string='ACCA ID')
-
+    batch_no =fields.Char(string='Batch Number')
     course_pursuing = fields.Char(string='Course Pursuing')
     educational_qualification = fields.Text(string='Educational Qualification')
     current_subject_level = fields.Char(string='Current Pursuing Subject/Level')

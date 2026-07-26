@@ -35,27 +35,29 @@
             <form string="ACCA Registration">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button class="oe_stat_button" type="action" name="%(acca_registration.action_acca_registration_attachments)d" icon="fa-paperclip">
+                        <button class="oe_stat_button" type="action"
+                                name="%(acca_registration.action_acca_registration_attachments)d" icon="fa-paperclip">
                             <div class="o_stat_info">
                                 <span class="o_stat_text">Documents</span>
                             </div>
                         </button>
                     </div>
-                    
-                    <div class="alert alert-info" role="alert" style="margin-bottom: 10px;">
-                        <strong>Public Link:</strong>
-                        <field name="public_url" widget="CopyClipboardChar" readonly="1" class="ml-2"/>
-                    </div>
-                    
-                    <field name="image_file" widget="image" class="oe_avatar" options="{'zoom': true, 'preview_image': 'image_file'}"/>
-                    
+
+                    <!--                    <div class="alert alert-info" role="alert" style="margin-bottom: 10px;">-->
+                    <!--                        <strong>Public Link:</strong>-->
+                    <!--                        <field name="public_url" widget="CopyClipboardChar" readonly="1" class="ml-2"/>-->
+                    <!--                    </div>-->
+
+                    <field name="image_file" widget="image" class="oe_avatar"
+                           options="{'zoom': true, 'preview_image': 'image_file'}"/>
+
                     <div class="oe_title">
                         <label for="name" class="oe_edit_only"/>
                         <h1>
                             <field name="name" readonly="1"/>
                         </h1>
                     </div>
-                    
+
                     <group>
                         <group string="Personal Information">
                             <field name="first_name"/>
@@ -121,6 +123,9 @@
         </field>
     </record>
 
-    <menuitem id="menu_acca_root" name="ACCA Registration" sequence="10" web_icon="acca_registration,static/description/icon.png"/>
-    <menuitem id="menu_acca_registration" name="Registrations" parent="menu_acca_root" action="action_acca_registration" sequence="10"/>
+
+    <menuitem id="menu_acca_root" name="ACCA Registration" sequence="10"
+              web_icon="acca_registration,static/description/icon.png"/>
+    <menuitem id="menu_acca_registration" name="Registrations" parent="menu_acca_root" action="action_acca_registration"
+              sequence="10"/>
 </odoo>
