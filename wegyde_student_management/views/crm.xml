@@ -3,15 +3,12 @@
     <record id="wegyde_crm_custom_fields" model="ir.ui.view">
         <field name="name">Crm Custom Fields</field>
         <field name="model">crm.lead</field>
-        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
-        <field name="mode">primary</field>
+        <field name="inherit_id" ref="institute_crm.view_institute_crm_lead_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='tag_ids']" position="after">
-                <field name="course"/>
-                <field name="subject"/>
-            </xpath>
-            <xpath expr="//field[@name='day_close']" position="after">
-                <field name="student_created" invisible="is_won_stage == 0"/>
+            <xpath expr="//field[@name='course_interested']" position="after">
+<!--                <field name="course"/>-->
+                <field name="subject" string="Subject Interested"/>
+<!--                <field name="student_created" />-->
             </xpath>
 
             <xpath expr="//header" position="inside">

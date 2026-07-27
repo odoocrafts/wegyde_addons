@@ -4,7 +4,6 @@
         <field name="name">Student Custom Fields</field>
         <field name="model">student.student</field>
         <field name="inherit_id" ref="student_management.view_student_form"/>
-        <field name="mode">primary</field>
         <field name="arch" type="xml">
             <xpath expr="//notebook/page[1]" position="attributes">
                 <attribute name="invisible">1</attribute>
@@ -16,8 +15,11 @@
                 <attribute name="invisible">1</attribute>
             </xpath>
             <xpath expr="//field[@name='branch']" position="attributes">
-                <attribute name="required">0</attribute>
+                <attribute name="required">False</attribute>
             </xpath>
+<!--            <xpath expr="//field[@name='whatsapp']" position="attributes">-->
+<!--                <attribute name="required">True</attribute>-->
+<!--            </xpath>-->
             <xpath expr="//notebook/page[1]" position="before">
 
                 <page string="Course / LMS Details">

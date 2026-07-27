@@ -59,7 +59,7 @@ class CreateStudentWizard(models.TransientModel):
     def action_create_student(self):
         self.ensure_one()
 
-        student = self.env['student.student'].create({
+        student = self.env['student.student'].sudo().create({
             'first_name': self.first_name,
             'last_name': self.last_name,
             'name' : self.name,
