@@ -13,7 +13,7 @@ class Student(models.Model):
     course_purchase_date = fields.Date(string='Course Purchase Date')
     course_expiry_date = fields.Date(string='Course Expiry Date')
     branch = fields.Many2one(
-        "op.branch",
+        "student.branch",
         string="Branch",
         required=False,
     )
