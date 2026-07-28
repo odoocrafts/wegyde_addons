@@ -12,12 +12,11 @@ class Student(models.Model):
     marks_scored = fields.Text(string='Marks Scored for ACCA Subjects')
     course_purchase_date = fields.Date(string='Course Purchase Date')
     course_expiry_date = fields.Date(string='Course Expiry Date')
-    # branch = fields.Char(string='Branch')
-    # branch = fields.Many2one(
-    #     "op.branch",
-    #     string="Branch",
-    #     required=False,
-    # )
+    branch = fields.Many2one(
+        "op.branch",
+        string="Branch",
+        required=False,
+    )
 
     course_extended = fields.Selection([
         ('yes', 'Yes'),
