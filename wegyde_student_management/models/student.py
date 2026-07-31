@@ -17,6 +17,16 @@ class Student(models.Model):
         string="Branch",
         required=False,
     )
+    has_pending_amount = fields.Boolean(
+        string="Fee Pending",
+        compute="_compute_has_pending_amount",
+        store=True,
+    )
+
+    @api.depends("pending_amount")
+    def _compute_has_pending_amount(self):
+        for rec in self:
+            rec.has_pending_amount = rec.pending_amount > 0
 
     course_extended = fields.Selection([
         ('yes', 'Yes'),

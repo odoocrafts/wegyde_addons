@@ -5,12 +5,16 @@ class Crm(models.Model):
 
     course = fields.Char('Course')
     subject = fields.Char('Subject')
+    lead_quality = fields.Selection([
+        ('hot', 'Hot 🔥'),
+        ('warm', 'Warm 🟡'),
+        ('cold', 'Cold 🔵'),
+    ], string="Lead Quality", tracking=True, required=True)
     student_created = fields.Boolean(string="Student Created", default=False)
     student_id = fields.Many2one("student.student", string="Student")
 
     def action_open_student(self):
         self.ensure_one()
-
         return {
             "type": "ir.actions.act_window",
             "res_model": "student.student",

@@ -6,11 +6,17 @@
         <field name="inherit_id" ref="institute_crm.view_institute_crm_lead_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='course_interested']" position="after">
-<!--                <field name="course"/>-->
                 <field name="subject" string="Subject Interested"/>
-<!--                <field name="student_created" />-->
             </xpath>
-
+            <xpath expr="//field[@name='contact_status']" position="after">
+                <field name="lead_quality"/>
+            </xpath>
+            <xpath expr="//field[@name='student_name']" position="attributes">
+                <attribute name="required">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='student_phone']" position="attributes">
+                <attribute name="required">1</attribute>
+            </xpath>
             <xpath expr="//header" position="inside">
                 <field name="is_won_stage" invisible="1"/>
 
@@ -65,6 +71,34 @@
                     </footer>
                 </sheet>
             </form>
+        </field>
+    </record>
+    <record id="crm_case_kanban_view_leads_inherit_student" model="ir.ui.view">
+        <field name="name">crm.lead.kanban.inherit.student</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <div>
+                    <field name="student_phone"/>
+                </div>
+                <div>
+                    <field name="lead_quality"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="crm_case_list_view_leads_inherit_student" model="ir.ui.view">
+        <field name="name">crm.lead.list.inherit.student</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='contact_name']" position="after">
+                <field name="student_phone"/>
+                <field name="lead_quality"/>
+            </xpath>
+
         </field>
     </record>
 </odoo>

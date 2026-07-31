@@ -11,15 +11,16 @@
             <xpath expr="//button[@name='action_generate_form_link']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
+
             <xpath expr="//button[@name='act_send_welcome_email']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
             <xpath expr="//field[@name='branch']" position="attributes">
                 <attribute name="required">0</attribute>
             </xpath>
-<!--            <xpath expr="//field[@name='whatsapp']" position="attributes">-->
-<!--                <attribute name="required">True</attribute>-->
-<!--            </xpath>-->
+            <xpath expr="//field[@name='pending_amount']" position="after">
+                <field name="has_pending_amount" widget="boolean_toggle" readonly="1"/>
+            </xpath>
             <xpath expr="//notebook/page[1]" position="before">
 
                 <page string="Course / LMS Details">
@@ -57,6 +58,17 @@
                         <field name="contract_file" filename="contract_filename" widget="binary"/>
                     </group>
                 </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="wegyde_student_custom_fields_tree" model="ir.ui.view">
+        <field name="name">Student Custom Fields Tree</field>
+        <field name="model">student.student</field>
+        <field name="inherit_id" ref="student_management.view_student_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='pending_amount']" position="after">
+                <field name="has_pending_amount" widget="boolean_toggle" readonly="1"/>
             </xpath>
         </field>
     </record>
