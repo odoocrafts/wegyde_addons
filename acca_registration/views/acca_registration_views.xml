@@ -21,6 +21,7 @@
                 <field name="highest_qualification"/>
                 <field name="city"/>
                 <field name="country"/>
+                <field name="payment_status" widget="badge" decoration-success="payment_status == 'paid'" decoration-warning="payment_status == 'pending'" decoration-danger="payment_status == 'failed'"/>
                 <field name="initial_fees_paid" widget="boolean_toggle"/>
                 <field name="create_date" string="Registration Date"/>
             </tree>
@@ -76,6 +77,10 @@
                             <field name="zip_code"/>
                             <field name="country"/>
                             <field name="advance_payment"/>
+                        </group>
+                        <group string="Payment Status">
+                            <field name="payment_status" widget="badge" decoration-success="payment_status == 'paid'" decoration-warning="payment_status == 'pending'" decoration-danger="payment_status == 'failed'"/>
+                            <field name="razorpay_payment_link_id"/>
                         </group>
                     </group>
 

@@ -14,6 +14,7 @@
         'security/ir.model.access.csv',
         'views/acca_registration_views.xml',
         'views/templates.xml',
+        'views/res_config_settings_views.xml',
     ],
     'assets': {
         'web.assets_backend': [

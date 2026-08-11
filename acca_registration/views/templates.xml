@@ -583,4 +583,78 @@
             </div>
         </t>
     </template>
+
+    <template id="acca_payment_success_template" name="Payment Successful">
+        <t t-call="web.layout">
+            <t t-set="head">
+                <t t-call-assets="web.assets_frontend" t-js="false"/>
+                <t t-call-assets="web.assets_frontend" t-css="false"/>
+                <style type="text/css">
+                    html, body {
+                        height: auto !important;
+                        overflow-y: auto !important;
+                        background-color: #f8f9fa;
+                    }
+                </style>
+            </t>
+            <div id="wrap" class="oe_structure oe_empty" style="min-height: 100vh;">
+                <div class="container py-5 text-center">
+                    <div class="row justify-content-center py-5">
+                        <div class="col-md-8 col-lg-6">
+                            <div class="card border-0 shadow-lg py-5 px-4"
+                                 style="border-radius: 20px; background: #ffffff;">
+                                <div class="mb-4">
+                                    <span class="d-inline-flex align-items-center justify-content-center text-white bg-success rounded-circle"
+                                          style="width: 80px; height: 80px; font-size: 40px; box-shadow: 0 4px 10px rgba(40, 167, 69, 0.4);">
+                                        <span class="fa fa-check"/>
+                                    </span>
+                                </div>
+                                <h2 class="text-success mb-3 fw-bold">Payment Successful!</h2>
+                                <p class="lead text-muted mb-4">Thank you<t t-if="registration">, <strong t-esc="registration.name"/></t>! Your payment for the ACCA Registration has been received successfully.
+                                </p>
+
+                                <div class="bg-light p-4 mb-4 border text-start" style="border-radius: 12px;">
+                                    <t t-if="registration">
+                                        <div class="row small text-muted mb-1 pb-1 border-bottom">
+                                            <div class="col-5">
+                                                <strong>Registration ID:</strong>
+                                            </div>
+                                            <div class="col-7 text-dark">
+                                                <t t-esc="registration.id"/>
+                                            </div>
+                                        </div>
+                                    </t>
+                                    <div class="row small text-muted mb-1 pb-1 border-bottom">
+                                        <div class="col-5">
+                                            <strong>Payment ID:</strong>
+                                        </div>
+                                        <div class="col-7 text-dark">
+                                            <t t-esc="payment_id or 'N/A'"/>
+                                        </div>
+                                    </div>
+                                    <div class="row small text-muted">
+                                        <div class="col-5">
+                                            <strong>Payment Link ID:</strong>
+                                        </div>
+                                        <div class="col-7 text-dark">
+                                            <t t-esc="payment_link_id or 'N/A'"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <p class="text-muted mb-5">Our academic support team will review your registration and contact you soon.
+                                </p>
+                                <div>
+                                    <a href="/" class="btn btn-primary px-4 py-2"
+                                       style="border-radius: 20px; font-weight: 500; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); border: none;">
+                                        Back to Home
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
 </odoo>

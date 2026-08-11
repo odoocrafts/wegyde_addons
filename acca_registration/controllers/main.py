@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 import base64
+import requests
+import json
+import hmac
+import hashlib
+import logging
 from odoo import http
 from odoo.http import request
 
@@ -119,6 +124,124 @@ class AccaController(http.Controller):
         create_attachments(other_doc_files, "[Other Document]")
 
         # Render success template
+        
+        # --- Razorpay Integration ---
+        razorpay_key_id = request.env['ir.config_parameter'].sudo().get_param('acca_registration.razorpay_key_id', default='')
+        razorpay_key_secret = request.env['ir.config_parameter'].sudo().get_param('acca_registration.razorpay_key_secret', default='')
+        default_fee = request.env['ir.config_parameter'].sudo().get_param('acca_registration.default_fee', default=0.0)
+        
+        try:
+            default_fee = float(default_fee)
+        except ValueError:
+            default_fee = 0.0
+            
+        fee_to_charge = advance_payment if advance_payment > 0 else default_fee
+        
+        if razorpay_key_id and razorpay_key_secret and fee_to_charge > 0:
+            base_url = request.env['ir.config_parameter'].sudo().get_param('web.base.url', default='')
+            payload = {
+                "amount": int(fee_to_charge * 100),
+                "currency": "INR",
+                "accept_partial": False,
+                "reference_id": str(registration_record.id),
+                "description": "ACCA Registration Fee",
+                "customer": {
+                    "name": f"{first_name} {last_name}",
+                    "email": email,
+                    "contact": post.get('phone', '')
+                },
+                "notify": {
+                    "sms": True,
+                    "email": True
+                },
+                "reminder_enable": True,
+                "callback_url": f"{base_url}/acca/payment/success?ref={registration_record.id}",
+                "callback_method": "get"
+            }
+            
+            try:
+                response = requests.post(
+                    "https://api.razorpay.com/v1/payment_links",
+                    json=payload,
+                    auth=(razorpay_key_id, razorpay_key_secret),
+                    timeout=10
+                )
+                if response.status_code == 200:
+                    resp_data = response.json()
+                    payment_link_id = resp_data.get('id')
+                    short_url = resp_data.get('short_url')
+                    
+                    if payment_link_id and short_url:
+                        registration_record.sudo().write({
+                            'razorpay_payment_link_id': payment_link_id,
+                        })
+                        return request.redirect(short_url)
+                else:
+                    logging.getLogger(__name__).error(f"Razorpay Payment Link generation failed: {response.text}")
+            except Exception as e:
+                logging.getLogger(__name__).error(f"Error generating Razorpay Payment Link: {str(e)}")
+
+        # Fallback if no payment link generated or Razorpay not configured
         return request.render('acca_registration.acca_register_success_template', {
             'registration': registration_record
         })
+
+    @http.route('/acca/payment/success', type='http', auth='public', methods=['GET'])
+    def acca_payment_success(self, **kwargs):
+        ref = kwargs.get('ref')
+        razorpay_payment_id = kwargs.get('razorpay_payment_id')
+        razorpay_payment_link_id = kwargs.get('razorpay_payment_link_id')
+        
+        registration = False
+        if ref:
+            registration = request.env['acca.registration'].sudo().browse(int(ref))
+            if not registration.exists():
+                registration = False
+                
+        return request.render('acca_registration.acca_payment_success_template', {
+            'registration': registration,
+            'payment_id': razorpay_payment_id,
+            'payment_link_id': razorpay_payment_link_id
+        })
+
+    @http.route('/acca/razorpay/webhook', type='http', auth='public', methods=['POST'], csrf=False)
+    def acca_razorpay_webhook(self, **kwargs):
+        payload = request.httprequest.data
+        webhook_signature = request.httprequest.headers.get('X-Razorpay-Signature')
+        webhook_secret = request.env['ir.config_parameter'].sudo().get_param('acca_registration.razorpay_webhook_secret', default='')
+        
+        if not webhook_secret or not webhook_signature:
+            return request.make_response("Unauthorized", status=401)
+            
+        expected_signature = hmac.new(
+            webhook_secret.encode('utf-8'),
+            payload,
+            hashlib.sha256
+        ).hexdigest()
+        
+        if not hmac.compare_digest(expected_signature, webhook_signature):
+            return request.make_response("Invalid Signature", status=400)
+            
+        try:
+            data = json.loads(payload.decode('utf-8'))
+        except ValueError:
+            return request.make_response("Invalid JSON", status=400)
+            
+        event = data.get('event')
+        if event == 'payment_link.paid':
+            payment_link_entity = data.get('payload', {}).get('payment_link', {}).get('entity', {})
+            reference_id = payment_link_entity.get('reference_id')
+            
+            if reference_id:
+                try:
+                    registration = request.env['acca.registration'].sudo().browse(int(reference_id))
+                    if registration.exists():
+                        registration.sudo().write({
+                            'payment_status': 'paid',
+                            'initial_fees_paid': True,
+                        })
+                        return request.make_response("OK", status=200)
+                except ValueError:
+                    pass
+                    
+        return request.make_response("Ignored", status=200)

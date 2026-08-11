@@ -27,7 +27,12 @@ class AccaRegistration(models.Model):
     
     highest_qualification = fields.Text(string='Highest Qualification')
     initial_fees_paid = fields.Boolean(string='Initial Registration Fees Paid')
-    # advance_payment = fields.Float(string="Advance Payment")
+    payment_status = fields.Selection([
+        ('pending', 'Pending'),
+        ('paid', 'Paid'),
+        ('failed', 'Failed'),
+    ], string='Payment Status', default='pending', readonly=True)
+    razorpay_payment_link_id = fields.Char(string='Razorpay Payment Link ID', readonly=True)
     address = fields.Text(string='Full Address')
 
     # Old administrative fields (kept for compatibility)
