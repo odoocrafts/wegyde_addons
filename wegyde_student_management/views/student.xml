@@ -50,8 +50,14 @@
                         </group>
                     </group>
                     <group string="Academic History &amp; Marks">
-                        <field name="past_subject_completed" placeholder="List subjects completed..."/>
-                        <field name="marks_scored" placeholder="Marks scored details..."/>
+                        <field name="past_subject_ids" string="">
+                            <tree editable="bottom">
+                                <field name="past_subject_completed" placeholder="List subjects completed..."/>
+                                <field name="marks_scored" placeholder="Marks scored details..."/>
+                            </tree>
+                        </field>
+<!--                        <field name="past_subject_completed" placeholder="List subjects completed..."/>-->
+<!--                        <field name="marks_scored" placeholder="Marks scored details..."/>-->
                     </group>
                     <group string="Signed Agreement">
                         <field name="contract_filename" invisible="1"/>
