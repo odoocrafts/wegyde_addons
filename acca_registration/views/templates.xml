@@ -379,12 +379,16 @@
                                                     <div class="col-md-4 text-center mt-3 mt-md-0">
                                                         <div class="bg-white p-3 border rounded shadow-sm border-2 border-primary d-inline-block">
                                                             <span class="text-muted small d-block">INITIAL FEE</span>
-<!--                                                            <span class="h3 fw-bold text-primary">₹ 8,500</span>-->
-                                                            <span class="h3 fw-bold text-primary" id="fee_display">₹
-                                                                4,500
+                                                            <span class="h3 fw-bold text-primary" id="fee_display">
+                                                                <t t-if="default_fee and default_fee &gt; 0">
+                                                                    ₹ <t t-esc="'{:,.0f}'.format(default_fee) if default_fee.is_integer() else default_fee"/>
+                                                                </t>
+                                                                <t t-else="">
+                                                                    ₹ 4,500
+                                                                </t>
                                                             </span>
                                                             <input type="hidden" name="advance_payment"
-                                                                   id="advance_payment" value="4500"/>
+                                                                   id="advance_payment" t-att-value="str(default_fee) if default_fee and default_fee &gt; 0 else '4500'"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -465,15 +469,19 @@
                             form.classList.add('was-validated');
                         }, false);
 
-                        // Clear qualification error on click
                         // Clear qualification error on click and update fee dynamically
                         const checkboxes = document.querySelectorAll('.qualification-cb');
                         const qual3 = document.getElementById('qual_3');
                         const qual4 = document.getElementById('qual_4');
                         const feeDisplay = document.getElementById('fee_display');
                         const feeInput = document.getElementById('advance_payment');
+                        const overrideFee = ]]><t t-esc="default_fee if default_fee and default_fee &gt; 0 else 0"/><![CDATA[;
+
                         function updateFee() {
-                            if (qual3.checked || qual4.checked) {
+                            if (overrideFee > 0) {
+                                feeDisplay.textContent = '₹ ' + overrideFee;
+                                feeInput.value = overrideFee;
+                            } else if (qual3.checked || qual4.checked) {
                                 feeDisplay.textContent = '₹ 21,499';
                                 feeInput.value = '21499';
                             } else {

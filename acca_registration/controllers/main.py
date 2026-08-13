@@ -13,7 +13,14 @@ class AccaController(http.Controller):
     @http.route('/acca/register', type='http', auth='public', methods=['GET'])
     def acca_register_form(self, **kwargs):
         """Render the ACCA registration web form."""
-        return request.render('acca_registration.acca_register_form_template', {})
+        default_fee = request.env['ir.config_parameter'].sudo().get_param('acca_registration.default_fee', default=0.0)
+        try:
+            default_fee = float(default_fee)
+        except (ValueError, TypeError):
+            default_fee = 0.0
+        return request.render('acca_registration.acca_register_form_template', {
+            'default_fee': default_fee,
+        })
 
     @http.route('/acca/register/submit', type='http', auth='public', methods=['POST'], csrf=True)
     def acca_register_submit(self, **post):
@@ -132,10 +139,12 @@ class AccaController(http.Controller):
         
         try:
             default_fee = float(default_fee)
-        except ValueError:
+        except (ValueError, TypeError):
             default_fee = 0.0
             
-        fee_to_charge = advance_payment if advance_payment > 0 else default_fee
+        fee_to_charge = default_fee if default_fee > 0 else (advance_payment if advance_payment > 0 else 0.0)
+        if default_fee > 0:
+            registration_record.sudo().write({'advance_payment': fee_to_charge})
         
         if razorpay_key_id and razorpay_key_secret and fee_to_charge > 0:
             base_url = request.env['ir.config_parameter'].sudo().get_param('web.base.url', default='')
