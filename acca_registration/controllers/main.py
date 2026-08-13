@@ -175,7 +175,7 @@ class AccaController(http.Controller):
                         registration_record.sudo().write({
                             'razorpay_payment_link_id': payment_link_id,
                         })
-                        return request.redirect(short_url)
+                        return request.redirect(short_url, local=False)
                 else:
                     logging.getLogger(__name__).error(f"Razorpay Payment Link generation failed: {response.text}")
             except Exception as e:
