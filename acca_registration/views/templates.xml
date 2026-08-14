@@ -395,13 +395,77 @@
                                             </div>
                                         </div>
 
+                                        <!-- Payment Choice Hidden Input -->
+                                        <input type="hidden" name="payment_choice" id="payment_choice" value="online"/>
+
                                         <!-- Submit Button -->
                                         <div class="text-center pt-2">
-                                            <button type="submit" class="btn btn-primary btn-lg px-5 py-3 shadow-lg"
+                                            <button type="button" id="submit_btn" disabled="disabled" class="btn btn-primary btn-lg px-5 py-3 shadow-lg"
                                                     style="border-radius: 30px; font-weight: bold; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); border: none; letter-spacing: 0.5px; transition: transform 0.2s, box-shadow 0.2s;">
                                                 Submit Registration
                                                 <span class="fa fa-arrow-right ms-2"/>
                                             </button>
+                                        </div>
+
+                                        <!-- Payment Choice Wizard Modal -->
+                                        <div class="modal fade" id="paymentChoiceModal" tabindex="-1" aria-labelledby="paymentChoiceModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; overflow: hidden;">
+                                                    <div class="modal-header text-white py-3" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
+                                                        <h5 class="modal-title fw-bold mb-0" id="paymentChoiceModalLabel">
+                                                            <i class="fa fa-credit-card me-2"/>Choose Payment Option
+                                                        </h5>
+                                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body p-4 text-center">
+                                                        <p class="text-muted mb-3">Your registration details are ready! Please select how you would like to pay the initial fee.</p>
+                                                        
+                                                        <div class="p-3 mb-4 rounded-3 border border-2 border-primary bg-light d-flex justify-content-between align-items-center">
+                                                            <span class="text-secondary fw-semibold">Registration Fee:</span>
+                                                            <span class="h4 fw-bold text-primary mb-0" id="modal_fee_display">₹ 4,500</span>
+                                                        </div>
+
+                                                        <div class="d-grid gap-3">
+                                                            <!-- Pay Online Option -->
+                                                            <div class="card border-primary p-3 text-start payment-choice-card shadow-sm" id="card_pay_online" style="cursor: pointer; border-radius: 12px; transition: all 0.2s; border-width: 2px;">
+                                                                <div class="d-flex align-items-center">
+                                                                    <div class="bg-primary text-white rounded-circle p-3 me-3 d-flex align-items-center justify-content-center" style="width: 46px; height: 46px;">
+                                                                        <i class="fa fa-bolt fa-lg"/>
+                                                                    </div>
+                                                                    <div class="flex-grow-1">
+                                                                        <h6 class="fw-bold text-primary mb-0">Pay Online Now (Razorpay)</h6>
+                                                                        <small class="text-muted d-block mt-1">Instant via UPI, Cards, Net Banking</small>
+                                                                    </div>
+                                                                    <div>
+                                                                        <i class="fa fa-chevron-right text-primary"/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- Pay Later Option -->
+                                                            <div class="card border p-3 text-start payment-choice-card shadow-sm" id="card_pay_later" style="cursor: pointer; border-radius: 12px; transition: all 0.2s; border-width: 2px;">
+                                                                <div class="d-flex align-items-center">
+                                                                    <div class="bg-secondary text-white rounded-circle p-3 me-3 d-flex align-items-center justify-content-center" style="width: 46px; height: 46px;">
+                                                                        <i class="fa fa-building fa-lg"/>
+                                                                    </div>
+                                                                    <div class="flex-grow-1">
+                                                                        <h6 class="fw-bold text-dark mb-0">Pay Later at Office</h6>
+                                                                        <small class="text-muted d-block mt-1">Submit now and pay fee at our office</small>
+                                                                    </div>
+                                                                    <div>
+                                                                        <i class="fa fa-chevron-right text-muted"/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div id="submitting_spinner" class="d-none mt-3 text-primary">
+                                                            <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                                            <span class="fw-semibold">Processing your registration...</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </form>
 
@@ -431,9 +495,17 @@
                     .form-check:hover {
                         background-color: rgba(30, 60, 114, 0.04);
                     }
-                    button[type="submit"]:hover {
+                    .payment-choice-card:hover {
+                        transform: translateY(-2px);
+                        box-shadow: 0 6px 14px rgba(30, 60, 114, 0.15) !important;
+                    }
+                    button[type="submit"]:hover, #submit_btn:not(:disabled):hover {
                         transform: translateY(-2px);
                         box-shadow: 0 8px 16px rgba(30, 60, 114, 0.4) !important;
+                    }
+                    #submit_btn:disabled {
+                        opacity: 0.55;
+                        cursor: not-allowed;
                     }
                     ]]>
                 </style>
@@ -442,62 +514,114 @@
                     <![CDATA[
                     document.addEventListener('DOMContentLoaded', function () {
                         const form = document.getElementById('acca_zoho_form');
+                        const submitBtn = document.getElementById('submit_btn');
+                        const agreeCb = document.getElementById('initial_fees_paid');
+                        const paymentChoiceInput = document.getElementById('payment_choice');
 
-                        form.addEventListener('submit', function (event) {
-                            // Check qualifications checkboxes
-                            const checkboxes = document.querySelectorAll('.qualification-cb');
-                            let checkedCount = 0;
-                            checkboxes.forEach(cb => {
-                                if (cb.checked) checkedCount++;
-                            });
-
-                            const errorDiv = document.getElementById('qual_error');
-                            if (checkedCount === 0) {
-                                errorDiv.classList.remove('d-none');
-                                event.preventDefault();
-                                event.stopPropagation();
-                            } else {
-                                errorDiv.classList.add('d-none');
-                            }
-
-                            // Bootstrap validation check
-                            if (!form.checkValidity()) {
-                                event.preventDefault();
-                                event.stopPropagation();
-                            }
-
-                            form.classList.add('was-validated');
-                        }, false);
-
-                        // Clear qualification error on click and update fee dynamically
-                        const checkboxes = document.querySelectorAll('.qualification-cb');
-                        const qual3 = document.getElementById('qual_3');
-                        const qual4 = document.getElementById('qual_4');
                         const feeDisplay = document.getElementById('fee_display');
                         const feeInput = document.getElementById('advance_payment');
-                        const overrideFee = ]]><t t-esc="default_fee if default_fee and default_fee &gt; 0 else 0"/><![CDATA[;
+                        const modalFeeDisplay = document.getElementById('modal_fee_display');
+
+                        const qual2 = document.getElementById('qual_2');
+                        const qual4 = document.getElementById('qual_4');
+                        const checkboxes = document.querySelectorAll('.qualification-cb');
+
+                        const defaultBaseFee = ]]><t t-esc="default_fee if default_fee and default_fee &gt; 0 else 4500"/><![CDATA[;
+                        const defaultBaseFeeFormatted = ']]><t t-esc="'{:,.0f}'.format(default_fee) if (default_fee and default_fee &gt; 0 and default_fee.is_integer()) else (default_fee if default_fee and default_fee &gt; 0 else '4,500')"/><![CDATA[';
 
                         function updateFee() {
-                            if (overrideFee > 0) {
-                                feeDisplay.textContent = '₹ ' + overrideFee;
-                                feeInput.value = overrideFee;
-                            } else if (qual3.checked || qual4.checked) {
+                            if ((qual2 && qual2.checked) || (qual4 && qual4.checked)) {
                                 feeDisplay.textContent = '₹ 21,499';
                                 feeInput.value = '21499';
+                                if (modalFeeDisplay) modalFeeDisplay.textContent = '₹ 21,499';
                             } else {
-                                feeDisplay.textContent = '₹ 4,500';
-                                feeInput.value = '4500';
+                                feeDisplay.textContent = '₹ ' + defaultBaseFeeFormatted;
+                                feeInput.value = defaultBaseFee;
+                                if (modalFeeDisplay) modalFeeDisplay.textContent = '₹ ' + defaultBaseFeeFormatted;
                             }
                         }
+
                         checkboxes.forEach(cb => {
                             cb.addEventListener('change', function () {
                                 const errorDiv = document.getElementById('qual_error');
-                                errorDiv.classList.add('d-none');
+                                if (errorDiv) errorDiv.classList.add('d-none');
+                                updateFee();
                             });
                         });
-                        if (qual3 && qual4) {
-                            qual3.addEventListener('change', updateFee);
-                            qual4.addEventListener('change', updateFee);
+                        updateFee();
+
+                        // Submit button disabled until I agree checkbox is checked
+                        if (agreeCb && submitBtn) {
+                            submitBtn.disabled = !agreeCb.checked;
+                            agreeCb.addEventListener('change', function () {
+                                submitBtn.disabled = !this.checked;
+                            });
+                        }
+
+                        // Submit Button clicked -> Validate form -> Show Payment Choice Wizard
+                        if (submitBtn) {
+                            submitBtn.addEventListener('click', function (e) {
+                                e.preventDefault();
+
+                                // Check qualification selection
+                                let checkedCount = 0;
+                                checkboxes.forEach(cb => {
+                                    if (cb.checked) checkedCount++;
+                                });
+
+                                const errorDiv = document.getElementById('qual_error');
+                                if (checkedCount === 0) {
+                                    if (errorDiv) errorDiv.classList.remove('d-none');
+                                    form.classList.add('was-validated');
+                                    errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                    return;
+                                } else {
+                                    if (errorDiv) errorDiv.classList.add('d-none');
+                                }
+
+                                // Check standard required inputs
+                                if (!form.checkValidity()) {
+                                    form.classList.add('was-validated');
+                                    const firstInvalid = form.querySelector(':invalid');
+                                    if (firstInvalid) {
+                                        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                        firstInvalid.focus();
+                                    }
+                                    return;
+                                }
+
+                                // Open Modal
+                                updateFee();
+                                const modalElem = document.getElementById('paymentChoiceModal');
+                                if (modalElem) {
+                                    const paymentModal = new bootstrap.Modal(modalElem);
+                                    paymentModal.show();
+                                }
+                            });
+                        }
+
+                        // Handle modal choice clicks
+                        const cardPayOnline = document.getElementById('card_pay_online');
+                        const cardPayLater = document.getElementById('card_pay_later');
+                        const spinner = document.getElementById('submitting_spinner');
+
+                        function processSubmission(choice) {
+                            if (paymentChoiceInput) paymentChoiceInput.value = choice;
+                            if (cardPayOnline) cardPayOnline.style.pointerEvents = 'none';
+                            if (cardPayLater) cardPayLater.style.pointerEvents = 'none';
+                            if (spinner) spinner.classList.remove('d-none');
+                            form.submit();
+                        }
+
+                        if (cardPayOnline) {
+                            cardPayOnline.addEventListener('click', function () {
+                                processSubmission('online');
+                            });
+                        }
+                        if (cardPayLater) {
+                            cardPayLater.addEventListener('click', function () {
+                                processSubmission('pay_later');
+                            });
                         }
                     });
                     ]]>
@@ -526,15 +650,37 @@
                             <div class="card border-0 shadow-lg py-5 px-4"
                                  style="border-radius: 20px; background: #ffffff;">
                                 <div class="mb-4">
-                                    <span class="d-inline-flex align-items-center justify-content-center text-white bg-success rounded-circle"
-                                          style="width: 80px; height: 80px; font-size: 40px; box-shadow: 0 4px 10px rgba(40, 167, 69, 0.4);">
-                                        <span class="fa fa-check"/>
-                                    </span>
+                                    <t t-if="payment_choice == 'pay_later'">
+                                        <span class="d-inline-flex align-items-center justify-content-center text-white bg-warning rounded-circle"
+                                              style="width: 80px; height: 80px; font-size: 38px; box-shadow: 0 4px 10px rgba(255, 193, 7, 0.4);">
+                                            <span class="fa fa-building"/>
+                                        </span>
+                                    </t>
+                                    <t t-else="">
+                                        <span class="d-inline-flex align-items-center justify-content-center text-white bg-success rounded-circle"
+                                              style="width: 80px; height: 80px; font-size: 40px; box-shadow: 0 4px 10px rgba(40, 167, 69, 0.4);">
+                                            <span class="fa fa-check"/>
+                                        </span>
+                                    </t>
                                 </div>
                                 <h2 class="text-success mb-3 fw-bold">Registration Submitted!</h2>
                                 <p class="lead text-muted mb-4">Thank you,<strong t-esc="registration.name"/>! Your ACCA
-                                    Registration has been submitted successfully to the backend.
+                                    Registration has been submitted successfully.
                                 </p>
+
+                                <t t-if="payment_choice == 'pay_later'">
+                                    <div class="alert alert-warning border-2 p-3 text-start mb-4" style="border-radius: 12px; background-color: #fff8e6;">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <i class="fa fa-info-circle fa-lg text-warning me-2"/>
+                                            <strong class="text-dark" style="font-size: 1.05rem;">Fee Payment Pending at Office</strong>
+                                        </div>
+                                        <p class="mb-0 text-muted small" style="line-height: 1.5;">
+                                            Please visit the <strong>WeGyde Office</strong> to pay the initial registration fee of 
+                                            <strong class="text-dark">₹ <t t-esc="'{:,.0f}'.format(fee_amount) if (fee_amount and fee_amount.is_integer()) else (fee_amount or '4,500')"/></strong> 
+                                            and complete your admission enrollment.
+                                        </p>
+                                    </div>
+                                </t>
 
                                 <div class="bg-light p-4 mb-4 border text-start" style="border-radius: 12px;">
                                     <div class="row small text-muted mb-1 pb-1 border-bottom">
@@ -561,12 +707,25 @@
                                             <t t-esc="registration.phone or 'N/A'"/>
                                         </div>
                                     </div>
-                                    <div class="row small text-muted">
+                                    <div class="row small text-muted mb-1 pb-1 border-bottom">
                                         <div class="col-5">
                                             <strong>Highest Qualification:</strong>
                                         </div>
                                         <div class="col-7 text-dark">
                                             <t t-esc="registration.highest_qualification or 'N/A'"/>
+                                        </div>
+                                    </div>
+                                    <div class="row small text-muted">
+                                        <div class="col-5">
+                                            <strong>Payment Status:</strong>
+                                        </div>
+                                        <div class="col-7">
+                                            <t t-if="payment_choice == 'pay_later'">
+                                                <span class="badge bg-warning text-dark">Pending (Pay at Office)</span>
+                                            </t>
+                                            <t t-else="">
+                                                <span class="badge bg-secondary">Pending</span>
+                                            </t>
                                         </div>
                                     </div>
                                 </div>

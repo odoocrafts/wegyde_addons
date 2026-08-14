@@ -72,9 +72,32 @@ class AccaController(http.Controller):
             addr_lines.append(country)
         full_address = "\n".join(filter(None, addr_lines))
 
-        # Initial fees checkbox
-        initial_fees_paid = True if post.get('initial_fees_paid') == 'on' else False
-        advance_payment = float(post.get('advance_payment', 0))
+        # Payment Choice & Fee Calculation
+        payment_choice = post.get('payment_choice', 'online')
+        
+        is_standard_exemption = any(
+            q in qualifications for q in [
+                'Graduation Completed (BCOM/BBA etc)',
+                'B.Com Pursuing - Conditional Exemption(Standard)'
+            ]
+        )
+        
+        default_fee = request.env['ir.config_parameter'].sudo().get_param('acca_registration.default_fee', default=0.0)
+        try:
+            default_fee = float(default_fee)
+        except (ValueError, TypeError):
+            default_fee = 0.0
+
+        if is_standard_exemption:
+            fee_to_charge = 21499.0
+        elif default_fee > 0:
+            fee_to_charge = default_fee
+        else:
+            try:
+                advance_payment_val = float(post.get('advance_payment', 4500))
+                fee_to_charge = advance_payment_val if advance_payment_val > 0 else 4500.0
+            except (ValueError, TypeError):
+                fee_to_charge = 4500.0
 
         # Prepare values for Odoo create method
         vals = {
@@ -91,8 +114,9 @@ class AccaController(http.Controller):
             'country': country,
             'address': full_address,
             'highest_qualification': highest_qualification_str,
-            'initial_fees_paid': initial_fees_paid,
-            'advance_payment': advance_payment,
+            'initial_fees_paid': False,
+            'payment_status': 'pending',
+            'advance_payment': fee_to_charge,
         }
 
         # Include profile picture if uploaded
@@ -130,21 +154,17 @@ class AccaController(http.Controller):
         create_attachments(exemption_req_files, "[Exemption Requirement]")
         create_attachments(other_doc_files, "[Other Document]")
 
-        # Render success template
-        
-        # --- Razorpay Integration ---
+        # If User Chose to Pay Later at Office
+        if payment_choice == 'pay_later':
+            return request.render('acca_registration.acca_register_success_template', {
+                'registration': registration_record,
+                'payment_choice': 'pay_later',
+                'fee_amount': fee_to_charge,
+            })
+
+        # --- Razorpay Integration for Online Payment ---
         razorpay_key_id = request.env['ir.config_parameter'].sudo().get_param('acca_registration.razorpay_key_id', default='')
         razorpay_key_secret = request.env['ir.config_parameter'].sudo().get_param('acca_registration.razorpay_key_secret', default='')
-        default_fee = request.env['ir.config_parameter'].sudo().get_param('acca_registration.default_fee', default=0.0)
-        
-        try:
-            default_fee = float(default_fee)
-        except (ValueError, TypeError):
-            default_fee = 0.0
-            
-        fee_to_charge = default_fee if default_fee > 0 else (advance_payment if advance_payment > 0 else 0.0)
-        if default_fee > 0:
-            registration_record.sudo().write({'advance_payment': fee_to_charge})
         
         if razorpay_key_id and razorpay_key_secret and fee_to_charge > 0:
             base_url = request.env['ir.config_parameter'].sudo().get_param('web.base.url', default='')
@@ -192,7 +212,9 @@ class AccaController(http.Controller):
 
         # Fallback if no payment link generated or Razorpay not configured
         return request.render('acca_registration.acca_register_success_template', {
-            'registration': registration_record
+            'registration': registration_record,
+            'payment_choice': 'online_fallback',
+            'fee_amount': fee_to_charge,
         })
 
     @http.route('/acca/payment/success', type='http', auth='public', methods=['GET'])
