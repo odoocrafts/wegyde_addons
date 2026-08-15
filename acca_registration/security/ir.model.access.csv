@@ -1,3 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_acca_registration_user,acca.registration.user,model_acca_registration,base.group_user,1,1,1,1
+access_acca_document_preview_user,acca.document.preview.user,model_acca_document_preview,base.group_user,1,1,1,1
 

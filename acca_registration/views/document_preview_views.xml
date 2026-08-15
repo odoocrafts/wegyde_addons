@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Document Preview Form View -->
+    <record id="view_acca_document_preview_form" model="ir.ui.view">
+        <field name="name">acca.document.preview.form</field>
+        <field name="model">acca.document.preview</field>
+        <field name="arch" type="xml">
+            <form string="Document Preview">
+                <sheet>
+                    <field name="attachment_id" invisible="1"/>
+                    <field name="name" invisible="1"/>
+                    <field name="mimetype" invisible="1"/>
+                    <field name="preview_html" widget="html" nolabel="1"/>
+                </sheet>
+                <footer>
+                    <button name="action_download_file" string="Download File" type="object" icon="fa-download" class="btn btn-secondary me-2"/>
+                    <button string="Close" class="btn btn-primary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

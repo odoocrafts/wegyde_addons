@@ -1,10 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Custom Kanban View for ACCA Attachments -->
+    <record id="view_acca_ir_attachment_kanban" model="ir.ui.view">
+        <field name="name">acca.ir.attachment.kanban</field>
+        <field name="model">ir.attachment</field>
+        <field name="arch" type="xml">
+            <kanban create="false" class="o_kanban_mobile">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="mimetype"/>
+                <field name="create_date"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_record d-flex flex-column justify-content-between p-3 border rounded shadow-sm bg-white" style="min-height: 160px;">
+                            <div>
+                                <div class="d-flex align-items-start justify-content-between mb-2">
+                                    <h6 class="fw-bold text-primary mb-0 text-truncate" style="max-width: 78%;" t-att-title="record.name.value">
+                                        <t t-esc="record.name.value"/>
+                                    </h6>
+                                    <span class="badge bg-light text-dark border">
+                                        <t t-if="record.mimetype.value and 'pdf' in record.mimetype.value">PDF</t>
+                                        <t t-elif="record.mimetype.value and 'image' in record.mimetype.value">Image</t>
+                                        <t t-else="">Doc</t>
+                                    </span>
+                                </div>
+                                <div class="text-center my-2 py-2 bg-light rounded d-flex align-items-center justify-content-center" style="min-height: 70px;">
+                                    <t t-if="record.mimetype.value and 'image' in record.mimetype.value">
+                                        <img t-att-src="'/web/image/' + record.id.raw_value" style="max-height: 65px; max-width: 100%; object-fit: contain; border-radius: 4px;"/>
+                                    </t>
+                                    <t t-elif="record.mimetype.value and 'pdf' in record.mimetype.value">
+                                        <i class="fa fa-file-pdf-o text-danger" style="font-size: 42px;"/>
+                                    </t>
+                                    <t t-else="">
+                                        <i class="fa fa-file-text-o text-muted" style="font-size: 42px;"/>
+                                    </t>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top">
+                                <small class="text-muted"><t t-esc="record.create_date.value"/></small>
+                                <div>
+                                    <button name="action_preview_document" type="object" class="btn btn-sm btn-primary me-1" title="Preview Document">
+                                        <i class="fa fa-eye me-1"/>Preview
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Custom Tree View for ACCA Attachments -->
+    <record id="view_acca_ir_attachment_tree" model="ir.ui.view">
+        <field name="name">acca.ir.attachment.tree</field>
+        <field name="model">ir.attachment</field>
+        <field name="arch" type="xml">
+            <tree string="Documents" create="false">
+                <field name="name" string="Document Name"/>
+                <field name="mimetype" string="File Type"/>
+                <field name="create_date" string="Uploaded Date"/>
+                <button name="action_preview_document" string="Preview Document" type="object" icon="fa-eye" class="btn btn-sm btn-primary"/>
+            </tree>
+        </field>
+    </record>
+
     <!-- Attachment Action helper -->
     <record id="action_acca_registration_attachments" model="ir.actions.act_window">
-        <field name="name">Attachments</field>
+        <field name="name">Documents</field>
         <field name="res_model">ir.attachment</field>
         <field name="view_mode">kanban,tree,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'kanban', 'view_id': ref('view_acca_ir_attachment_kanban')}),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('view_acca_ir_attachment_tree')})]"/>
         <field name="domain">[('res_model', '=', 'acca.registration'), ('res_id', '=', active_id)]</field>
         <field name="context">{'default_res_model': 'acca.registration', 'default_res_id': active_id}</field>
     </record>
@@ -44,11 +112,6 @@
                         </button>
                     </div>
 
-                    <!--                    <div class="alert alert-info" role="alert" style="margin-bottom: 10px;">-->
-                    <!--                        <strong>Public Link:</strong>-->
-                    <!--                        <field name="public_url" widget="CopyClipboardChar" readonly="1" class="ml-2"/>-->
-                    <!--                    </div>-->
-
                     <field name="image_file" widget="image" class="oe_avatar"
                            options="{'zoom': true, 'preview_image': 'image_file'}"/>
 
@@ -83,6 +146,60 @@
                             <field name="razorpay_payment_link_id"/>
                         </group>
                     </group>
+
+                    <notebook>
+                        <page string="Uploaded Documents" name="uploaded_documents">
+                            <field name="attachment_ids" mode="kanban,tree">
+                                <tree string="Documents" create="false" delete="false">
+                                    <field name="name" string="Document Name"/>
+                                    <field name="mimetype" string="File Type"/>
+                                    <field name="create_date" string="Uploaded On"/>
+                                    <button name="action_preview_document" string="Preview" type="object" icon="fa-eye" class="btn btn-sm btn-primary"/>
+                                </tree>
+                                <kanban create="false" class="o_kanban_mobile">
+                                    <field name="id"/>
+                                    <field name="name"/>
+                                    <field name="mimetype"/>
+                                    <field name="create_date"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div class="oe_kanban_global_click o_kanban_record d-flex flex-column justify-content-between p-3 border rounded shadow-sm bg-white" style="min-height: 150px;">
+                                                <div>
+                                                    <div class="d-flex align-items-start justify-content-between mb-2">
+                                                        <h6 class="fw-bold text-primary mb-0 text-truncate" style="max-width: 78%;" t-att-title="record.name.value">
+                                                            <t t-esc="record.name.value"/>
+                                                        </h6>
+                                                        <span class="badge bg-light text-dark border">
+                                                            <t t-if="record.mimetype.value and 'pdf' in record.mimetype.value">PDF</t>
+                                                            <t t-elif="record.mimetype.value and 'image' in record.mimetype.value">Image</t>
+                                                            <t t-else="">Doc</t>
+                                                        </span>
+                                                    </div>
+                                                    <div class="text-center my-2 py-2 bg-light rounded d-flex align-items-center justify-content-center" style="min-height: 60px;">
+                                                        <t t-if="record.mimetype.value and 'image' in record.mimetype.value">
+                                                            <img t-att-src="'/web/image/' + record.id.raw_value" style="max-height: 55px; max-width: 100%; object-fit: contain; border-radius: 4px;"/>
+                                                        </t>
+                                                        <t t-elif="record.mimetype.value and 'pdf' in record.mimetype.value">
+                                                            <i class="fa fa-file-pdf-o text-danger" style="font-size: 36px;"/>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <i class="fa fa-file-text-o text-muted" style="font-size: 36px;"/>
+                                                        </t>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top">
+                                                    <small class="text-muted"><t t-esc="record.create_date.value"/></small>
+                                                    <button name="action_preview_document" type="object" class="btn btn-sm btn-primary" title="Preview Document">
+                                                        <i class="fa fa-eye me-1"/>Preview
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                            </field>
+                        </page>
+                    </notebook>
 
                 </sheet>
             </form>
@@ -127,7 +244,6 @@
             </p>
         </field>
     </record>
-
 
     <menuitem id="menu_acca_root" name="ACCA Registration" sequence="10"
               web_icon="acca_registration,static/description/icon.png"/>

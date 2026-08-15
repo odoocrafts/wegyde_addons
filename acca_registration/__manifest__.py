@@ -12,6 +12,7 @@
     'depends': ['base', 'web'],
     'data': [
         'security/ir.model.access.csv',
+        'views/document_preview_views.xml',
         'views/acca_registration_views.xml',
         'views/templates.xml',
         'views/res_config_settings_views.xml',

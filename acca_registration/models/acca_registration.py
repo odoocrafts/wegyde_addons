@@ -34,6 +34,14 @@ class AccaRegistration(models.Model):
     ], string='Payment Status', default='pending', readonly=True)
     razorpay_payment_link_id = fields.Char(string='Razorpay Payment Link ID', readonly=True)
     address = fields.Text(string='Full Address')
+    
+    attachment_ids = fields.One2many(
+        'ir.attachment',
+        'res_id',
+        domain=[('res_model', '=', 'acca.registration')],
+        string='Uploaded Documents',
+        readonly=True
+    )
 
     # Old administrative fields (kept for compatibility)
     wegyde_id = fields.Char(string='WeGyde ID')
