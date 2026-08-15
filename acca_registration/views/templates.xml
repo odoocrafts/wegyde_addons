@@ -561,7 +561,7 @@
                         const feeInput = document.getElementById('advance_payment');
                         const modalFeeDisplay = document.getElementById('modal_fee_display');
 
-                        const qual2 = document.getElementById('qual_2');
+                        const qual3 = document.getElementById('qual_3');
                         const qual4 = document.getElementById('qual_4');
                         const checkboxes = document.querySelectorAll('.qualification-cb');
 
@@ -569,7 +569,7 @@
                         const defaultBaseFeeFormatted = ']]><t t-esc="'{:,.0f}'.format(default_fee) if (default_fee and default_fee &gt; 0 and default_fee.is_integer()) else (default_fee if default_fee and default_fee &gt; 0 else '4,500')"/><![CDATA[';
 
                         function updateFee() {
-                            if ((qual2 && qual2.checked) || (qual4 && qual4.checked)) {
+                            if ((qual3 && qual3.checked) || (qual4 && qual4.checked)) {
                                 feeDisplay.textContent = '₹ 21,499';
                                 feeInput.value = '21499';
                                 if (modalFeeDisplay) modalFeeDisplay.textContent = '₹ 21,499';

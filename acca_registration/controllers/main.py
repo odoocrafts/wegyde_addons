@@ -75,9 +75,9 @@ class AccaController(http.Controller):
         # Payment Choice & Fee Calculation
         payment_choice = post.get('payment_choice', 'online')
         
-        is_standard_exemption = any(
+        is_bcom_pursuing = any(
             q in qualifications for q in [
-                'Graduation Completed (BCOM/BBA etc)',
+                'B.Com Pursuing - Conditional Exemption',
                 'B.Com Pursuing - Conditional Exemption(Standard)'
             ]
         )
@@ -88,7 +88,7 @@ class AccaController(http.Controller):
         except (ValueError, TypeError):
             default_fee = 0.0
 
-        if is_standard_exemption:
+        if is_bcom_pursuing:
             fee_to_charge = 21499.0
         elif default_fee > 0:
             fee_to_charge = default_fee
