@@ -2,7 +2,9 @@
 <odoo>
     <template id="kyc_admission_form_template" name="WeGyde Admission - KYC Form">
         <t t-call="web.layout">
+            <t t-set="title">WeGyde Admission - KYC Form | WeGyde</t>
             <t t-set="head">
+                <title>WeGyde Admission - KYC Form | WeGyde</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
                 <t t-call-assets="web.assets_frontend" t-js="false"/>
                 <t t-call-assets="web.assets_frontend" t-css="false"/>
@@ -614,7 +616,9 @@
     <!-- Success Confirmation Template -->
     <template id="kyc_admission_success_template" name="KYC Form Submitted Successfully">
         <t t-call="web.layout">
+            <t t-set="title">KYC Form Submitted | WeGyde</t>
             <t t-set="head">
+                <title>KYC Form Submitted | WeGyde</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
                 <t t-call-assets="web.assets_frontend" t-js="false"/>
                 <t t-call-assets="web.assets_frontend" t-css="false"/>

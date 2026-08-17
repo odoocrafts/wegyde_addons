@@ -2,7 +2,9 @@
 <odoo>
     <template id="acca_register_form_template" name="ACCA Registration Form">
         <t t-call="web.layout">
+            <t t-set="title">ACCA Registration Form | WeGyde</t>
             <t t-set="head">
+                <title>ACCA Registration Form | WeGyde</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
                 <t t-call-assets="web.assets_frontend" t-js="false"/>
                 <t t-call-assets="web.assets_frontend" t-css="false"/>
@@ -21,7 +23,7 @@
                                             <t t-esc="res_company.name or 'WeGyde Innovations'"/>
                                         </h5>
                                         <small class="text-muted d-block" style="font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;">
-                                            ACCA Learning Partner &amp; Admission Portal
+                                            ACCA Registration Portal
                                         </small>
                                     </div>
                                 </div>
@@ -814,7 +816,9 @@
 
     <template id="acca_register_success_template" name="Registration Successful">
         <t t-call="web.layout">
+            <t t-set="title">Registration Submitted | WeGyde</t>
             <t t-set="head">
+                <title>Registration Submitted | WeGyde</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
                 <t t-call-assets="web.assets_frontend" t-js="false"/>
                 <t t-call-assets="web.assets_frontend" t-css="false"/>
@@ -936,7 +940,9 @@
 
     <template id="acca_payment_success_template" name="Payment Successful">
         <t t-call="web.layout">
+            <t t-set="title">Payment Successful | WeGyde</t>
             <t t-set="head">
+                <title>Payment Successful | WeGyde</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
                 <t t-call-assets="web.assets_frontend" t-js="false"/>
                 <t t-call-assets="web.assets_frontend" t-css="false"/>
