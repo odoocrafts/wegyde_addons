@@ -2,7 +2,9 @@
 <odoo>
     <template id="acca_register_form_template" name="ACCA Registration Form">
         <t t-call="web.layout">
+            <t t-set="title">ACCA Registration Form | WeGyde</t>
             <t t-set="head">
+                <title>ACCA Registration Form | WeGyde</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
                 <t t-call-assets="web.assets_frontend" t-js="false"/>
                 <t t-call-assets="web.assets_frontend" t-css="false"/>
@@ -11,10 +13,29 @@
                 <div class="container py-3 py-sm-4 py-md-5 px-2 px-sm-3 px-md-4">
                     <div class="row justify-content-center">
                         <div class="col-12 col-lg-10 col-xl-9">
+                            
+                            <!-- Brand Header (Company Logo & Name) -->
+                            <div class="text-center mb-4 acca-brand-header">
+                                <div class="d-inline-flex align-items-center justify-content-center gap-3 p-2 px-4 rounded-pill bg-white shadow-sm border mb-3">
+                                    <img src="/web/binary/company_logo" alt="Company Logo" class="acca-company-logo" onerror="this.style.display='none'"/>
+                                    <div class="text-start">
+                                        <h5 class="fw-bold mb-0 text-dark acca-company-name">
+                                            <t t-esc="res_company.name or 'WeGyde Innovations'"/>
+                                        </h5>
+                                        <small class="text-muted d-block" style="font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;">
+                                            ACCA Registration Portal
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="card border-0 shadow-sm form-main-card">
                                 <!-- Header -->
-                                <div class="card-header text-white text-center py-3 py-md-4 px-3"
+                                <div class="card-header text-white text-center py-4 px-3 px-md-4"
                                      style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); border-radius: 16px 16px 0 0;">
+                                    <span class="badge bg-white text-primary rounded-pill px-3 py-1 mb-2 fw-semibold shadow-sm" style="color: #1e3c72; font-size: 0.8rem; letter-spacing: 0.5px;">
+                                        <i class="fa fa-graduation-cap me-1"/> OFFICIAL REGISTRATION PORTAL
+                                    </span>
                                     <h2 class="mb-1 fw-bold form-main-title">ACCA Registration Form</h2>
                                     <p class="mb-0 text-white-50 small">Fill in the details below to complete your ACCA registration</p>
                                 </div>
@@ -447,6 +468,16 @@
                         overflow-x: hidden !important;
                         background-color: #f1f5f9;
                     }
+                    .acca-company-logo {
+                        max-height: 48px;
+                        max-width: 140px;
+                        object-fit: contain;
+                    }
+                    .acca-company-name {
+                        color: #1e3c72;
+                        font-size: 1.15rem;
+                        letter-spacing: -0.2px;
+                    }
                     .form-main-card {
                         border-radius: 16px;
                         overflow: hidden;
@@ -785,7 +816,9 @@
 
     <template id="acca_register_success_template" name="Registration Successful">
         <t t-call="web.layout">
+            <t t-set="title">Registration Submitted | WeGyde</t>
             <t t-set="head">
+                <title>Registration Submitted | WeGyde</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
                 <t t-call-assets="web.assets_frontend" t-js="false"/>
                 <t t-call-assets="web.assets_frontend" t-css="false"/>
@@ -907,7 +940,9 @@
 
     <template id="acca_payment_success_template" name="Payment Successful">
         <t t-call="web.layout">
+            <t t-set="title">Payment Successful | WeGyde</t>
             <t t-set="head">
+                <title>Payment Successful | WeGyde</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
                 <t t-call-assets="web.assets_frontend" t-js="false"/>
                 <t t-call-assets="web.assets_frontend" t-css="false"/>
