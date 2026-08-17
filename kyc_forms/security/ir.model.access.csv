@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_kyc_form_user,kyc.form.user,model_kyc_form,base.group_user,1,1,1,1
+access_kyc_pursuing_subject_user,kyc.pursuing.subject.user,model_kyc_pursuing_subject,base.group_user,1,1,1,1
