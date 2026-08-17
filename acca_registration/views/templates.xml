@@ -3,26 +3,25 @@
     <template id="acca_register_form_template" name="ACCA Registration Form">
         <t t-call="web.layout">
             <t t-set="head">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
                 <t t-call-assets="web.assets_frontend" t-js="false"/>
                 <t t-call-assets="web.assets_frontend" t-css="false"/>
             </t>
-            <div id="wrap" class="oe_structure oe_empty" style="min-height: 100vh; background-color: #f8f9fa;">
-                <!-- Premium glassmorphism design -->
-                <div class="container py-5">
+            <div id="wrap" class="oe_structure oe_empty" style="min-height: 100vh; background-color: #f1f5f9;">
+                <div class="container py-3 py-sm-4 py-md-5 px-2 px-sm-3 px-md-4">
                     <div class="row justify-content-center">
-                        <div class="col-lg-10 col-md-12">
-                            <div class="card border-0 shadow-lg"
-                                 style="border-radius: 16px; overflow: hidden; background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px);">
-                                <!-- Gradient Header -->
-                                <div class="card-header text-white py-4 text-center"
-                                     style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
-                                    <h2 class="mb-1 fw-bold" style="letter-spacing: 0.5px;">ACCA Registration Form</h2>
-                                    <!--                                    <p class="mb-0 text-white-50">Please fill out this form to complete your backend ACCA registration.</p>-->
+                        <div class="col-12 col-lg-10 col-xl-9">
+                            <div class="card border-0 shadow-sm form-main-card">
+                                <!-- Header -->
+                                <div class="card-header text-white text-center py-3 py-md-4 px-3"
+                                     style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); border-radius: 16px 16px 0 0;">
+                                    <h2 class="mb-1 fw-bold form-main-title">ACCA Registration Form</h2>
+                                    <p class="mb-0 text-white-50 small">Fill in the details below to complete your ACCA registration</p>
                                 </div>
-                                <div class="card-body p-4 p-md-5">
+                                <div class="card-body p-3 p-sm-4 p-md-5">
 
                                     <t t-if="error">
-                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert" style="border-radius: 10px;">
                                             <span class="fa fa-exclamation-triangle me-2"/>
                                             <t t-esc="error"/>
                                             <button type="button" class="btn-close" data-bs-dismiss="alert"
@@ -35,75 +34,68 @@
                                         <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
 
                                         <!-- Form Section 1: Personal Details -->
-                                        <h4 class="mb-4 text-primary pb-2 border-bottom fw-bold"><span
-                                                class="fa fa-user me-2"/>Personal Details
-                                        </h4>
+                                        <div class="form-section-header">
+                                            <span class="fa fa-user me-2"/>Personal Details
+                                        </div>
                                         <div class="row g-3 mb-4">
-                                            <div class="col-md-6">
+                                            <div class="col-12 col-md-6">
                                                 <label for="first_name" class="form-label fw-bold">First Name
                                                     <span class="text-danger">*</span>
                                                 </label>
-                                                <input type="text" class="form-control form-control-lg border-2"
+                                                <input type="text" class="form-control form-control-custom"
                                                        id="first_name" name="first_name" required="required"
                                                        placeholder="Enter first name"
-                                                       t-att-value="values.get('first_name') if values else ''"
-                                                       style="border-radius: 8px; font-size: 0.95rem;"/>
+                                                       t-att-value="values.get('first_name') if values else ''"/>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-12 col-md-6">
                                                 <label for="last_name" class="form-label fw-bold">Last Name
                                                     <span class="text-danger">*</span>
                                                 </label>
-                                                <input type="text" class="form-control form-control-lg border-2"
+                                                <input type="text" class="form-control form-control-custom"
                                                        id="last_name" name="last_name" required="required"
                                                        placeholder="Enter last name"
-                                                       t-att-value="values.get('last_name') if values else ''"
-                                                       style="border-radius: 8px; font-size: 0.95rem;"/>
+                                                       t-att-value="values.get('last_name') if values else ''"/>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-12 col-md-6">
                                                 <label for="phone" class="form-label fw-bold">Phone Number
                                                     <span class="text-danger">*</span>
                                                 </label>
-                                                <input type="tel" class="form-control form-control-lg border-2"
+                                                <input type="tel" class="form-control form-control-custom"
                                                        id="phone" name="phone" required="required"
                                                        placeholder="e.g. +91 9876543210"
-                                                       t-att-value="values.get('phone') if values else ''"
-                                                       style="border-radius: 8px; font-size: 0.95rem;"/>
+                                                       t-att-value="values.get('phone') if values else ''"/>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-12 col-md-6">
                                                 <label for="dob" class="form-label fw-bold">Date of Birth
                                                     <span class="text-danger">*</span>
                                                 </label>
-                                                <input type="date" class="form-control form-control-lg border-2"
+                                                <input type="date" class="form-control form-control-custom"
                                                        id="dob" name="dob" required="required"
-                                                       t-att-value="values.get('dob') if values else ''"
-                                                       style="border-radius: 8px; font-size: 0.95rem;"/>
+                                                       t-att-value="values.get('dob') if values else ''"/>
                                             </div>
                                             <div class="col-12">
                                                 <label for="email" class="form-label fw-bold">Email Address
                                                     <span class="text-danger">*</span>
                                                 </label>
-                                                <input type="email" class="form-control form-control-lg border-2"
+                                                <input type="email" class="form-control form-control-custom"
                                                        id="email" name="email" required="required"
                                                        placeholder="yourname@domain.com"
-                                                       t-att-value="values.get('email') if values else ''"
-                                                       style="border-radius: 8px; font-size: 0.95rem;"/>
+                                                       t-att-value="values.get('email') if values else ''"/>
                                             </div>
                                         </div>
 
                                         <!-- Form Section 2: KYC Profile Photo -->
-                                        <h4 class="mb-4 text-primary pb-2 border-bottom fw-bold"><span
-                                                class="fa fa-camera me-2"/>KYC Photo Upload
-                                        </h4>
+                                        <div class="form-section-header">
+                                            <span class="fa fa-camera me-2"/>KYC Photo Upload
+                                        </div>
                                         <div class="row g-3 mb-4">
                                             <div class="col-12">
                                                 <label for="image_file" class="form-label fw-bold">Image Upload
                                                     <span class="text-danger">*</span>
                                                 </label>
-                                                <input type="file" class="form-control border-2" id="image_file"
-                                                       name="image_file" accept="image/*" required="required"
-                                                       style="border-radius: 8px;"/>
-                                                <div class="form-text text-muted small mt-2 bg-light p-3 border"
-                                                     style="border-radius: 8px; line-height: 1.4;">
+                                                <input type="file" class="form-control form-control-custom" id="image_file"
+                                                       name="image_file" accept="image/*" required="required"/>
+                                                <div class="form-text text-muted small mt-2 bg-light p-2 p-md-3 border rounded-3">
                                                     <span class="fa fa-info-circle text-primary me-1"/>
                                                     Please note that the photo is part of the KYC form. We will not use
                                                     your photo for any social media promotion without your permission.
@@ -112,63 +104,56 @@
                                         </div>
 
                                         <!-- Form Section 3: Address Details -->
-                                        <h4 class="mb-4 text-primary pb-2 border-bottom fw-bold"><span
-                                                class="fa fa-map-marker-alt me-2"/>Address Details
-                                        </h4>
+                                        <div class="form-section-header">
+                                            <span class="fa fa-map-marker-alt me-2"/>Address Details
+                                        </div>
                                         <div class="row g-3 mb-4">
                                             <div class="col-12">
                                                 <label for="street" class="form-label fw-bold">Street Address
                                                     <span class="text-danger">*</span>
                                                 </label>
-                                                <input type="text" class="form-control border-2" id="street"
+                                                <input type="text" class="form-control form-control-custom" id="street"
                                                        name="street" required="required" placeholder="Street Address"
-                                                       t-att-value="values.get('street') if values else ''"
-                                                       style="border-radius: 8px;"/>
+                                                       t-att-value="values.get('street') if values else ''"/>
                                             </div>
                                             <div class="col-12">
                                                 <label for="street2" class="form-label fw-bold">Address Line 2</label>
-                                                <input type="text" class="form-control border-2" id="street2"
+                                                <input type="text" class="form-control form-control-custom" id="street2"
                                                        name="street2"
                                                        placeholder="Apartment, suite, unit, building, floor, etc."
-                                                       t-att-value="values.get('street2') if values else ''"
-                                                       style="border-radius: 8px;"/>
+                                                       t-att-value="values.get('street2') if values else ''"/>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-12 col-md-6">
                                                 <label for="city" class="form-label fw-bold">City
                                                     <span class="text-danger">*</span>
                                                 </label>
-                                                <input type="text" class="form-control border-2" id="city" name="city"
+                                                <input type="text" class="form-control form-control-custom" id="city" name="city"
                                                        required="required" placeholder="City"
-                                                       t-att-value="values.get('city') if values else ''"
-                                                       style="border-radius: 8px;"/>
+                                                       t-att-value="values.get('city') if values else ''"/>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-12 col-md-6">
                                                 <label for="state" class="form-label fw-bold">State / Region / Province
                                                     <span class="text-danger">*</span>
                                                 </label>
-                                                <input type="text" class="form-control border-2" id="state" name="state"
+                                                <input type="text" class="form-control form-control-custom" id="state" name="state"
                                                        required="required" placeholder="State/Region"
-                                                       t-att-value="values.get('state') if values else ''"
-                                                       style="border-radius: 8px;"/>
+                                                       t-att-value="values.get('state') if values else ''"/>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-12 col-md-6">
                                                 <label for="zip_code" class="form-label fw-bold">Postal / Zip Code
                                                     <span class="text-danger">*</span>
                                                 </label>
-                                                <input type="text" class="form-control border-2" id="zip_code"
+                                                <input type="text" class="form-control form-control-custom" id="zip_code"
                                                        name="zip_code" required="required" placeholder="Postal Code"
-                                                       t-att-value="values.get('zip_code') if values else ''"
-                                                       style="border-radius: 8px;"/>
+                                                       t-att-value="values.get('zip_code') if values else ''"/>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-12 col-md-6">
                                                 <label for="country" class="form-label fw-bold">Country
                                                     <span class="text-danger">*</span>
                                                 </label>
-                                                <select class="form-select border-2" id="country" name="country"
-                                                        required="required" style="border-radius: 8px;">
-                                                    <option value="" disabled="disabled" selected="selected">Select
-                                                        Country
-                                                    </option>
+                                                <select class="form-select form-control-custom" id="country" name="country"
+                                                        required="required">
+                                                    <option value="" disabled="disabled" selected="selected">Select Country</option>
                                                     <option value="India">India</option>
                                                     <option value="United Arab Emirates">United Arab Emirates</option>
                                                     <option value="United Kingdom">United Kingdom</option>
@@ -187,16 +172,15 @@
                                         </div>
 
                                         <!-- Form Section 4: Academic Information -->
-                                        <h4 class="mb-4 text-primary pb-2 border-bottom fw-bold"><span
-                                                class="fa fa-graduation-cap me-2"/>Highest Qualification
-                                        </h4>
+                                        <div class="form-section-header">
+                                            <span class="fa fa-graduation-cap me-2"/>Highest Qualification
+                                        </div>
                                         <div class="mb-4">
                                             <label class="form-label fw-bold">Select your completed qualifications in
                                                 order to claim exemptions for ACCA
                                                 <span class="text-danger">*</span>
                                             </label>
-                                            <div class="form-text text-muted small mb-3 bg-light p-3 border"
-                                                 style="border-radius: 8px; line-height: 1.4;">
+                                            <div class="form-text text-muted small mb-3 bg-light p-2 p-md-3 border rounded-3" style="line-height: 1.4;">
                                                 <span class="fa fa-info-circle text-primary me-1"/>
                                                 <strong>Please note:</strong>
                                                 <br/>
@@ -205,145 +189,127 @@
                                                 2. If you are pursuing B.Com, then select B.Com + 12th Pass.
                                             </div>
 
-                                            <div class="row g-2 px-2" id="highest_qualification_group">
-                                                <div class="col-md-6">
-                                                    <div class="form-check p-2 border rounded"
-                                                         style="transition: background-color 0.2s;">
-                                                        <input class="form-check-input ms-1 me-2 qualification-cb"
+                                            <div class="row g-2" id="highest_qualification_group">
+                                                <div class="col-12 col-md-6">
+                                                    <div class="qualification-card">
+                                                        <input class="form-check-input qualification-cb"
                                                                type="checkbox" name="highest_qualification" id="qual_1"
                                                                value="12th Pass"/>
-                                                        <label class="form-check-label" for="qual_1">12th Pass</label>
+                                                        <label class="form-check-label flex-grow-1" for="qual_1">12th Pass</label>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-check p-2 border rounded"
-                                                         style="transition: background-color 0.2s;">
-                                                        <input class="form-check-input ms-1 me-2 qualification-cb"
+                                                <div class="col-12 col-md-6">
+                                                    <div class="qualification-card">
+                                                        <input class="form-check-input qualification-cb"
                                                                type="checkbox" name="highest_qualification" id="qual_2"
                                                                value="Graduation Completed (BCOM/BBA etc)"/>
-                                                        <label class="form-check-label" for="qual_2">Graduation
-                                                            Completed (BCOM/BBA etc)
-                                                        </label>
+                                                        <label class="form-check-label flex-grow-1" for="qual_2">Graduation Completed (BCOM/BBA etc)</label>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-check p-2 border rounded"
-                                                         style="transition: background-color 0.2s;">
-                                                        <input class="form-check-input ms-1 me-2 qualification-cb"
+                                                <div class="col-12 col-md-6">
+                                                    <div class="qualification-card">
+                                                        <input class="form-check-input qualification-cb"
                                                                type="checkbox" name="highest_qualification" id="qual_3"
                                                                value="B.Com Pursuing - Conditional Exemption"/>
-                                                        <label class="form-check-label" for="qual_3">B.Com Pursuing -
-                                                            Conditional Exemption
-                                                        </label>
+                                                        <label class="form-check-label flex-grow-1" for="qual_3">B.Com Pursuing - Conditional Exemption</label>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-check p-2 border rounded"
-                                                         style="transition: background-color 0.2s;">
-                                                        <input class="form-check-input ms-1 me-2 qualification-cb"
+                                                <div class="col-12 col-md-6">
+                                                    <div class="qualification-card">
+                                                        <input class="form-check-input qualification-cb"
                                                                type="checkbox" name="highest_qualification" id="qual_4"
                                                                value="B.Com Pursuing - Conditional Exemption(Standard)"/>
-                                                        <label class="form-check-label" for="qual_4">B.Com Pursuing -
-                                                            Conditional Exemption(Standard)
-                                                        </label>
+                                                        <label class="form-check-label flex-grow-1" for="qual_4">B.Com Pursuing - Conditional Exemption(Standard)</label>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-check p-2 border rounded"
-                                                         style="transition: background-color 0.2s;">
-                                                        <input class="form-check-input ms-1 me-2 qualification-cb"
+                                                <div class="col-12 col-md-6">
+                                                    <div class="qualification-card">
+                                                        <input class="form-check-input qualification-cb"
                                                                type="checkbox" name="highest_qualification" id="qual_5"
                                                                value="CA IPCC"/>
-                                                        <label class="form-check-label" for="qual_5">CA IPCC</label>
+                                                        <label class="form-check-label flex-grow-1" for="qual_5">CA IPCC</label>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-check p-2 border rounded"
-                                                         style="transition: background-color 0.2s;">
-                                                        <input class="form-check-input ms-1 me-2 qualification-cb"
+                                                <div class="col-12 col-md-6">
+                                                    <div class="qualification-card">
+                                                        <input class="form-check-input qualification-cb"
                                                                type="checkbox" name="highest_qualification" id="qual_6"
                                                                value="CA Final"/>
-                                                        <label class="form-check-label" for="qual_6">CA Final</label>
+                                                        <label class="form-check-label flex-grow-1" for="qual_6">CA Final</label>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-check p-2 border rounded"
-                                                         style="transition: background-color 0.2s;">
-                                                        <input class="form-check-input ms-1 me-2 qualification-cb"
+                                                <div class="col-12 col-md-6">
+                                                    <div class="qualification-card">
+                                                        <input class="form-check-input qualification-cb"
                                                                type="checkbox" name="highest_qualification" id="qual_7"
                                                                value="ICAEW"/>
-                                                        <label class="form-check-label" for="qual_7">ICAEW</label>
+                                                        <label class="form-check-label flex-grow-1" for="qual_7">ICAEW</label>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-check p-2 border rounded"
-                                                         style="transition: background-color 0.2s;">
-                                                        <input class="form-check-input ms-1 me-2 qualification-cb"
+                                                <div class="col-12 col-md-6">
+                                                    <div class="qualification-card">
+                                                        <input class="form-check-input qualification-cb"
                                                                type="checkbox" name="highest_qualification" id="qual_8"
                                                                value="CMA QUALIFIED"/>
-                                                        <label class="form-check-label" for="qual_8">CMA QUALIFIED
-                                                        </label>
+                                                        <label class="form-check-label flex-grow-1" for="qual_8">CMA QUALIFIED</label>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="text-danger small mt-2 d-none" id="qual_error">Please select at
-                                                least one qualification.
+                                            <div class="text-danger small mt-2 d-none" id="qual_error">
+                                                Please select at least one qualification.
                                             </div>
                                         </div>
 
                                         <!-- Form Section 5: Document Uploads -->
-                                        <h4 class="mb-4 text-primary pb-2 border-bottom fw-bold"><span
-                                                class="fa fa-folder-open me-2"/>Required Documents
-                                        </h4>
+                                        <div class="form-section-header">
+                                            <span class="fa fa-folder-open me-2"/>Required Documents
+                                        </div>
                                         <div class="row g-3 mb-4">
-                                            <div class="col-md-6">
+                                            <div class="col-12 col-md-6">
                                                 <label for="id_proof_files" class="form-label fw-bold">Valid ID Proof
                                                     <span class="text-danger">*</span>
                                                 </label>
-                                                <input type="file" class="form-control border-2" id="id_proof_files"
+                                                <input type="file" class="form-control form-control-custom" id="id_proof_files"
                                                        name="id_proof_files" accept=".pdf,image/*" multiple="multiple"
-                                                       required="required" style="border-radius: 8px;"/>
+                                                       required="required"/>
                                                 <div class="form-text text-muted small mt-1">Aadhar Card (with DOB),
                                                     Driving License, or Passport. Max Size - 5MB (Upload up to 3 files).
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6">
+                                            <div class="col-12 col-md-6">
                                                 <label for="entry_req_files" class="form-label fw-bold">Entry
                                                     Requirement
                                                     <span class="text-danger">*</span>
                                                 </label>
-                                                <input type="file" class="form-control border-2" id="entry_req_files"
+                                                <input type="file" class="form-control form-control-custom" id="entry_req_files"
                                                        name="entry_req_files" accept=".pdf,image/*" multiple="multiple"
-                                                       required="required" style="border-radius: 8px;"/>
+                                                       required="required"/>
                                                 <div class="form-text text-muted small mt-1">10th Marklist and 12th
                                                     Marklist. Max Size - 5MB (Upload up to 2 files).
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6">
+                                            <div class="col-12 col-md-6">
                                                 <label for="exemption_req_files" class="form-label fw-bold">Exemption
                                                     Requirement
                                                     <span class="text-muted">(Optional)</span>
                                                 </label>
-                                                <input type="file" class="form-control border-2"
+                                                <input type="file" class="form-control form-control-custom"
                                                        id="exemption_req_files" name="exemption_req_files"
-                                                       accept=".pdf,image/*" multiple="multiple"
-                                                       style="border-radius: 8px;"/>
+                                                       accept=".pdf,image/*" multiple="multiple"/>
                                                 <div class="form-text text-muted small mt-1">CA (IPCC) / CA (Final) /
-                                                    B.Com semesters marklists / CA Final Certificate. Max Size - 5MB (Up
-                                                    to 5 files).
+                                                    B.Com marklists / CA Final Certificate. Max Size - 5MB (Up to 5 files).
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6">
+                                            <div class="col-12 col-md-6">
                                                 <label for="other_doc_files" class="form-label fw-bold">Any other
                                                     document
                                                     <span class="text-muted">(Optional)</span>
                                                 </label>
-                                                <input type="file" class="form-control border-2" id="other_doc_files"
-                                                       name="other_doc_files" accept=".pdf,image/*" multiple="multiple"
-                                                       style="border-radius: 8px;"/>
+                                                <input type="file" class="form-control form-control-custom" id="other_doc_files"
+                                                       name="other_doc_files" accept=".pdf,image/*" multiple="multiple"/>
                                                 <div class="form-text text-muted small mt-1">Any additional certificates
                                                     or supporting letters. Max Size - 5MB (Up to 5 files).
                                                 </div>
@@ -351,56 +317,121 @@
                                         </div>
 
                                         <!-- Form Section 6: Payment Details -->
-                                        <h4 class="mb-4 text-primary pb-2 border-bottom fw-bold"><span
-                                                class="fa fa-credit-card me-2"/>Payment Information
-                                        </h4>
-                                        <div class="card border-primary mb-5"
-                                             style="background: rgba(30, 60, 114, 0.02); border-radius: 12px;">
-                                            <div class="card-body p-4">
-                                                <h5 class="fw-bold text-primary mb-3">Pay Initial Registration Fees</h5>
-                                                <div class="row align-items-center">
-                                                    <div class="col-md-8">
-                                                        <p class="mb-2 text-muted">Please confirm your registration
-                                                            fees. Initial registration fee amounts are calculated based
-                                                            on your choices and eligibility waivers.
-                                                        </p>
-                                                        <div class="form-check mt-3">
-                                                            <input class="form-check-input border-primary border-2"
-                                                                   type="checkbox" id="initial_fees_paid"
-                                                                   name="initial_fees_paid" required="required"
-                                                                   style="width: 1.3em; height: 1.3em;"/>
-                                                            <label class="form-check-label fw-bold ms-2"
-                                                                   for="initial_fees_paid"
-                                                                   style="font-size: 1rem; color: #1e3c72;">
-                                                                I agree to pay the initial ACCA registration fees *
-                                                            </label>
-                                                        </div>
+                                        <div class="form-section-header">
+                                            <span class="fa fa-credit-card me-2"/>Payment Information
+                                        </div>
+                                        <div class="card border-primary mb-4 p-3 p-md-4"
+                                             style="background: rgba(30, 60, 114, 0.02); border-radius: 12px; border-width: 1.5px;">
+                                            <h5 class="fw-bold text-primary mb-2">Pay Initial Registration Fees</h5>
+                                            <p class="mb-3 text-muted small">Please confirm your registration
+                                                fees. Initial registration fee amounts are calculated based
+                                                on your choices and eligibility waivers.
+                                            </p>
+                                            <div class="row align-items-center g-3">
+                                                <div class="col-12 col-md-8">
+                                                    <div class="form-check p-2 border rounded-3 bg-white d-flex align-items-center" style="min-height: 48px;">
+                                                        <input class="form-check-input border-primary border-2 ms-1 me-2"
+                                                               type="checkbox" id="initial_fees_paid"
+                                                               name="initial_fees_paid" required="required"
+                                                               style="width: 1.35em; height: 1.35em; min-width: 1.35em; cursor: pointer;"/>
+                                                        <label class="form-check-label fw-bold mb-0 text-primary flex-grow-1"
+                                                               for="initial_fees_paid"
+                                                               style="font-size: 0.95rem; cursor: pointer; line-height: 1.3;">
+                                                            I agree to pay the initial ACCA registration fees *
+                                                        </label>
                                                     </div>
-                                                    <div class="col-md-4 text-center mt-3 mt-md-0">
-                                                        <div class="bg-white p-3 border rounded shadow-sm border-2 border-primary d-inline-block">
-                                                            <span class="text-muted small d-block">INITIAL FEE</span>
-<!--                                                            <span class="h3 fw-bold text-primary">₹ 8,500</span>-->
-                                                            <span class="h3 fw-bold text-primary" id="fee_display">₹
-                                                                4,500
-                                                            </span>
-                                                            <input type="hidden" name="advance_payment"
-                                                                   id="advance_payment" value="4500"/>
-                                                        </div>
+                                                </div>
+                                                <div class="col-12 col-md-4 text-center">
+                                                    <div class="bg-white p-2 p-md-3 border rounded-3 shadow-sm border-2 border-primary w-100">
+                                                        <span class="text-muted small d-block" style="font-size: 0.75rem; letter-spacing: 0.5px;">INITIAL FEE</span>
+                                                        <span class="h4 fw-bold text-primary mb-0" id="fee_display">
+                                                            <t t-if="default_fee and default_fee &gt; 0">
+                                                                ₹ <t t-esc="'{:,.0f}'.format(default_fee) if default_fee.is_integer() else default_fee"/>
+                                                            </t>
+                                                            <t t-else="">
+                                                                ₹ 4,500
+                                                            </t>
+                                                        </span>
+                                                        <input type="hidden" name="advance_payment"
+                                                               id="advance_payment" t-att-value="str(default_fee) if default_fee and default_fee &gt; 0 else '4500'"/>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
+                                        <!-- Payment Choice Hidden Input -->
+                                        <input type="hidden" name="payment_choice" id="payment_choice" value="online"/>
+
                                         <!-- Submit Button -->
                                         <div class="text-center pt-2">
-                                            <button type="submit" class="btn btn-primary btn-lg px-5 py-3 shadow-lg"
-                                                    style="border-radius: 30px; font-weight: bold; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); border: none; letter-spacing: 0.5px; transition: transform 0.2s, box-shadow 0.2s;">
+                                            <button type="button" id="submit_btn" disabled="disabled" class="btn btn-primary submit-action-btn shadow-lg">
                                                 Submit Registration
                                                 <span class="fa fa-arrow-right ms-2"/>
                                             </button>
                                         </div>
                                     </form>
 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Choice Wizard Modal Overlay (Direct Body Child) -->
+                <div id="paymentChoiceModal" class="custom-modal-overlay" style="display: none;">
+                    <div class="custom-modal-dialog">
+                        <div class="custom-modal-content">
+                            <div class="modal-header text-white py-3 px-3 px-sm-4" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); display: flex; align-items: center; justify-content: space-between;">
+                                <h5 class="modal-title fw-bold mb-0 text-white" id="paymentChoiceModalLabel" style="font-size: 1.15rem;">
+                                    <i class="fa fa-credit-card me-2"/>Choose Payment Option
+                                </h5>
+                                <button type="button" class="btn-close btn-close-white" id="btn_close_modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body p-3 p-sm-4 text-center">
+                                <p class="text-muted mb-3 small">Your registration details are ready! Please select how you would like to pay the initial fee.</p>
+                                
+                                <div class="p-3 mb-3 rounded-3 border border-2 border-primary bg-light d-flex justify-content-between align-items-center">
+                                    <span class="text-secondary fw-semibold">Registration Fee:</span>
+                                    <span class="h4 fw-bold text-primary mb-0" id="modal_fee_display">₹ 4,500</span>
+                                </div>
+
+                                <div class="d-grid gap-3">
+                                    <!-- Pay Online Option -->
+                                    <div class="card border-primary p-3 text-start payment-choice-card shadow-sm" id="card_pay_online" style="cursor: pointer; border-radius: 12px; transition: all 0.2s; border-width: 2px;">
+                                        <div class="d-flex align-items-center">
+                                            <div class="bg-primary text-white rounded-circle p-2 me-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 44px; height: 44px;">
+                                                <i class="fa fa-bolt fa-lg"/>
+                                            </div>
+                                            <div class="flex-grow-1 pe-2">
+                                                <h6 class="fw-bold text-primary mb-0">Pay Online Now (Razorpay)</h6>
+                                                <small class="text-muted d-block mt-1">Instant via UPI, Cards, Net Banking</small>
+                                            </div>
+                                            <div class="flex-shrink-0">
+                                                <i class="fa fa-chevron-right text-primary"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Pay Later Option -->
+                                    <div class="card border p-3 text-start payment-choice-card shadow-sm" id="card_pay_later" style="cursor: pointer; border-radius: 12px; transition: all 0.2s; border-width: 2px;">
+                                        <div class="d-flex align-items-center">
+                                            <div class="bg-secondary text-white rounded-circle p-2 me-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 44px; height: 44px;">
+                                                <i class="fa fa-building fa-lg"/>
+                                            </div>
+                                            <div class="flex-grow-1 pe-2">
+                                                <h6 class="fw-bold text-dark mb-0">Pay Later at Office</h6>
+                                                <small class="text-muted d-block mt-1">Submit now and pay fee at our office</small>
+                                            </div>
+                                            <div class="flex-shrink-0">
+                                                <i class="fa fa-chevron-right text-muted"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="submitting_spinner" class="d-none mt-3 text-primary">
+                                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                    <span class="fw-semibold small">Processing your registration...</span>
                                 </div>
                             </div>
                         </div>
@@ -414,22 +445,159 @@
                         height: auto !important;
                         overflow-y: auto !important;
                         overflow-x: hidden !important;
-                        background-color: #f8f9fa;
+                        background-color: #f1f5f9;
                     }
-                    .form-control:focus, .form-select:focus {
+                    .form-main-card {
+                        border-radius: 16px;
+                        overflow: hidden;
+                        background: #ffffff;
+                    }
+                    .form-main-title {
+                        font-size: 1.5rem;
+                        letter-spacing: 0.5px;
+                    }
+                    @media (min-width: 768px) {
+                        .form-main-title {
+                            font-size: 1.85rem;
+                        }
+                    }
+                    .form-section-header {
+                        font-size: 1.15rem;
+                        font-weight: 700;
+                        color: #1e3c72;
+                        padding-bottom: 0.5rem;
+                        margin-bottom: 1.25rem;
+                        border-bottom: 2px solid #e2e8f0;
+                        display: flex;
+                        align-items: center;
+                    }
+                    .form-control-custom {
+                        border-radius: 8px !important;
+                        border: 1.5px solid #cbd5e1 !important;
+                        font-size: 16px !important; /* Prevents auto-zoom on iOS */
+                        padding: 0.65rem 0.85rem !important;
+                        transition: border-color 0.2s, box-shadow 0.2s;
+                    }
+                    .form-control-custom:focus {
+                        border-color: #1e3c72 !important;
+                        box-shadow: 0 0 0 0.2rem rgba(30, 60, 114, 0.15) !important;
+                    }
+                    .qualification-card {
+                        display: flex;
+                        align-items: center;
+                        padding: 10px 14px;
+                        border: 1.5px solid #e2e8f0;
+                        border-radius: 8px;
+                        background: #ffffff;
+                        transition: all 0.2s;
+                        min-height: 48px;
+                        cursor: pointer;
+                        user-select: none;
+                    }
+                    .qualification-card:hover {
+                        background-color: rgba(30, 60, 114, 0.03);
+                        border-color: #94a3b8;
+                    }
+                    .qualification-card.active {
                         border-color: #1e3c72;
-                        box-shadow: 0 0 0 0.25rem rgba(30, 60, 114, 0.25);
+                        background-color: rgba(30, 60, 114, 0.06);
+                    }
+                    .qualification-card .form-check-input {
+                        width: 1.25em;
+                        height: 1.25em;
+                        min-width: 1.25em;
+                        margin-top: 0;
+                        margin-right: 10px;
+                        cursor: pointer;
+                    }
+                    .qualification-card .form-check-label {
+                        font-size: 0.95rem;
+                        cursor: pointer;
+                        margin-bottom: 0;
+                        line-height: 1.3;
                     }
                     .form-check-input:checked {
                         background-color: #1e3c72;
                         border-color: #1e3c72;
                     }
-                    .form-check:hover {
-                        background-color: rgba(30, 60, 114, 0.04);
+                    .submit-action-btn {
+                        border-radius: 30px;
+                        font-weight: 700;
+                        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+                        border: none;
+                        letter-spacing: 0.5px;
+                        padding: 0.85rem 2rem;
+                        font-size: 1.05rem;
+                        transition: transform 0.2s, box-shadow 0.2s;
+                        width: 100%;
+                        max-width: 320px;
                     }
-                    button[type="submit"]:hover {
+                    @media (min-width: 576px) {
+                        .submit-action-btn {
+                            width: auto;
+                            min-width: 260px;
+                        }
+                    }
+                    .submit-action-btn:not(:disabled):hover {
                         transform: translateY(-2px);
-                        box-shadow: 0 8px 16px rgba(30, 60, 114, 0.4) !important;
+                        box-shadow: 0 8px 20px rgba(30, 60, 114, 0.35) !important;
+                    }
+                    .submit-action-btn:disabled {
+                        opacity: 0.55;
+                        cursor: not-allowed;
+                    }
+                    .payment-choice-card:hover {
+                        transform: translateY(-2px);
+                        box-shadow: 0 6px 14px rgba(30, 60, 114, 0.15) !important;
+                    }
+                    
+                    /* Modal - Fixed directly relative to Viewport */
+                    .custom-modal-overlay {
+                        position: fixed !important;
+                        top: 0 !important;
+                        left: 0 !important;
+                        right: 0 !important;
+                        bottom: 0 !important;
+                        width: 100vw !important;
+                        height: 100vh !important;
+                        background: rgba(15, 23, 42, 0.75) !important;
+                        backdrop-filter: blur(4px) !important;
+                        -webkit-backdrop-filter: blur(4px) !important;
+                        z-index: 999999 !important;
+                        display: none;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 16px;
+                        box-sizing: border-box;
+                    }
+                    .custom-modal-overlay.open {
+                        display: flex !important;
+                    }
+                    .custom-modal-dialog {
+                        width: 100%;
+                        max-width: 480px;
+                        margin: auto;
+                        max-height: calc(100vh - 32px);
+                        display: flex;
+                        flex-direction: column;
+                    }
+                    .custom-modal-content {
+                        background: #ffffff;
+                        border-radius: 16px;
+                        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
+                        overflow-y: auto;
+                        max-height: calc(100vh - 40px);
+                        animation: customModalIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+                    }
+                    @keyframes customModalIn {
+                        from {
+                            opacity: 0;
+                            transform: scale(0.92) translateY(12px);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: scale(1) translateY(0);
+                        }
                     }
                     ]]>
                 </style>
@@ -438,58 +606,175 @@
                     <![CDATA[
                     document.addEventListener('DOMContentLoaded', function () {
                         const form = document.getElementById('acca_zoho_form');
+                        const submitBtn = document.getElementById('submit_btn');
+                        const agreeCb = document.getElementById('initial_fees_paid');
+                        const paymentChoiceInput = document.getElementById('payment_choice');
 
-                        form.addEventListener('submit', function (event) {
-                            // Check qualifications checkboxes
-                            const checkboxes = document.querySelectorAll('.qualification-cb');
-                            let checkedCount = 0;
-                            checkboxes.forEach(cb => {
-                                if (cb.checked) checkedCount++;
-                            });
-
-                            const errorDiv = document.getElementById('qual_error');
-                            if (checkedCount === 0) {
-                                errorDiv.classList.remove('d-none');
-                                event.preventDefault();
-                                event.stopPropagation();
-                            } else {
-                                errorDiv.classList.add('d-none');
-                            }
-
-                            // Bootstrap validation check
-                            if (!form.checkValidity()) {
-                                event.preventDefault();
-                                event.stopPropagation();
-                            }
-
-                            form.classList.add('was-validated');
-                        }, false);
-
-                        // Clear qualification error on click
-                        // Clear qualification error on click and update fee dynamically
-                        const checkboxes = document.querySelectorAll('.qualification-cb');
-                        const qual3 = document.getElementById('qual_3');
-                        const qual4 = document.getElementById('qual_4');
                         const feeDisplay = document.getElementById('fee_display');
                         const feeInput = document.getElementById('advance_payment');
+                        const modalFeeDisplay = document.getElementById('modal_fee_display');
+
+                        const qual3 = document.getElementById('qual_3');
+                        const qual4 = document.getElementById('qual_4');
+                        const checkboxes = document.querySelectorAll('.qualification-cb');
+                        const qualCards = document.querySelectorAll('.qualification-card');
+
+                        const defaultBaseFee = ]]><t t-esc="default_fee if default_fee and default_fee &gt; 0 else 4500"/><![CDATA[;
+                        const defaultBaseFeeFormatted = ']]><t t-esc="'{:,.0f}'.format(default_fee) if (default_fee and default_fee &gt; 0 and default_fee.is_integer()) else (default_fee if default_fee and default_fee &gt; 0 else '4,500')"/><![CDATA[';
+
                         function updateFee() {
-                            if (qual3.checked || qual4.checked) {
-                                feeDisplay.textContent = '₹ 21,499';
-                                feeInput.value = '21499';
+                            if ((qual3 && qual3.checked) || (qual4 && qual4.checked)) {
+                                if (feeDisplay) feeDisplay.textContent = '₹ 21,499';
+                                if (feeInput) feeInput.value = '21499';
+                                if (modalFeeDisplay) modalFeeDisplay.textContent = '₹ 21,499';
                             } else {
-                                feeDisplay.textContent = '₹ 4,500';
-                                feeInput.value = '4500';
+                                if (feeDisplay) feeDisplay.textContent = '₹ ' + defaultBaseFeeFormatted;
+                                if (feeInput) feeInput.value = defaultBaseFee;
+                                if (modalFeeDisplay) modalFeeDisplay.textContent = '₹ ' + defaultBaseFeeFormatted;
                             }
                         }
+
+                        function syncQualCardStyles() {
+                            qualCards.forEach(card => {
+                                const cb = card.querySelector('.qualification-cb');
+                                if (cb && cb.checked) {
+                                    card.classList.add('active');
+                                } else {
+                                    card.classList.remove('active');
+                                }
+                            });
+                        }
+
+                        // Enable clicking entire card to toggle checkbox
+                        qualCards.forEach(card => {
+                            card.addEventListener('click', function (e) {
+                                if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'LABEL') {
+                                    const cb = card.querySelector('.qualification-cb');
+                                    if (cb) {
+                                        cb.checked = !cb.checked;
+                                        cb.dispatchEvent(new Event('change'));
+                                    }
+                                }
+                            });
+                        });
+
                         checkboxes.forEach(cb => {
                             cb.addEventListener('change', function () {
                                 const errorDiv = document.getElementById('qual_error');
-                                errorDiv.classList.add('d-none');
+                                if (errorDiv) errorDiv.classList.add('d-none');
+                                syncQualCardStyles();
+                                updateFee();
                             });
                         });
-                        if (qual3 && qual4) {
-                            qual3.addEventListener('change', updateFee);
-                            qual4.addEventListener('change', updateFee);
+                        syncQualCardStyles();
+                        updateFee();
+
+                        // Submit button disabled until I agree checkbox is checked
+                        if (agreeCb && submitBtn) {
+                            submitBtn.disabled = !agreeCb.checked;
+                            agreeCb.addEventListener('change', function () {
+                                submitBtn.disabled = !this.checked;
+                            });
+                        }
+
+                        // Modal Setup: Move modal to document.body so it is NEVER trapped in ancestor styling
+                        const modalElem = document.getElementById('paymentChoiceModal');
+                        const closeBtn = document.getElementById('btn_close_modal');
+
+                        if (modalElem && modalElem.parentNode !== document.body) {
+                            document.body.appendChild(modalElem);
+                        }
+
+                        function openModal() {
+                            if (modalElem) {
+                                if (modalElem.parentNode !== document.body) {
+                                    document.body.appendChild(modalElem);
+                                }
+                                modalElem.classList.add('open');
+                                modalElem.style.display = 'flex';
+                                document.body.style.overflow = 'hidden';
+                            }
+                        }
+
+                        function closeModal() {
+                            if (modalElem) {
+                                modalElem.classList.remove('open');
+                                modalElem.style.display = 'none';
+                                document.body.style.overflow = '';
+                            }
+                        }
+
+                        if (closeBtn) {
+                            closeBtn.addEventListener('click', closeModal);
+                        }
+                        if (modalElem) {
+                            modalElem.addEventListener('click', function (e) {
+                                if (e.target === modalElem) {
+                                    closeModal();
+                                }
+                            });
+                        }
+
+                        // Submit Button clicked -> Validate form -> Show Payment Choice Wizard in center
+                        if (submitBtn) {
+                            submitBtn.addEventListener('click', function (e) {
+                                e.preventDefault();
+
+                                // Check qualification selection
+                                let checkedCount = 0;
+                                checkboxes.forEach(cb => {
+                                    if (cb.checked) checkedCount++;
+                                });
+
+                                const errorDiv = document.getElementById('qual_error');
+                                if (checkedCount === 0) {
+                                    if (errorDiv) errorDiv.classList.remove('d-none');
+                                    form.classList.add('was-validated');
+                                    errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                    return;
+                                } else {
+                                    if (errorDiv) errorDiv.classList.add('d-none');
+                                }
+
+                                // Check standard required inputs
+                                if (!form.checkValidity()) {
+                                    form.classList.add('was-validated');
+                                    const firstInvalid = form.querySelector(':invalid');
+                                    if (firstInvalid) {
+                                        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                        firstInvalid.focus();
+                                    }
+                                    return;
+                                }
+
+                                // Open Modal right in the current visible viewport center
+                                updateFee();
+                                openModal();
+                            });
+                        }
+
+                        // Handle modal choice clicks
+                        const cardPayOnline = document.getElementById('card_pay_online');
+                        const cardPayLater = document.getElementById('card_pay_later');
+                        const spinner = document.getElementById('submitting_spinner');
+
+                        function processSubmission(choice) {
+                            if (paymentChoiceInput) paymentChoiceInput.value = choice;
+                            if (cardPayOnline) cardPayOnline.style.pointerEvents = 'none';
+                            if (cardPayLater) cardPayLater.style.pointerEvents = 'none';
+                            if (spinner) spinner.classList.remove('d-none');
+                            form.submit();
+                        }
+
+                        if (cardPayOnline) {
+                            cardPayOnline.addEventListener('click', function () {
+                                processSubmission('online');
+                            });
+                        }
+                        if (cardPayLater) {
+                            cardPayLater.addEventListener('click', function () {
+                                processSubmission('pay_later');
+                            });
                         }
                     });
                     ]]>
@@ -501,43 +786,66 @@
     <template id="acca_register_success_template" name="Registration Successful">
         <t t-call="web.layout">
             <t t-set="head">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
                 <t t-call-assets="web.assets_frontend" t-js="false"/>
                 <t t-call-assets="web.assets_frontend" t-css="false"/>
                 <style type="text/css">
                     html, body {
                         height: auto !important;
                         overflow-y: auto !important;
-                        background-color: #f8f9fa;
+                        background-color: #f1f5f9;
                     }
                 </style>
             </t>
             <div id="wrap" class="oe_structure oe_empty" style="min-height: 100vh;">
-                <div class="container py-5 text-center">
-                    <div class="row justify-content-center py-5">
-                        <div class="col-md-8 col-lg-6">
-                            <div class="card border-0 shadow-lg py-5 px-4"
+                <div class="container py-4 py-md-5 text-center px-3">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-md-8 col-lg-6">
+                            <div class="card border-0 shadow-sm py-4 py-md-5 px-3 px-md-4"
                                  style="border-radius: 20px; background: #ffffff;">
                                 <div class="mb-4">
-                                    <span class="d-inline-flex align-items-center justify-content-center text-white bg-success rounded-circle"
-                                          style="width: 80px; height: 80px; font-size: 40px; box-shadow: 0 4px 10px rgba(40, 167, 69, 0.4);">
-                                        <span class="fa fa-check"/>
-                                    </span>
+                                    <t t-if="payment_choice == 'pay_later'">
+                                        <span class="d-inline-flex align-items-center justify-content-center text-white bg-warning rounded-circle"
+                                              style="width: 76px; height: 76px; font-size: 34px; box-shadow: 0 4px 10px rgba(255, 193, 7, 0.4);">
+                                            <span class="fa fa-building"/>
+                                        </span>
+                                    </t>
+                                    <t t-else="">
+                                        <span class="d-inline-flex align-items-center justify-content-center text-white bg-success rounded-circle"
+                                              style="width: 76px; height: 76px; font-size: 36px; box-shadow: 0 4px 10px rgba(40, 167, 69, 0.4);">
+                                            <span class="fa fa-check"/>
+                                        </span>
+                                    </t>
                                 </div>
-                                <h2 class="text-success mb-3 fw-bold">Registration Submitted!</h2>
-                                <p class="lead text-muted mb-4">Thank you,<strong t-esc="registration.name"/>! Your ACCA
-                                    Registration has been submitted successfully to the backend.
+                                <h2 class="text-success mb-2 fw-bold" style="font-size: 1.6rem;">Registration Submitted!</h2>
+                                <p class="lead text-muted mb-4" style="font-size: 1.05rem;">Thank you,<strong t-esc="registration.name"/>! Your ACCA
+                                    Registration has been submitted successfully.
                                 </p>
 
-                                <div class="bg-light p-4 mb-4 border text-start" style="border-radius: 12px;">
-                                    <div class="row small text-muted mb-1 pb-1 border-bottom">
+                                <t t-if="payment_choice == 'pay_later'">
+                                    <div class="alert alert-warning border-2 p-3 text-start mb-4" style="border-radius: 12px; background-color: #fff8e6;">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <i class="fa fa-info-circle fa-lg text-warning me-2"/>
+                                            <strong class="text-dark" style="font-size: 1.05rem;">Fee Payment Pending at Office</strong>
+                                        </div>
+                                        <p class="mb-0 text-muted small" style="line-height: 1.5;">
+                                            Please visit the <strong>WeGyde Office</strong> to pay the initial registration fee of 
+                                            <strong class="text-dark">₹ <t t-esc="'{:,.0f}'.format(fee_amount) if (fee_amount and fee_amount.is_integer()) else (fee_amount or '4,500')"/></strong> 
+                                            and complete your admission enrollment.
+                                        </p>
+                                    </div>
+                                </t>
+
+                                <div class="bg-light p-3 p-md-4 mb-4 border text-start" style="border-radius: 12px;">
+                                    <div class="row small text-muted mb-2 pb-2 border-bottom">
                                         <div class="col-5">
                                             <strong>Student Name:</strong>
                                         </div>
-                                        <div class="col-7 text-dark">
+                                        <div class="col-7 text-dark fw-semibold">
                                             <t t-esc="registration.name"/>
                                         </div>
                                     </div>
-                                    <div class="row small text-muted mb-1 pb-1 border-bottom">
+                                    <div class="row small text-muted mb-2 pb-2 border-bottom">
                                         <div class="col-5">
                                             <strong>Email:</strong>
                                         </div>
@@ -545,7 +853,7 @@
                                             <t t-esc="registration.email"/>
                                         </div>
                                     </div>
-                                    <div class="row small text-muted mb-1 pb-1 border-bottom">
+                                    <div class="row small text-muted mb-2 pb-2 border-bottom">
                                         <div class="col-5">
                                             <strong>Phone:</strong>
                                         </div>
@@ -553,7 +861,7 @@
                                             <t t-esc="registration.phone or 'N/A'"/>
                                         </div>
                                     </div>
-                                    <div class="row small text-muted">
+                                    <div class="row small text-muted mb-2 pb-2 border-bottom">
                                         <div class="col-5">
                                             <strong>Highest Qualification:</strong>
                                         </div>
@@ -561,16 +869,104 @@
                                             <t t-esc="registration.highest_qualification or 'N/A'"/>
                                         </div>
                                     </div>
+                                    <div class="row small text-muted">
+                                        <div class="col-5">
+                                            <strong>Payment Status:</strong>
+                                        </div>
+                                        <div class="col-7">
+                                            <t t-if="payment_choice == 'pay_later'">
+                                                <span class="badge bg-warning text-dark">Pending (Pay at Office)</span>
+                                            </t>
+                                            <t t-else="">
+                                                <span class="badge bg-secondary">Pending</span>
+                                            </t>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <p class="text-muted mb-5">Our academic support team will review your uploaded documents
+                                <p class="text-muted mb-4 small">Our academic support team will review your uploaded documents
                                     and contact you soon.
                                 </p>
-                                <div>
-                                    <a href="/acca/register" class="btn btn-outline-primary px-4 py-2 me-2"
+                                <div class="d-flex flex-column flex-sm-row justify-content-center gap-2">
+                                    <a href="/acca/register" class="btn btn-outline-primary px-4 py-2"
                                        style="border-radius: 20px; font-weight: 500;">
                                         Submit Another Form
                                     </a>
+                                    <a href="/" class="btn btn-primary px-4 py-2"
+                                       style="border-radius: 20px; font-weight: 500; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); border: none;">
+                                        Back to Home
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="acca_payment_success_template" name="Payment Successful">
+        <t t-call="web.layout">
+            <t t-set="head">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+                <t t-call-assets="web.assets_frontend" t-js="false"/>
+                <t t-call-assets="web.assets_frontend" t-css="false"/>
+                <style type="text/css">
+                    html, body {
+                        height: auto !important;
+                        overflow-y: auto !important;
+                        background-color: #f1f5f9;
+                    }
+                </style>
+            </t>
+            <div id="wrap" class="oe_structure oe_empty" style="min-height: 100vh;">
+                <div class="container py-4 py-md-5 text-center px-3">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-md-8 col-lg-6">
+                            <div class="card border-0 shadow-sm py-4 py-md-5 px-3 px-md-4"
+                                 style="border-radius: 20px; background: #ffffff;">
+                                <div class="mb-4">
+                                    <span class="d-inline-flex align-items-center justify-content-center text-white bg-success rounded-circle"
+                                          style="width: 76px; height: 76px; font-size: 36px; box-shadow: 0 4px 10px rgba(40, 167, 69, 0.4);">
+                                        <span class="fa fa-check"/>
+                                    </span>
+                                </div>
+                                <h2 class="text-success mb-2 fw-bold" style="font-size: 1.6rem;">Payment Successful!</h2>
+                                <p class="lead text-muted mb-4" style="font-size: 1.05rem;">Thank you<t t-if="registration">, <strong t-esc="registration.name"/></t>! Your payment for the ACCA Registration has been received successfully.
+                                </p>
+
+                                <div class="bg-light p-3 p-md-4 mb-4 border text-start" style="border-radius: 12px;">
+                                    <t t-if="registration">
+                                        <div class="row small text-muted mb-2 pb-2 border-bottom">
+                                            <div class="col-5">
+                                                <strong>Registration ID:</strong>
+                                            </div>
+                                            <div class="col-7 text-dark fw-semibold">
+                                                <t t-esc="registration.id"/>
+                                            </div>
+                                        </div>
+                                    </t>
+                                    <div class="row small text-muted mb-2 pb-2 border-bottom">
+                                        <div class="col-5">
+                                            <strong>Payment ID:</strong>
+                                        </div>
+                                        <div class="col-7 text-dark">
+                                            <t t-esc="payment_id or 'N/A'"/>
+                                        </div>
+                                    </div>
+                                    <div class="row small text-muted">
+                                        <div class="col-5">
+                                            <strong>Payment Link ID:</strong>
+                                        </div>
+                                        <div class="col-7 text-dark">
+                                            <t t-esc="payment_link_id or 'N/A'"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <p class="text-muted mb-4 small">Our academic support team will review your registration and contact you soon.
+                                </p>
+                                <div>
                                     <a href="/" class="btn btn-primary px-4 py-2"
                                        style="border-radius: 20px; font-weight: 500; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); border: none;">
                                         Back to Home

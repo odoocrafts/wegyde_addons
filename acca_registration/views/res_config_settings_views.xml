@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.acca.registration</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="90"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="ACCA Registration" string="ACCA Registration" name="acca_registration" groups="base.group_system">
+                    <block title="Razorpay Payment Gateway Integration" name="razorpay_setting_container">
+                        <setting id="razorpay_key_id" string="Razorpay Key ID" help="Your Razorpay Key ID.">
+                            <field name="razorpay_key_id"/>
+                        </setting>
+                        <setting id="razorpay_key_secret" string="Razorpay Key Secret" help="Your Razorpay Key Secret.">
+                            <field name="razorpay_key_secret"/>
+                        </setting>
+                        <setting id="razorpay_webhook_secret" string="Razorpay Webhook Secret" help="Secret used to verify Razorpay webhooks.">
+                            <field name="razorpay_webhook_secret"/>
+                        </setting>
+                        <setting id="acca_default_fee" string="Default Registration Fee" help="The default fee to charge if Advance Payment is not specified on the form.">
+                            <field name="acca_default_fee"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_acca_registration_configuration" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'acca_registration', 'bin_size': False}</field>
+    </record>
+
+    <menuitem id="menu_acca_registration_config" name="Configuration" parent="acca_registration.menu_acca_root" sequence="100"/>
+    <menuitem id="menu_acca_registration_settings" name="Settings" parent="menu_acca_registration_config" action="action_acca_registration_configuration" sequence="10"/>
+</odoo>

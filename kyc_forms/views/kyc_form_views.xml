@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_kyc_form_tree" model="ir.ui.view">
+        <field name="name">kyc.form.tree</field>
+        <field name="model">kyc.form</field>
+        <field name="arch" type="xml">
+            <tree string="KYC Submissions" js_class="kyc_form_list">
+                <field name="name" string="Student Name"/>
+                <field name="phone" string="Mobile (WhatsApp)"/>
+                <field name="email"/>
+                <field name="highest_qualification"/>
+                <field name="acca_reg_number" string="ACCA Reg No."/>
+                <field name="languages"/>
+                <field name="city"/>
+                <field name="country"/>
+                <field name="referral_source" string="Source"/>
+                <field name="create_date" string="Submitted On"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_kyc_form_form" model="ir.ui.view">
+        <field name="name">kyc.form.form</field>
+        <field name="model">kyc.form</field>
+        <field name="arch" type="xml">
+            <form string="KYC Form Submission">
+                <sheet>
+                    <field name="image_file" widget="image" class="oe_avatar"
+                           options="{'zoom': true, 'preview_image': 'image_file'}"/>
+
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only" string="Student Name"/>
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Personal &amp; Contact Details">
+                            <field name="first_name"/>
+                            <field name="last_name"/>
+                            <field name="phone" widget="phone"/>
+                            <field name="email" widget="email"/>
+                            <field name="dob"/>
+                            <field name="acca_reg_number"/>
+                        </group>
+                        <group string="Academic &amp; Other Info">
+                            <field name="highest_qualification"/>
+                            <field name="languages"/>
+                            <field name="referral_source"/>
+                        </group>
+                    </group>
+
+                    <group string="Address Details">
+                        <group>
+                            <field name="street"/>
+                            <field name="street2"/>
+                            <field name="city"/>
+                        </group>
+                        <group>
+                            <field name="state"/>
+                            <field name="zip_code"/>
+                            <field name="country"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Pursuing Subjects &amp; Packages" name="pursuing_subjects">
+                            <field name="subject_line_ids">
+                                <tree string="Subjects &amp; Packages" editable="bottom">
+                                    <field name="subject_name"/>
+                                    <field name="subject_code"/>
+                                    <field name="package_type" widget="badge" 
+                                           decoration-info="package_type == 'Basic'"
+                                           decoration-primary="package_type == 'Standard'"
+                                           decoration-success="package_type == 'Premium'"
+                                           decoration-warning="package_type == 'Offline'"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_kyc_form_search" model="ir.ui.view">
+        <field name="name">kyc.form.search</field>
+        <field name="model">kyc.form</field>
+        <field name="arch" type="xml">
+            <search string="Search KYC Forms">
+                <field name="name"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="acca_reg_number"/>
+                <field name="highest_qualification"/>
+                <field name="city"/>
+                <field name="country"/>
+                <field name="referral_source"/>
+                <group expand="0" string="Group By">
+                    <filter string="Highest Qualification" name="group_qualification" context="{'group_by': 'highest_qualification'}"/>
+                    <filter string="Referral Source" name="group_source" context="{'group_by': 'referral_source'}"/>
+                    <filter string="Country" name="group_country" context="{'group_by': 'country'}"/>
+                    <filter string="Submission Date" name="group_date" context="{'group_by': 'create_date:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_kyc_form" model="ir.actions.act_window">
+        <field name="name">KYC Forms</field>
+        <field name="res_model">kyc.form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_kyc_form_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Manage WeGyde Admission &amp; KYC form submissions.
+            </p>
+            <p>
+                Student submissions from the public KYC portal will appear here.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Items -->
+    <menuitem id="menu_kyc_root" name="KYC Forms" sequence="11"
+              web_icon="kyc_forms,static/description/icon.png"/>
+    <menuitem id="menu_kyc_submissions" name="KYC Submissions" parent="menu_kyc_root" action="action_kyc_form"
+              sequence="10"/>
+</odoo>
