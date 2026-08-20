@@ -66,3 +66,12 @@ class StudentPastSubject(models.Model):
     marks_scored = fields.Float(
         string='Marks Scored for ACCA Subjects'
     )
+
+class ProductTemplate(models.Model):
+    _inherit = 'product.template'
+
+    detailed_type = fields.Selection(
+        related='type',
+        default='service',
+        readonly=False,
+    )
