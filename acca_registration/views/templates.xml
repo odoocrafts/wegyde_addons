@@ -9,7 +9,7 @@
                 <t t-call-assets="web.assets_frontend" t-js="false"/>
                 <t t-call-assets="web.assets_frontend" t-css="false"/>
             </t>
-            <div id="wrap" class="oe_structure oe_empty" style="min-height: 100vh; background-color: #f1f5f9;">
+            <div id="wrap" class="oe_structure oe_empty" style="min-height: 100vh; background: #f0f7ff;">
                 <div class="container py-3 py-sm-4 py-md-5 px-2 px-sm-3 px-md-4">
                     <div class="row justify-content-center">
                         <div class="col-12 col-lg-10 col-xl-9">
@@ -33,9 +33,6 @@
                                 <!-- Header -->
                                 <div class="card-header text-white text-center py-4 px-3 px-md-4"
                                      style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); border-radius: 16px 16px 0 0;">
-                                    <span class="badge bg-white text-primary rounded-pill px-3 py-1 mb-2 fw-semibold shadow-sm" style="color: #1e3c72; font-size: 0.8rem; letter-spacing: 0.5px;">
-                                        <i class="fa fa-graduation-cap me-1"/> OFFICIAL REGISTRATION PORTAL
-                                    </span>
                                     <h2 class="mb-1 fw-bold form-main-title">ACCA Registration Form</h2>
                                     <p class="mb-0 text-white-50 small">Fill in the details below to complete your ACCA registration</p>
                                 </div>
@@ -466,7 +463,7 @@
                         height: auto !important;
                         overflow-y: auto !important;
                         overflow-x: hidden !important;
-                        background-color: #f1f5f9;
+                        background-color: #f0f7ff !important;
                     }
                     .acca-company-logo {
                         max-height: 48px;
@@ -826,7 +823,7 @@
                     html, body {
                         height: auto !important;
                         overflow-y: auto !important;
-                        background-color: #f1f5f9;
+                        background-color: #f0f7ff !important;
                     }
                 </style>
             </t>
@@ -950,7 +947,7 @@
                     html, body {
                         height: auto !important;
                         overflow-y: auto !important;
-                        background-color: #f1f5f9;
+                        background-color: #f0f7ff !important;
                     }
                 </style>
             </t>
