@@ -78,4 +78,12 @@
             </xpath>
         </field>
     </record>
+    <menuitem
+        id="student_management.menu_student_branch"
+        active="False"
+    />
+    <menuitem
+        id="student_management.menu_student_batch"
+        active="False"
+    />
 </odoo>
