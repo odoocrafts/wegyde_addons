@@ -31,6 +31,7 @@ class Student(models.Model):
     @api.depends("pending_amount")
     def _compute_has_pending_amount(self):
         for rec in self:
+            print('hi')
             rec.has_pending_amount = rec.pending_amount > 0
 
     course_extended = fields.Selection([
