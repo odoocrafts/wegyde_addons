@@ -5,26 +5,29 @@
             <t t-set="title">WeGyde Admission - KYC Form | WeGyde</t>
             <t t-set="head">
                 <title>WeGyde Admission - KYC Form | WeGyde</title>
-                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+                <meta name="viewport"
+                      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
                 <t t-call-assets="web.assets_frontend" t-js="false"/>
                 <t t-call-assets="web.assets_frontend" t-css="false"/>
             </t>
             <div id="wrap" class="oe_structure oe_empty" style="min-height: 100vh; background: #f0fdfa;">
-                
+
                 <!-- Main Container -->
                 <div class="container py-4 py-md-5 px-2 px-sm-3 px-md-4">
                     <div class="row justify-content-center">
                         <div class="col-12 col-lg-9 col-xl-8">
-                            
+
                             <!-- Brand Header (Company Logo & Name) -->
                             <div class="text-center mb-4 kyc-brand-header">
                                 <div class="d-inline-flex align-items-center justify-content-center gap-3 p-2 px-4 rounded-pill bg-white shadow-sm border mb-3">
-                                    <img src="/web/binary/company_logo" alt="Company Logo" class="kyc-company-logo" onerror="this.style.display='none'"/>
+                                    <img src="/web/binary/company_logo" alt="Company Logo" class="kyc-company-logo"
+                                         onerror="this.style.display='none'"/>
                                     <div class="text-start">
                                         <h5 class="fw-bold mb-0 text-dark kyc-company-name">
                                             <t t-esc="res_company.name or 'WeGyde Innovations'"/>
                                         </h5>
-                                        <small class="text-muted d-block" style="font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;">
+                                        <small class="text-muted d-block"
+                                               style="font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;">
                                             Admission &amp; Academic Portal
                                         </small>
                                     </div>
@@ -33,22 +36,28 @@
 
                             <!-- Main KYC Form Card -->
                             <div class="card border-0 shadow-sm kyc-card-container">
-                                
+
                                 <!-- Card Header Banner -->
                                 <div class="kyc-card-header text-white text-center py-4 px-3 px-md-4">
-                                    <h2 class="mb-1 fw-bold kyc-title" style="letter-spacing: -0.3px;">WeGyde Admission - KYC Form</h2>
-                                    <p class="mb-0 text-white-50 small">Please provide your verified details and select your pursuing subject packages</p>
+                                    <h2 class="mb-1 fw-bold kyc-title" style="letter-spacing: -0.3px;">WeGyde Admission
+                                        - KYC Form
+                                    </h2>
+                                    <p class="mb-0 text-white-50 small">Please provide your verified details and select
+                                        your pursuing subject packages
+                                    </p>
                                 </div>
 
                                 <div class="card-body p-3 p-sm-4 p-md-5">
 
                                     <t t-if="error">
-                                        <div class="alert alert-danger alert-dismissible fade show mb-4 d-flex align-items-center" role="alert" style="border-radius: 10px;">
+                                        <div class="alert alert-danger alert-dismissible fade show mb-4 d-flex align-items-center"
+                                             role="alert" style="border-radius: 10px;">
                                             <span class="fa fa-exclamation-triangle fa-lg me-3 text-danger"/>
                                             <div class="flex-grow-1">
                                                 <t t-esc="error"/>
                                             </div>
-                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                    aria-label="Close"></button>
                                         </div>
                                     </t>
 
@@ -56,85 +65,111 @@
                                           class="needs-validation" id="kyc_admission_form" novalidate="novalidate">
                                         <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
 
-                                        <!-- Section 1: Personal Details -->
-                                        <div class="kyc-section-badge mb-3">
-                                            <i class="fa fa-user-circle-o me-2"/>Personal &amp; Contact Details
-                                        </div>
-
-                                        <!-- 1. Name -->
+                                        <!-- Hidden Student ID -->
+                                        <input type="hidden" name="student_id" t-att-value="student.id"/>
+                                        <!-- Student Name Banner -->
                                         <div class="mb-4">
-                                            <label class="form-label fw-bold text-dark">Name <span class="text-danger">*</span></label>
-                                            <div class="row g-2">
-                                                <div class="col-12 col-sm-6">
-                                                    <div class="input-group">
-                                                        <span class="input-group-text kyc-addon-icon"><i class="fa fa-user-o"/></span>
-                                                        <input type="text" class="form-control kyc-input" id="first_name" name="first_name" 
-                                                               required="required" placeholder="First Name"
-                                                               t-att-value="values.get('first_name') if values else ''"/>
+                                            <label class="form-label fw-bold text-dark">Student Name</label>
+                                            <div class="p-3 rounded-3 border d-flex align-items-center justify-content-between"
+                                                 style="background: #f0fdf4; border-color: #ccfbf1 !important;">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="kyc-addon-icon rounded-circle p-2 me-3 d-inline-flex align-items-center justify-content-center"
+                                                          style="width: 42px; height: 42px; border: none !important;">
+                                                        <i class="fa fa-user-circle fa-lg"/>
+                                                    </span>
+                                                    <div>
+                                                        <h6 class="mb-0 fw-bold text-dark fs-6">
+                                                            <t t-esc="student.name"/>
+                                                        </h6>
+<!--                                                        <small class="text-muted">Student ID: #-->
+<!--                                                            <t t-esc="student.id"/>-->
+<!--                                                        </small>-->
                                                     </div>
-                                                    <small class="text-muted ms-1" style="font-size: 0.75rem;">First Name</small>
                                                 </div>
-                                                <div class="col-12 col-sm-6">
-                                                    <input type="text" class="form-control kyc-input" id="last_name" name="last_name" 
-                                                           required="required" placeholder="Last Name"
-                                                           t-att-value="values.get('last_name') if values else ''"/>
-                                                    <small class="text-muted ms-1" style="font-size: 0.75rem;">Last Name</small>
-                                                </div>
+                                                <span class="badge bg-teal-subtle text-teal px-3 py-2 fw-semibold">
+                                                    <i class="fa fa-check-circle me-1"/>
+                                                    Verified Student
+                                                </span>
                                             </div>
                                         </div>
 
                                         <!-- 2. Mobile Number -->
                                         <div class="mb-4">
-                                            <label for="phone" class="form-label fw-bold text-dark">Mobile Number (WhatsApp number) <span class="text-danger">*</span></label>
+                                            <label for="phone" class="form-label fw-bold text-dark">Mobile Number
+                                                (WhatsApp number)
+                                                <span class="text-danger">*</span>
+                                            </label>
                                             <div class="input-group">
-                                                <span class="input-group-text kyc-addon-icon"><i class="fa fa-whatsapp"/></span>
-                                                <input type="tel" class="form-control kyc-input" id="phone" name="phone" 
+                                                <span class="input-group-text kyc-addon-icon">
+                                                    <i class="fa fa-whatsapp"/>
+                                                </span>
+                                                <input type="tel" class="form-control kyc-input" id="phone" name="phone"
                                                        required="required" placeholder="e.g. +91 9876543210"
-                                                       t-att-value="values.get('phone') if values else ''"/>
+                                                       t-att-value="values.get('phone') if values else (student.mobile or '')"/>
                                             </div>
                                         </div>
 
                                         <!-- 3. Email -->
                                         <div class="mb-4">
-                                            <label for="email" class="form-label fw-bold text-dark">Email <span class="text-danger">*</span></label>
+                                            <label for="email" class="form-label fw-bold text-dark">Email
+                                                <span class="text-danger">*</span>
+                                            </label>
                                             <div class="input-group">
-                                                <span class="input-group-text kyc-addon-icon"><i class="fa fa-envelope-o"/></span>
-                                                <input type="email" class="form-control kyc-input" id="email" name="email" 
+                                                <span class="input-group-text kyc-addon-icon">
+                                                    <i class="fa fa-envelope-o"/>
+                                                </span>
+                                                <input type="email" class="form-control kyc-input" id="email"
+                                                       name="email"
                                                        required="required" placeholder="yourname@domain.com"
-                                                       t-att-value="values.get('email') if values else ''"/>
+                                                       t-att-value="values.get('email') if values else (student.email or '')"/>
                                             </div>
                                         </div>
 
                                         <!-- 4. Date of Birth -->
                                         <div class="mb-4">
-                                            <label for="dob" class="form-label fw-bold text-dark">Date of Birth <span class="text-danger">*</span></label>
+                                            <label for="dob" class="form-label fw-bold text-dark">Date of Birth
+                                                <span class="text-danger">*</span>
+                                            </label>
                                             <div class="input-group">
-                                                <span class="input-group-text kyc-addon-icon"><i class="fa fa-calendar"/></span>
-                                                <input type="date" class="form-control kyc-input" id="dob" name="dob" 
+                                                <span class="input-group-text kyc-addon-icon">
+                                                    <i class="fa fa-calendar"/>
+                                                </span>
+                                                <input type="date" class="form-control kyc-input" id="dob" name="dob"
                                                        required="required"
-                                                       t-att-value="values.get('dob') if values else ''"/>
+                                                />
                                             </div>
-                                            <small class="text-muted ms-1" style="font-size: 0.75rem;">dd-MMM-yyyy</small>
+                                            <small class="text-muted ms-1" style="font-size: 0.75rem;">dd-MMM-yyyy
+                                            </small>
                                         </div>
 
                                         <!-- 5. Image Upload (Max 1MB) -->
                                         <div class="mb-4">
                                             <div class="d-flex justify-content-between align-items-center mb-1">
-                                                <label for="image_file" class="form-label fw-bold text-dark mb-0">Image Upload</label>
+                                                <label for="image_file" class="form-label fw-bold text-dark mb-0">Image
+                                                    Upload
+                                                </label>
                                                 <span class="badge bg-light text-muted border">Max: 1 MB</span>
                                             </div>
                                             <div class="kyc-upload-box text-center p-3 p-md-4 rounded-3" id="drop_area">
                                                 <i class="fa fa-cloud-upload fa-2x text-emerald mb-2 d-block"/>
-                                                <input type="file" class="form-control kyc-file-input" id="image_file" name="image_file" accept="image/*"/>
+                                                <input type="file" class="form-control kyc-file-input" id="image_file"
+                                                       name="image_file" accept="image/*"/>
                                                 <div id="image_preview_container" class="mt-2 d-none">
-                                                    <img id="image_preview_img" src="#" alt="Preview" class="rounded shadow-sm" style="max-height: 90px; object-fit: contain;"/>
+                                                    <img id="image_preview_img" src="#" alt="Preview"
+                                                         class="rounded shadow-sm"
+                                                         style="max-height: 90px; object-fit: contain;"/>
                                                 </div>
-                                                <div id="image_size_error" class="text-danger small mt-2 d-none fw-semibold">
-                                                    <i class="fa fa-exclamation-circle me-1"/> Image file size exceeds 1 MB. Please choose an image under 1 MB.
+                                                <div id="image_size_error"
+                                                     class="text-danger small mt-2 d-none fw-semibold">
+                                                    <i class="fa fa-exclamation-circle me-1"/>
+                                                    Image file size exceeds 1 MB. Please choose an image under 1 MB.
                                                 </div>
                                             </div>
-                                            <small class="text-muted d-block mt-2" style="font-size: 0.8rem; line-height: 1.4;">
-                                                <i class="fa fa-lock text-muted me-1"/> Please note that the photo is part of KYC form. We will not use your photo for any social media promotion without your permission.
+                                            <small class="text-muted d-block mt-2"
+                                                   style="font-size: 0.8rem; line-height: 1.4;">
+                                                <i class="fa fa-lock text-muted me-1"/>
+                                                Please note that the photo is part of KYC form. We will not use your
+                                                photo for any social media promotion without your permission.
                                             </small>
                                         </div>
 
@@ -145,11 +180,19 @@
 
                                         <!-- 6. Highest Qualification -->
                                         <div class="mb-4">
-                                            <label for="highest_qualification" class="form-label fw-bold text-dark">Highest Qualification <span class="text-danger">*</span></label>
-                                            <select class="form-select kyc-input" id="highest_qualification" name="highest_qualification" required="required">
-                                                <option value="" disabled="disabled" selected="selected">- Select Highest Qualification -</option>
+                                            <label for="highest_qualification" class="form-label fw-bold text-dark">
+                                                Highest Qualification
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <select class="form-select kyc-input" id="highest_qualification"
+                                                    name="highest_qualification" required="required">
+                                                <option value="" disabled="disabled" selected="selected">- Select
+                                                    Highest Qualification -
+                                                </option>
                                                 <option value="12th Pass">12th Pass</option>
-                                                <option value="Graduation (B.Com, BBA etc)">Graduation (B.Com, BBA etc)</option>
+                                                <option value="Graduation (B.Com, BBA etc)">Graduation (B.Com, BBA
+                                                    etc)
+                                                </option>
                                                 <option value="CA Inter">CA Inter</option>
                                                 <option value="CA">CA</option>
                                                 <option value="Other">Other</option>
@@ -158,43 +201,63 @@
 
                                         <!-- 7. Address -->
                                         <div class="mb-4">
-                                            <label class="form-label fw-bold text-dark">Address <span class="text-danger">*</span></label>
+                                            <label class="form-label fw-bold text-dark">Address
+                                                <span class="text-danger">*</span>
+                                            </label>
                                             <div class="row g-2">
                                                 <div class="col-12 mb-2">
-                                                    <input type="text" class="form-control kyc-input" id="street" name="street" 
+                                                    <input type="text" class="form-control kyc-input" id="street"
+                                                           name="street"
                                                            required="required" placeholder="Street Address"
-                                                           t-att-value="values.get('street') if values else ''"/>
-                                                    <small class="text-muted ms-1" style="font-size: 0.75rem;">Street Address</small>
+                                                    />
+                                                    <small class="text-muted ms-1" style="font-size: 0.75rem;">Street
+                                                        Address
+                                                    </small>
                                                 </div>
                                                 <div class="col-12 mb-2">
-                                                    <input type="text" class="form-control kyc-input" id="street2" name="street2" 
+                                                    <input type="text" class="form-control kyc-input" id="street2"
+                                                           name="street2"
                                                            placeholder="Address Line 2 (Apartment, Suite, Unit)"
-                                                           t-att-value="values.get('street2') if values else ''"/>
-                                                    <small class="text-muted ms-1" style="font-size: 0.75rem;">Address Line 2</small>
+                                                    />
+                                                    <small class="text-muted ms-1" style="font-size: 0.75rem;">Address
+                                                        Line 2
+                                                    </small>
                                                 </div>
                                                 <div class="col-12 col-sm-6 mb-2">
-                                                    <input type="text" class="form-control kyc-input" id="city" name="city" 
+                                                    <input type="text" class="form-control kyc-input" id="city"
+                                                           name="city"
                                                            required="required" placeholder="City"
-                                                           t-att-value="values.get('city') if values else ''"/>
-                                                    <small class="text-muted ms-1" style="font-size: 0.75rem;">City</small>
+                                                    />
+                                                    <small class="text-muted ms-1" style="font-size: 0.75rem;">City
+                                                    </small>
                                                 </div>
                                                 <div class="col-12 col-sm-6 mb-2">
-                                                    <input type="text" class="form-control kyc-input" id="state" name="state" 
+                                                    <input type="text" class="form-control kyc-input" id="state"
+                                                           name="state"
                                                            required="required" placeholder="State / Region / Province"
-                                                           t-att-value="values.get('state') if values else ''"/>
-                                                    <small class="text-muted ms-1" style="font-size: 0.75rem;">State / Region / Province</small>
+                                                    />
+                                                    <small class="text-muted ms-1" style="font-size: 0.75rem;">State /
+                                                        Region / Province
+                                                    </small>
                                                 </div>
                                                 <div class="col-12 col-sm-6 mb-2">
-                                                    <input type="text" class="form-control kyc-input" id="zip_code" name="zip_code" 
+                                                    <input type="text" class="form-control kyc-input" id="zip_code"
+                                                           name="zip_code"
                                                            required="required" placeholder="Postal / Zip Code"
-                                                           t-att-value="values.get('zip_code') if values else ''"/>
-                                                    <small class="text-muted ms-1" style="font-size: 0.75rem;">Postal / Zip Code</small>
+                                                    />
+                                                    <small class="text-muted ms-1" style="font-size: 0.75rem;">Postal /
+                                                        Zip Code
+                                                    </small>
                                                 </div>
                                                 <div class="col-12 col-sm-6 mb-2">
-                                                    <select class="form-select kyc-input" id="country" name="country" required="required">
-                                                        <option value="" disabled="disabled" selected="selected">- Select Country -</option>
+                                                    <select class="form-select kyc-input" id="country" name="country"
+                                                            required="required">
+                                                        <option value="" disabled="disabled" selected="selected">-
+                                                            Select Country -
+                                                        </option>
                                                         <option value="India">India</option>
-                                                        <option value="United Arab Emirates">United Arab Emirates</option>
+                                                        <option value="United Arab Emirates">United Arab Emirates
+                                                        </option>
                                                         <option value="United Kingdom">United Kingdom</option>
                                                         <option value="United States">United States</option>
                                                         <option value="Oman">Oman</option>
@@ -207,52 +270,76 @@
                                                         <option value="Nepal">Nepal</option>
                                                         <option value="Sri Lanka">Sri Lanka</option>
                                                     </select>
-                                                    <small class="text-muted ms-1" style="font-size: 0.75rem;">Country</small>
+                                                    <small class="text-muted ms-1" style="font-size: 0.75rem;">Country
+                                                    </small>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <!-- 8. ACCA Registration Number -->
                                         <div class="mb-4">
-                                            <label for="acca_reg_number" class="form-label fw-bold text-dark">ACCA Registration Number <span class="text-danger">*</span></label>
+                                            <label for="acca_reg_number" class="form-label fw-bold text-dark">ACCA
+                                                Registration Number
+                                                <span class="text-danger">*</span>
+                                            </label>
                                             <div class="input-group">
-                                                <span class="input-group-text kyc-addon-icon"><i class="fa fa-id-card-o"/></span>
-                                                <input type="text" class="form-control kyc-input" id="acca_reg_number" name="acca_reg_number" 
+                                                <span class="input-group-text kyc-addon-icon">
+                                                    <i class="fa fa-id-card-o"/>
+                                                </span>
+                                                <input type="text" class="form-control kyc-input" id="acca_reg_number"
+                                                       name="acca_reg_number"
                                                        required="required" placeholder="Enter ACCA Registration Number"
-                                                       t-att-value="values.get('acca_reg_number') if values else ''"/>
+                                                />
                                             </div>
                                             <div class="kyc-notice-card mt-2 p-2 p-md-3 rounded-3">
-                                                <small class="text-dark d-block" style="font-size: 0.78rem; line-height: 1.45;">
-                                                    <i class="fa fa-info-circle text-emerald me-1"/> <strong>Why we ask for this:</strong> 1. We share verification data with ACCA for students attending approved employer classes. 2. To grant access to Mock Exams via the ACCA portal.
+                                                <small class="text-dark d-block"
+                                                       style="font-size: 0.78rem; line-height: 1.45;">
+                                                    <i class="fa fa-info-circle text-emerald me-1"/>
+                                                    <strong>Why we ask for this:</strong>
+                                                    1. We share verification data with ACCA for students attending
+                                                    approved employer classes. 2. To grant access to Mock Exams via the
+                                                    ACCA portal.
                                                 </small>
                                             </div>
                                         </div>
 
                                         <!-- 9. Language -->
                                         <div class="mb-4">
-                                            <label class="form-label fw-bold text-dark">Language <span class="text-danger">*</span></label>
+                                            <label class="form-label fw-bold text-dark">Language
+                                                <span class="text-danger">*</span>
+                                            </label>
                                             <div class="row g-2" id="language_group">
                                                 <div class="col-12 col-sm-4">
                                                     <div class="kyc-check-card p-2 rounded-3">
-                                                        <input class="form-check-input lang-cb me-2" type="checkbox" name="languages" id="lang_hindi" value="Hindi"/>
-                                                        <label class="form-check-label text-dark fw-semibold mb-0" for="lang_hindi">Hindi</label>
+                                                        <input class="form-check-input lang-cb me-2" type="checkbox"
+                                                               name="languages" id="lang_hindi" value="Hindi"/>
+                                                        <label class="form-check-label text-dark fw-semibold mb-0"
+                                                               for="lang_hindi">Hindi
+                                                        </label>
                                                     </div>
                                                 </div>
                                                 <div class="col-12 col-sm-4">
                                                     <div class="kyc-check-card p-2 rounded-3">
-                                                        <input class="form-check-input lang-cb me-2" type="checkbox" name="languages" id="lang_english" value="English"/>
-                                                        <label class="form-check-label text-dark fw-semibold mb-0" for="lang_english">English</label>
+                                                        <input class="form-check-input lang-cb me-2" type="checkbox"
+                                                               name="languages" id="lang_english" value="English"/>
+                                                        <label class="form-check-label text-dark fw-semibold mb-0"
+                                                               for="lang_english">English
+                                                        </label>
                                                     </div>
                                                 </div>
                                                 <div class="col-12 col-sm-4">
                                                     <div class="kyc-check-card p-2 rounded-3">
-                                                        <input class="form-check-input lang-cb me-2" type="checkbox" name="languages" id="lang_malayalam" value="Malayalam"/>
-                                                        <label class="form-check-label text-dark fw-semibold mb-0" for="lang_malayalam">Malayalam</label>
+                                                        <input class="form-check-input lang-cb me-2" type="checkbox"
+                                                               name="languages" id="lang_malayalam" value="Malayalam"/>
+                                                        <label class="form-check-label text-dark fw-semibold mb-0"
+                                                               for="lang_malayalam">Malayalam
+                                                        </label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div id="language_error" class="text-danger small mt-1 d-none fw-semibold">
-                                                <i class="fa fa-exclamation-circle me-1"/> Please select at least one language.
+                                                <i class="fa fa-exclamation-circle me-1"/>
+                                                Please select at least one language.
                                             </div>
                                         </div>
 
@@ -268,17 +355,27 @@
                                                     <thead>
                                                         <tr>
                                                             <th style="min-width: 200px; font-weight: 700;">Subject</th>
-                                                            <th class="text-center" style="width: 85px; font-weight: 600;">
-                                                                <span class="badge bg-light text-dark border">Basic</span>
+                                                            <th class="text-center"
+                                                                style="width: 85px; font-weight: 600;">
+                                                                <span class="badge bg-light text-dark border">Basic
+                                                                </span>
                                                             </th>
-                                                            <th class="text-center" style="width: 85px; font-weight: 600;">
-                                                                <span class="badge bg-teal-subtle text-teal">Standard</span>
+                                                            <th class="text-center"
+                                                                style="width: 85px; font-weight: 600;">
+                                                                <span class="badge bg-teal-subtle text-teal">Standard
+                                                                </span>
                                                             </th>
-                                                            <th class="text-center" style="width: 85px; font-weight: 600;">
-                                                                <span class="badge bg-emerald-subtle text-emerald">Premium</span>
+                                                            <th class="text-center"
+                                                                style="width: 85px; font-weight: 600;">
+                                                                <span class="badge bg-emerald-subtle text-emerald">
+                                                                    Premium
+                                                                </span>
                                                             </th>
-                                                            <th class="text-center" style="width: 85px; font-weight: 600;">
-                                                                <span class="badge bg-warning-subtle text-dark">Offline</span>
+                                                            <th class="text-center"
+                                                                style="width: 85px; font-weight: 600;">
+                                                                <span class="badge bg-warning-subtle text-dark">
+                                                                    Offline
+                                                                </span>
                                                             </th>
                                                         </tr>
                                                     </thead>
@@ -289,20 +386,27 @@
                                                                     <t t-esc="subj[1]"/>
                                                                 </td>
                                                                 <td class="text-center">
-                                                                    <input class="form-check-input matrix-radio" type="radio" 
+                                                                    <input class="form-check-input matrix-radio"
+                                                                           type="radio"
                                                                            t-att-name="'pkg_' + subj[0]" value="Basic"/>
                                                                 </td>
                                                                 <td class="text-center">
-                                                                    <input class="form-check-input matrix-radio" type="radio" 
-                                                                           t-att-name="'pkg_' + subj[0]" value="Standard"/>
+                                                                    <input class="form-check-input matrix-radio"
+                                                                           type="radio"
+                                                                           t-att-name="'pkg_' + subj[0]"
+                                                                           value="Standard"/>
                                                                 </td>
                                                                 <td class="text-center">
-                                                                    <input class="form-check-input matrix-radio" type="radio" 
-                                                                           t-att-name="'pkg_' + subj[0]" value="Premium"/>
+                                                                    <input class="form-check-input matrix-radio"
+                                                                           type="radio"
+                                                                           t-att-name="'pkg_' + subj[0]"
+                                                                           value="Premium"/>
                                                                 </td>
                                                                 <td class="text-center">
-                                                                    <input class="form-check-input matrix-radio" type="radio" 
-                                                                           t-att-name="'pkg_' + subj[0]" value="Offline"/>
+                                                                    <input class="form-check-input matrix-radio"
+                                                                           type="radio"
+                                                                           t-att-name="'pkg_' + subj[0]"
+                                                                           value="Offline"/>
                                                                 </td>
                                                             </tr>
                                                         </t>
@@ -310,7 +414,9 @@
                                                 </table>
                                             </div>
                                             <small class="text-muted d-block mt-2" style="font-size: 0.8rem;">
-                                                <i class="fa fa-info-circle text-emerald me-1"/> Select the appropriate Subject and package you are currently pursuing from WeGyde App
+                                                <i class="fa fa-info-circle text-emerald me-1"/>
+                                                Select the appropriate Subject and package you are currently pursuing
+                                                from WeGyde App
                                             </small>
                                         </div>
 
@@ -319,13 +425,20 @@
                                             <i class="fa fa-bullhorn me-2"/>How Did You Find Us?
                                         </div>
 
-                                        <!-- 11. How did you get to know us? -->
+                                        <!-- 11. Referral Source -->
                                         <div class="mb-5">
-                                            <label for="referral_source" class="form-label fw-bold text-dark">How did you get to know us? <span class="text-danger">*</span></label>
-                                            <select class="form-select kyc-input" id="referral_source" name="referral_source" required="required">
-                                                <option value="" disabled="disabled" selected="selected">- Select Referral Source -</option>
+                                            <label for="referral_source" class="form-label fw-bold text-dark">How did
+                                                you get to know us?
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <select class="form-select kyc-input" id="referral_source"
+                                                    name="referral_source" required="required">
+                                                <option value="" disabled="disabled" selected="selected">- Select
+                                                    Referral Source -
+                                                </option>
                                                 <option value="Linkedin">Linkedin</option>
-                                                <option value="Instagram &amp; Facebook">Instagram &amp; Facebook</option>
+                                                <option value="Instagram &amp; Facebook">Instagram &amp; Facebook
+                                                </option>
                                                 <option value="Youtube">Youtube</option>
                                                 <option value="Friend's Referral">Friend's Referral</option>
                                                 <option value="Google Search">Google Search</option>
@@ -335,7 +448,8 @@
 
                                         <!-- Submit Button -->
                                         <div class="text-center pt-2 mb-3">
-                                            <button type="submit" id="kyc_submit_btn" class="btn kyc-submit-btn text-white fw-bold shadow">
+                                            <button type="submit" id="kyc_submit_btn"
+                                                    class="btn kyc-submit-btn text-white fw-bold shadow">
                                                 Submit KYC Form
                                                 <i class="fa fa-arrow-right ms-2"/>
                                             </button>
@@ -348,7 +462,7 @@
                     </div>
                 </div>
 
-                <!-- Custom Fresh Emerald & Mint Theme CSS -->
+                <!-- Custom Stylesheet -->
                 <style type="text/css">
                     <![CDATA[
                     :root {
@@ -405,7 +519,7 @@
                     .kyc-input {
                         border-radius: 8px !important;
                         border: 1.5px solid #d1d5db !important;
-                        font-size: 16px !important; /* Prevents auto-zoom on iOS */
+                        font-size: 16px !important;
                         padding: 0.62rem 0.85rem !important;
                         transition: all 0.2s ease-in-out;
                     }
@@ -419,9 +533,6 @@
                         border: 1.5px solid #d1d5db !important;
                         border-right: none !important;
                         border-radius: 8px 0 0 8px !important;
-                    }
-                    .kyc-input.border-start-0 {
-                        border-left: none !important;
                     }
                     .kyc-upload-box {
                         border: 2px dashed #0d9488;
@@ -506,7 +617,7 @@
                     ]]>
                 </style>
 
-                <!-- Script for Validation & Preview -->
+                <!-- Validation Scripts -->
                 <script type="text/javascript">
                     <![CDATA[
                     document.addEventListener('DOMContentLoaded', function () {
@@ -519,8 +630,7 @@
                         const langCheckboxes = document.querySelectorAll('.lang-cb');
                         const langError = document.getElementById('language_error');
 
-                        // 1MB = 1048576 bytes
-                        const MAX_SIZE = 1048576;
+                        const MAX_SIZE = 1048576; // 1 MB
 
                         if (imageInput) {
                             imageInput.addEventListener('change', function () {
@@ -529,10 +639,9 @@
                                     if (file.size > MAX_SIZE) {
                                         if (sizeError) sizeError.classList.remove('d-none');
                                         if (previewContainer) previewContainer.classList.add('d-none');
-                                        this.value = ''; // Clear invalid file
+                                        this.value = '';
                                     } else {
                                         if (sizeError) sizeError.classList.add('d-none');
-                                        // Show preview thumbnail
                                         if (previewContainer && previewImg) {
                                             const reader = new FileReader();
                                             reader.onload = function (e) {
@@ -556,7 +665,6 @@
                             });
                         });
 
-                        // Double-click radio to deselect package
                         const radios = document.querySelectorAll('.matrix-radio');
                         radios.forEach(radio => {
                             radio.addEventListener('click', function (e) {
@@ -574,7 +682,6 @@
 
                         if (form) {
                             form.addEventListener('submit', function (e) {
-                                // Check language selection
                                 let langSelected = false;
                                 langCheckboxes.forEach(c => { if (c.checked) langSelected = true; });
                                 if (!langSelected) {
@@ -616,14 +723,15 @@
             <t t-set="title">KYC Form Submitted | WeGyde</t>
             <t t-set="head">
                 <title>KYC Form Submitted | WeGyde</title>
-                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+                <meta name="viewport"
+                      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
                 <t t-call-assets="web.assets_frontend" t-js="false"/>
                 <t t-call-assets="web.assets_frontend" t-css="false"/>
                 <style type="text/css">
                     html, body {
-                        height: auto !important;
-                        overflow-y: auto !important;
-                        background-color: #f0fdfa !important;
+                    height: auto !important;
+                    overflow-y: auto !important;
+                    background-color: #f0fdfa !important;
                     }
                 </style>
             </t>
@@ -640,16 +748,19 @@
                                     </span>
                                 </div>
                                 <h2 class="text-dark mb-2 fw-bold" style="font-size: 1.6rem;">KYC Form Submitted!</h2>
-                                <p class="lead text-muted mb-4" style="font-size: 1.05rem;">Thank you, <strong class="text-dark" t-esc="kyc.name"/>! Your WeGyde Admission &amp; KYC details have been recorded successfully.
+                                <p class="lead text-muted mb-4" style="font-size: 1.05rem;">
+                                    Thank you,<strong class="text-dark" t-esc="student.name"/>! Your WeGyde Admission
+                                    &amp; KYC details have been recorded successfully.
                                 </p>
 
-                                <div class="bg-light p-3 p-md-4 mb-4 border text-start" style="border-radius: 12px; background-color: #f0fdf4 !important; border-color: #ccfbf1 !important;">
+                                <div class="bg-light p-3 p-md-4 mb-4 border text-start"
+                                     style="border-radius: 12px; background-color: #f0fdf4 !important; border-color: #ccfbf1 !important;">
                                     <div class="row small text-muted mb-2 pb-2 border-bottom">
                                         <div class="col-5">
                                             <strong>Student Name:</strong>
                                         </div>
                                         <div class="col-7 text-dark fw-semibold">
-                                            <t t-esc="kyc.name"/>
+                                            <t t-esc="student.name"/>
                                         </div>
                                     </div>
                                     <div class="row small text-muted mb-2 pb-2 border-bottom">
@@ -686,13 +797,10 @@
                                     </div>
                                 </div>
 
-                                <p class="text-muted mb-4 small">Our academic support team will verify your admission details shortly.
+                                <p class="text-muted mb-4 small">Our academic support team will verify your admission
+                                    details shortly.
                                 </p>
-                                <div class="d-flex flex-column flex-sm-row justify-content-center gap-2">
-                                    <a href="/kyc/admission" class="btn btn-outline-secondary px-4 py-2"
-                                       style="border-radius: 20px; font-weight: 500;">
-                                        Submit Another Form
-                                    </a>
+                                <div>
                                     <a href="/" class="btn px-4 py-2 text-white fw-semibold"
                                        style="border-radius: 20px; background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%); border: none;">
                                         Back to Home

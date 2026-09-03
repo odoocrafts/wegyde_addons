@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_course_fee_matrix_tree" model="ir.ui.view">
+        <field name="name">course.fee.matrix.tree</field>
+        <field name="model">acca.fee.matrix</field>
+        <field name="arch" type="xml">
+            <tree string="Master Price Matrix" editable="bottom">
+                <field name="paper_id"/>
+                <field name="language_id"/>
+                <field name="plan_id"/>
+                <field name="price" widget="monetary"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_course_pricing_rule" model="ir.actions.act_window">
+        <field name="name">Course Pricing</field>
+        <field name="res_model">acca.fee.matrix</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="menu_action_courses" model="ir.actions.act_window">
+        <field name="name">Courses</field>
+        <field name="res_model">product.product</field>
+        <field name="view_mode">kanban,tree,form</field>
+    </record>
+
+
+    <menuitem id="menu_course_configuration" name="Course Configuration" parent="student_management.menu_courses"
+              sequence="50"/>
+    <menuitem id="menu_course_configuration_id" name="Courses" parent="menu_course_configuration"
+              action="menu_action_courses" sequence="1"/>
+    <!--    <menuitem id="menu_course_papers" name="Papers" parent="menu_course_configuration" action="action_course_paper"-->
+    <!--              sequence="10"/>-->
+    <!--    <menuitem id="menu_course_languages" name="Languages" parent="menu_course_configuration"-->
+    <!--              action="action_course_language" sequence="20"/>-->
+    <!--    <menuitem id="menu_course_plans" name="Plans" parent="menu_course_configuration" action="action_course_plan"-->
+    <!--              sequence="30"/>-->
+    <menuitem id="menu_course_pricing" name="Course Pricing" parent="menu_course_configuration"
+              action="action_course_pricing_rule" sequence="40"/>
+
+</odoo>

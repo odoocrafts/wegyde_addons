@@ -8,11 +8,12 @@
     """,
     'category': 'Education',
     'author': 'Antigravity AI',
-    'depends': ['base', 'web'],
+    'depends': ['base', 'web','student_management','wegyde_student_management'],
     'data': [
         'security/ir.model.access.csv',
         'views/kyc_form_views.xml',
         'views/templates.xml',
+        'views/student.xml',
     ],
     'assets': {
         'web.assets_backend': [

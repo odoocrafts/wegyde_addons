@@ -21,6 +21,21 @@
             <xpath expr="//field[@name='pending_amount']" position="after">
                 <field name="has_pending_amount" widget="boolean_toggle" readonly="1"/>
             </xpath>
+            <xpath expr="//field[@name='course_type']" position="before">
+                <field name="is_acca"/>
+                <field name="paper_ids" widget="many2many_tags"
+                       options=" 'no_create': True}"
+                       placeholder="Select multiple papers..." invisible="not is_acca"/>
+
+                <field name="language_ids" widget="many2many_tags"
+                       options="{'no_create': True}"
+                       placeholder="Select multiple languages..." invisible="not is_acca"/>
+
+                <field name="plan_ids" widget="many2many_tags"
+                       options="{'no_create': True}"
+                       placeholder="Select multiple plans..." invisible="not is_acca"/>
+<!--                <field name="total_course_fee"/>-->
+            </xpath>
             <xpath expr="//notebook/page[1]" position="before">
 
                 <page string="Course / LMS Details">
@@ -53,11 +68,13 @@
                         <field name="past_subject_ids" string="">
                             <tree editable="bottom">
                                 <field name="past_subject_completed" placeholder="List subjects completed..."/>
+                                <field name="year" placeholder="year.."/>
                                 <field name="marks_scored" placeholder="Marks scored details..."/>
+
                             </tree>
                         </field>
-<!--                        <field name="past_subject_completed" placeholder="List subjects completed..."/>-->
-<!--                        <field name="marks_scored" placeholder="Marks scored details..."/>-->
+                        <!--                        <field name="past_subject_completed" placeholder="List subjects completed..."/>-->
+                        <!--                        <field name="marks_scored" placeholder="Marks scored details..."/>-->
                     </group>
                     <group string="Signed Agreement">
                         <field name="contract_filename" invisible="1"/>
@@ -79,11 +96,11 @@
         </field>
     </record>
     <menuitem
-        id="student_management.menu_student_branch"
-        active="False"
+            id="student_management.menu_student_branch"
+            active="False"
     />
     <menuitem
-        id="student_management.menu_student_batch"
-        active="False"
+            id="student_management.menu_student_batch"
+            active="False"
     />
 </odoo>

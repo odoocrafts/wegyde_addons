@@ -26,60 +26,85 @@ ACCA_SUBJECTS = [
 
 class KycFormController(http.Controller):
 
-    @http.route(['/kyc/admission', '/kyc/form', '/kyc'], type='http', auth='public', website=True, sitemap=True)
-    def kyc_form_index(self, **kw):
+    # 1. RENDER KYC FORM USING STUDENT ID IN URL PATH
+    @http.route([
+        '/kyc/admission/<int:student_id>',
+        '/kyc/form/<int:student_id>',
+        '/kyc/<int:student_id>',
+        '/kyc/admission',
+    ], type='http', auth='public', website=True, sitemap=False)
+    def kyc_form_index(self, student_id=None, **kw):
+        # Read student_id from URL path or query parameter
+        s_id = student_id or kw.get('student_id')
+        if not s_id:
+            return request.render('website.404', {})
+
+        student = request.env['student.student'].sudo().browse(int(s_id))
+        if not student.exists():
+            return request.render('website.404', {})
+
         return request.render('kyc_forms.kyc_admission_form_template', {
+            'student': student,
             'subjects': ACCA_SUBJECTS,
             'values': kw,
         })
 
+    # 2. SUBMIT KYC FORM
     @http.route('/kyc/admission/submit', type='http', auth='public', methods=['POST'], website=True, csrf=True)
     def kyc_form_submit(self, **kw):
-        # 1. Validate required text fields
+        student_id = kw.get('student_id')
+        if not student_id:
+            return request.render('website.404', {})
+
+        student = request.env['student.student'].sudo().browse(int(student_id))
+        if not student.exists():
+            return request.render('website.404', {})
+
+        # Validation
         required_fields = [
-            'first_name', 'last_name', 'phone', 'email', 'dob',
-            'highest_qualification', 'street', 'city', 'state', 'zip_code', 'country',
+            'phone', 'email', 'dob', 'highest_qualification',
+            'street', 'city', 'state', 'zip_code', 'country',
             'acca_reg_number', 'referral_source'
         ]
         for field in required_fields:
             if not kw.get(field) or not str(kw.get(field)).strip():
                 return request.render('kyc_forms.kyc_admission_form_template', {
                     'error': f'Please fill in the required field: {field.replace("_", " ").title()}',
+                    'student': student,
                     'subjects': ACCA_SUBJECTS,
                     'values': kw,
                 })
 
-        # 2. Process image upload & enforce 1MB size limit
+        # Image Upload (Max 1MB)
         image_file = request.httprequest.files.get('image_file')
         image_data = None
         image_filename = None
-
         if image_file and image_file.filename:
             file_content = image_file.read()
-            # 1 MB = 1024 * 1024 bytes = 1,048,576 bytes
             if len(file_content) > 1048576:
                 return request.render('kyc_forms.kyc_admission_form_template', {
                     'error': 'Image file size exceeds the maximum limit of 1 MB. Please upload a smaller photo.',
+                    'student': student,
                     'subjects': ACCA_SUBJECTS,
                     'values': kw,
                 })
             image_data = base64.b64encode(file_content)
             image_filename = image_file.filename
 
-        # 3. Process languages
+        # Languages
         languages_list = request.httprequest.form.getlist('languages')
         if not languages_list:
             return request.render('kyc_forms.kyc_admission_form_template', {
                 'error': 'Please select at least one Language.',
+                'student': student,
                 'subjects': ACCA_SUBJECTS,
                 'values': kw,
             })
         languages_str = ", ".join(languages_list)
 
-        # 4. Prepare KYC form values
+        # Prepare Values
         kyc_values = {
-            'first_name': kw.get('first_name').strip(),
-            'last_name': kw.get('last_name').strip(),
+            'student_id': student.id,
             'phone': kw.get('phone').strip(),
             'email': kw.get('email').strip(),
             'dob': kw.get('dob'),
@@ -97,11 +122,10 @@ class KycFormController(http.Controller):
             'referral_source': kw.get('referral_source'),
         }
 
-        # 5. Create KYC form record
-        KycModel = request.env['kyc.form'].sudo()
-        kyc_record = KycModel.create(kyc_values)
+        # Create KYC record
+        kyc_record = request.env['kyc.form'].sudo().create(kyc_values)
 
-        # 6. Process pursuing subjects matrix
+        # Process subjects
         SubjectModel = request.env['kyc.pursuing.subject'].sudo()
         for code, name in ACCA_SUBJECTS:
             pkg = kw.get(f'pkg_{code}')
@@ -113,8 +137,11 @@ class KycFormController(http.Controller):
                     'package_type': pkg,
                 })
 
-        _logger.info(f"Successfully created KYC Form record: {kyc_record.id} for {kyc_record.name}")
+        # Update student status
+        if hasattr(student, 'kyc_status'):
+            student.sudo().write({'kyc_status': 'submitted'})
 
         return request.render('kyc_forms.kyc_admission_success_template', {
             'kyc': kyc_record,
+            'student': student,
         })

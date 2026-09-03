@@ -10,11 +10,13 @@
         - Track academic records
         - Store contact details
     """,
-    'depends': ['crm', 'student_management','institute_crm' ],
+    'depends': ['crm', 'student_management','institute_crm','product'],
     'data': [
         'security/ir.model.access.csv',
+        "views/product.xml",
         'views/student.xml',
         'views/crm.xml',
+        "views/price_rule.xml",
     ],
     'installable': True,
     'application': True,

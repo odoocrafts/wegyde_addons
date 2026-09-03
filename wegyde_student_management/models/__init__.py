@@ -1,1 +1,1 @@
-from . import student,crm
+from . import student,crm, course_pricing,price_rule

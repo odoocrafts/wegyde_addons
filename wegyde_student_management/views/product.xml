@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="fee_plan_view_leads_inherit_product" model="ir.ui.view">
+        <field name="name">fee.plan.inherit.product</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='course_code']" position="after">
+                <field name="is_acca"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

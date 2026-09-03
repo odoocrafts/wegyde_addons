@@ -6,9 +6,10 @@ class KycForm(models.Model):
     _description = 'WeGyde Admission - KYC Form'
     _order = 'create_date desc'
 
-    name = fields.Char(string='Student Name', compute='_compute_name', store=True)
-    first_name = fields.Char(string='First Name', required=True)
-    last_name = fields.Char(string='Last Name', required=True)
+    name = fields.Char(string='Student Name', )
+    first_name = fields.Char(string='First Name',)
+    student_id = fields.Many2one('student.student', string='Student ID', required=True)
+    last_name = fields.Char(string='Last Name')
     phone = fields.Char(string='Mobile Number (WhatsApp)', required=True)
     email = fields.Char(string='Email Address', required=True)
     dob = fields.Date(string='Date of Birth', required=True)
@@ -49,8 +50,8 @@ class KycForm(models.Model):
         ('Other', 'Other'),
     ], string='How did you get to know us?', required=True)
 
-    @api.depends('first_name', 'last_name')
-    def _compute_name(self):
-        for rec in self:
-            parts = [p.strip() for p in [rec.first_name, rec.last_name] if p and p.strip()]
-            rec.name = " ".join(parts) if parts else "New KYC Submission"
+    # @api.depends('first_name', 'last_name')
+    # def _compute_name(self):
+    #     for rec in self:
+    #         parts = [p.strip() for p in [rec.first_name, rec.last_name] if p and p.strip()]
+    #         rec.name = " ".join(parts) if parts else "New KYC Submission"

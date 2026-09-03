@@ -1,5 +1,6 @@
 from odoo import api, fields, models, _
 
+
 class Student(models.Model):
     _inherit = "student.student"
 
@@ -27,6 +28,9 @@ class Student(models.Model):
         compute="_compute_has_pending_amount",
         store=True,
     )
+    # paper_id = fields.Many2one('course.paper', string='Paper')
+    # language_id = fields.Many2one('course.language', string='Language')
+    # plan_id = fields.Many2one('course.plan', string='Plan')
 
     @api.depends("pending_amount")
     def _compute_has_pending_amount(self):
@@ -51,6 +55,72 @@ class Student(models.Model):
     contract_file = fields.Binary(string='Signed Contract')
     contract_filename = fields.Char(string='Contract File Name')
 
+    is_acca = fields.Boolean(
+        string='Is ACCA Course',
+        compute='_compute_is_acca',
+        store=True
+    )
+
+    @api.depends('course_id')
+    def _compute_is_acca(self):
+        for rec in self:
+            rec.is_acca = bool(rec.course_id and rec.course_id.is_acca)
+
+    paper_ids = fields.Many2many('acca.paper', string='Selected Papers')
+    language_ids = fields.Many2many('acca.language', string='Selected Languages')
+    plan_ids = fields.Many2many('acca.plan', string='Selected Plans')
+    course_fee = fields.Float(
+        string='Course Fee',
+        compute='_compute_course_fee',
+        store=True,
+        readonly=False
+    )
+
+    @api.depends('course_id')
+    def _compute_is_acca(self):
+        for rec in self:
+            rec.is_acca = bool(rec.course_id and rec.course_id.is_acca)
+
+    @api.depends('course_id', 'is_acca', 'paper_ids', 'language_ids', 'plan_ids')
+    def _compute_course_fee(self):
+        for student in self:
+            # 1. Non-ACCA Course: Take the standard product list_price
+            if not student.is_acca:
+                student.course_fee = student.course_id.list_price if student.course_id else 0.0
+                continue
+            # 2. ACCA Course: Check all selected combinations
+            if not (student.paper_ids and student.language_ids and student.plan_ids):
+                student.course_fee = 0.0
+                continue
+            total = 0.0
+            for paper in student.paper_ids:
+                paper_id = paper._origin.id or paper.id
+                for lang in student.language_ids:
+                    lang_id = lang._origin.id or lang.id
+                    for plan in student.plan_ids:
+                        plan_id = plan._origin.id or plan.id
+                        # Search pre-set price in ACCA Fee Matrix
+                        fee_rule = self.env['acca.fee.matrix'].search([
+                            ('paper_id', '=', paper_id),
+                            ('language_id', '=', lang_id),
+                            ('plan_id', '=', plan_id),
+                        ], limit=1)
+                        if fee_rule:
+                            total += fee_rule.price
+            # Update your existing course_fee field
+            student.course_fee = total
+
+
+class StudentPastSubjectCourse(models.Model):
+    _name = 'student.past.subject.course'
+    _description = 'Past Subject / Course'
+
+    name = fields.Char(
+        string='Course / Level',
+        required=True
+    )
+
+
 class StudentPastSubject(models.Model):
     _name = 'student.past.subject'
     _description = 'Student Past Subject'
@@ -60,13 +130,18 @@ class StudentPastSubject(models.Model):
         string='Student',
         ondelete='cascade'
     )
-    past_subject_completed = fields.Char(
+    past_subject_completed = fields.Many2one(
+        'student.past.subject.course',
         string='Past Subject / Level Completed',
-
+        ondelete='set null'
+    )
+    year = fields.Integer(
+        string='Year'
     )
     marks_scored = fields.Float(
         string='Marks Scored for ACCA Subjects'
     )
+
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
@@ -76,3 +151,36 @@ class ProductTemplate(models.Model):
         default='service',
         readonly=False,
     )
+
+class ProductProduct(models.Model):
+    _inherit = 'product.product'
+
+    is_acca = fields.Boolean(
+        string='Is ACCA Course?',
+        help='Check this if this course follows the ACCA Paper/Language/Plan fee structure.'
+    )
+
+
+class CoursePaper(models.Model):
+    _name = 'course.paper'
+    _description = 'Course Paper'
+    _order = 'id'
+
+    name = fields.Char(string='Paper', required=True)
+    code = fields.Char(string='Code')
+    active = fields.Boolean(default=True)
+
+class CourseLanguage(models.Model):
+    _name = 'course.language'
+    _description = 'Course Language'
+
+    name = fields.Char( string='Language', required=True )
+    active = fields.Boolean( default=True )
+
+class CoursePlan(models.Model):
+    _name = 'course.plan'
+    _description = 'Course Plan'
+
+    name = fields.Char( string='Plan', required=True )
+    code = fields.Char( string='Code' )
+    active = fields.Boolean( default=True )

@@ -1,4 +1,9 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_student_creation,create.student.wizard,model_create_student_wizard,base.group_user,1,1,1,1
 access_student_marks,create.student.marks,model_student_past_subject,base.group_user,1,1,1,1
+access_student_subject_course,create.student.subject.course,model_student_past_subject_course,base.group_user,1,1,1,1
+access_course_acca_paper,access_course_acca_paper,model_acca_paper,base.group_user,1,1,1,1
+access_course_acca_language,access_course_acca_language,model_acca_language,base.group_user,1,1,1,1
+access_course_acca_plan,access_course_acca_plan,model_acca_plan,base.group_user,1,1,1,1
 
+access_course_fee_metrix,access_acca_fee_matrix,model_acca_fee_matrix,base.group_user,1,1,1,1
