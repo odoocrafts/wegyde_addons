@@ -87,27 +87,74 @@ class Student(models.Model):
         readonly=False
     )
 
-    @api.onchange('course_id', 'is_acca', 'paper_ids', 'language_ids', 'plan_ids')
-    @api.depends('course_id', 'is_acca', 'paper_ids', 'language_ids', 'plan_ids')
+    # @api.onchange('course_id', 'is_acca', 'paper_ids', 'language_ids', 'plan_ids')
+    # @api.depends('course_id', 'is_acca', 'paper_ids', 'language_ids', 'plan_ids')
+    # def _compute_course_fee(self):
+    #     for student in self:
+    #         # 1. Non-ACCA Course: Take standard list_price
+    #         if not student.is_acca:
+    #             student.course_fee = student.course_id.list_price if student.course_id else 0.0
+    #             continue
+    #         # 2. ACCA Course: If any selection is missing, reset fee to 0
+    #         if not (student.paper_ids and student.language_ids and student.plan_ids):
+    #             student.course_fee = 0.0
+    #             continue
+    #         total = 0.0
+    #
+    #         # Helper to get real integer DB ID (prevents NewId bugs)
+    #         def get_real_id(record):
+    #             orig_id = record._origin.id if hasattr(record, '_origin') else record.id
+    #             print(orig_id, 'orig')
+    #             return orig_id if isinstance(orig_id, int) else (record.id if isinstance(record.id, int) else False)
+    #
+    #         # Loop through all selected combinations
+    #         for paper in student.paper_ids:
+    #             paper_id = get_real_id(paper)
+    #             if not paper_id:
+    #                 continue
+    #             for lang in student.language_ids:
+    #                 lang_id = get_real_id(lang)
+    #                 if not lang_id:
+    #                     continue
+    #                 for plan in student.plan_ids:
+    #                     plan_id = get_real_id(plan)
+    #                     if not plan_id:
+    #                         continue
+    #                     # Search pre-set price in ACCA Fee Matrix
+    #                     fee_rule = self.env['acca.fee.matrix'].search([
+    #                         ('paper_id', '=', paper_id),
+    #                         ('language_id', '=', lang_id),
+    #                         ('plan_id', '=', plan_id),
+    #                     ], limit=1)
+    #                     if fee_rule:
+    #                         total += fee_rule.price
+    #                         print(
+    #                             f"[ACCA Fee] Found Match: {paper.name} + {lang.name} + {plan.name} = {fee_rule.price}")
+    #                     else:
+    #                         print(
+    #                             f"[ACCA Fee] NO Rule found in matrix for: {paper.name} (ID: {paper_id}), {lang.name} (ID: {lang_id}), {plan.name} (ID: {plan_id})")
+    #         print(f"[ACCA Fee] Final Total Fee Calculated: {total}")
+    #         student.course_fee = total
+    @api.onchange('plan_ids')
+    @api.depends('plan_ids')
     def _compute_course_fee(self):
         for student in self:
-            # 1. Non-ACCA Course: Take standard list_price
+            # If not ACCA or plan is not chosen yet, do not calculate from matrix
             if not student.is_acca:
                 student.course_fee = student.course_id.list_price if student.course_id else 0.0
                 continue
-            # 2. ACCA Course: If any selection is missing, reset fee to 0
-            if not (student.paper_ids and student.language_ids and student.plan_ids):
+
+            # Gate: ONLY compute if plan_ids is set
+            if not (student.plan_ids and student.paper_ids and student.language_ids):
                 student.course_fee = 0.0
                 continue
+
             total = 0.0
 
-            # Helper to get real integer DB ID (prevents NewId bugs)
             def get_real_id(record):
                 orig_id = record._origin.id if hasattr(record, '_origin') else record.id
-                print(orig_id, 'orig')
                 return orig_id if isinstance(orig_id, int) else (record.id if isinstance(record.id, int) else False)
 
-            # Loop through all selected combinations
             for paper in student.paper_ids:
                 paper_id = get_real_id(paper)
                 if not paper_id:
@@ -120,7 +167,6 @@ class Student(models.Model):
                         plan_id = get_real_id(plan)
                         if not plan_id:
                             continue
-                        # Search pre-set price in ACCA Fee Matrix
                         fee_rule = self.env['acca.fee.matrix'].search([
                             ('paper_id', '=', paper_id),
                             ('language_id', '=', lang_id),
@@ -128,12 +174,7 @@ class Student(models.Model):
                         ], limit=1)
                         if fee_rule:
                             total += fee_rule.price
-                            print(
-                                f"[ACCA Fee] Found Match: {paper.name} + {lang.name} + {plan.name} = {fee_rule.price}")
-                        else:
-                            print(
-                                f"[ACCA Fee] NO Rule found in matrix for: {paper.name} (ID: {paper_id}), {lang.name} (ID: {lang_id}), {plan.name} (ID: {plan_id})")
-            print(f"[ACCA Fee] Final Total Fee Calculated: {total}")
+
             student.course_fee = total
 
 
