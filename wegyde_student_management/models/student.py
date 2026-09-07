@@ -80,12 +80,29 @@ class Student(models.Model):
     paper_ids = fields.Many2many('acca.paper', string='Selected Papers')
     language_ids = fields.Many2many('acca.language', string='Selected Languages')
     plan_ids = fields.Many2many('acca.plan', string='Selected Plans')
+    paper_line_ids = fields.One2many(
+        'student.paper.line',
+        'student_id',
+        string='Enrolled Papers'
+    )
     course_fee = fields.Float(
         string='Course Fee',
         compute='_compute_course_fee',
         store=True,
         readonly=False
     )
+
+    @api.onchange('paper_line_ids', 'course_id', 'is_acca')
+    @api.depends('is_acca', 'course_id', 'paper_line_ids.fee_amount')
+    def _compute_course_fee(self):
+        print('--> Course Fee Triggered on Parent')
+        for student in self:
+            if not student.is_acca:
+                student.course_fee = student.course_id.list_price if student.course_id else 0.0
+                continue
+            # Sum of all lines in the table
+            student.course_fee = sum(line.fee_amount for line in student.paper_line_ids)
+            print(f'--> Student Total Course Fee: {student.course_fee}')
 
     # @api.onchange('course_id', 'is_acca', 'paper_ids', 'language_ids', 'plan_ids')
     # @api.depends('course_id', 'is_acca', 'paper_ids', 'language_ids', 'plan_ids')
@@ -135,47 +152,47 @@ class Student(models.Model):
     #                             f"[ACCA Fee] NO Rule found in matrix for: {paper.name} (ID: {paper_id}), {lang.name} (ID: {lang_id}), {plan.name} (ID: {plan_id})")
     #         print(f"[ACCA Fee] Final Total Fee Calculated: {total}")
     #         student.course_fee = total
-    @api.onchange('plan_ids')
-    @api.depends('plan_ids')
-    def _compute_course_fee(self):
-        for student in self:
-            # If not ACCA or plan is not chosen yet, do not calculate from matrix
-            if not student.is_acca:
-                student.course_fee = student.course_id.list_price if student.course_id else 0.0
-                continue
-
-            # Gate: ONLY compute if plan_ids is set
-            if not (student.plan_ids and student.paper_ids and student.language_ids):
-                student.course_fee = 0.0
-                continue
-
-            total = 0.0
-
-            def get_real_id(record):
-                orig_id = record._origin.id if hasattr(record, '_origin') else record.id
-                return orig_id if isinstance(orig_id, int) else (record.id if isinstance(record.id, int) else False)
-
-            for paper in student.paper_ids:
-                paper_id = get_real_id(paper)
-                if not paper_id:
-                    continue
-                for lang in student.language_ids:
-                    lang_id = get_real_id(lang)
-                    if not lang_id:
-                        continue
-                    for plan in student.plan_ids:
-                        plan_id = get_real_id(plan)
-                        if not plan_id:
-                            continue
-                        fee_rule = self.env['acca.fee.matrix'].search([
-                            ('paper_id', '=', paper_id),
-                            ('language_id', '=', lang_id),
-                            ('plan_id', '=', plan_id),
-                        ], limit=1)
-                        if fee_rule:
-                            total += fee_rule.price
-
-            student.course_fee = total
+    # @api.onchange('plan_ids')
+    # @api.depends('plan_ids')
+    # def _compute_course_fee(self):
+    #     for student in self:
+    #         # If not ACCA or plan is not chosen yet, do not calculate from matrix
+    #         if not student.is_acca:
+    #             student.course_fee = student.course_id.list_price if student.course_id else 0.0
+    #             continue
+    #
+    #         # Gate: ONLY compute if plan_ids is set
+    #         if not (student.plan_ids and student.paper_ids and student.language_ids):
+    #             student.course_fee = 0.0
+    #             continue
+    #
+    #         total = 0.0
+    #
+    #         def get_real_id(record):
+    #             orig_id = record._origin.id if hasattr(record, '_origin') else record.id
+    #             return orig_id if isinstance(orig_id, int) else (record.id if isinstance(record.id, int) else False)
+    #
+    #         for paper in student.paper_ids:
+    #             paper_id = get_real_id(paper)
+    #             if not paper_id:
+    #                 continue
+    #             for lang in student.language_ids:
+    #                 lang_id = get_real_id(lang)
+    #                 if not lang_id:
+    #                     continue
+    #                 for plan in student.plan_ids:
+    #                     plan_id = get_real_id(plan)
+    #                     if not plan_id:
+    #                         continue
+    #                     fee_rule = self.env['acca.fee.matrix'].search([
+    #                         ('paper_id', '=', paper_id),
+    #                         ('language_id', '=', lang_id),
+    #                         ('plan_id', '=', plan_id),
+    #                     ], limit=1)
+    #                     if fee_rule:
+    #                         total += fee_rule.price
+    #
+    #         student.course_fee = total
 
 
 class StudentPastSubjectCourse(models.Model):
@@ -208,6 +225,40 @@ class StudentPastSubject(models.Model):
     marks_scored = fields.Float(
         string='Marks Scored for ACCA Subjects'
     )
+
+class StudentPaperLine(models.Model):
+    _name = 'student.paper.line'
+    _description = 'Student Enrolled Paper Line'
+    student_id = fields.Many2one('student.student', string='Student', ondelete='cascade', required=True)
+    paper_id = fields.Many2one('acca.paper', string='Paper', required=True)
+    language_id = fields.Many2one('acca.language', string='Language', required=True)
+    plan_id = fields.Many2one('acca.plan', string='Plan', required=True)
+    fee_amount = fields.Float(
+        string='Fee Amount',
+        compute='_compute_fee_amount',
+        store=True,
+        readonly=False
+    )
+    # -------------------------------------------------------------
+    # CALCULATE FEE ONLY WHEN PLAN IS SELECTED / CHANGED
+    # -------------------------------------------------------------
+    @api.onchange('paper_id', 'language_id', 'plan_id')
+    @api.depends('paper_id', 'language_id', 'plan_id')
+    def _compute_fee_amount(self):
+        for line in self:
+            if not (line.paper_id and line.language_id and line.plan_id):
+                line.fee_amount = 0.0
+                continue
+            paper_id = line.paper_id._origin.id or line.paper_id.id
+            lang_id = line.language_id._origin.id or line.language_id.id
+            plan_id = line.plan_id._origin.id or line.plan_id.id
+            fee_rule = self.env['acca.fee.matrix'].search([
+                ('paper_id', '=', paper_id),
+                ('language_id', '=', lang_id),
+                ('plan_id', '=', plan_id),
+            ], limit=1)
+            line.fee_amount = fee_rule.price if fee_rule else 0.0
+            print(f'--> Row Fee: {line.paper_id.name} ({line.plan_id.name}) = {line.fee_amount}')
 
 
 class ProductTemplate(models.Model):

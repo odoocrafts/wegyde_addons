@@ -7,3 +7,4 @@ access_course_acca_language,access_course_acca_language,model_acca_language,base
 access_course_acca_plan,access_course_acca_plan,model_acca_plan,base.group_user,1,1,1,1
 
 access_course_fee_metrix,access_acca_fee_matrix,model_acca_fee_matrix,base.group_user,1,1,1,1
+access_student_paper_line,access_student_paper_line,model_student_paper_line,base.group_user,1,1,1,1
