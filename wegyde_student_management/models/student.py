@@ -5,6 +5,50 @@ class Student(models.Model):
     _inherit = "student.student"
 
     wegyde_id = fields.Char(string='WeGyde ID')
+    first_name = fields.Char(string='First Name')
+    last_name = fields.Char(string='Last Name')
+    # Automatically computed and stored in database
+    name = fields.Char(
+        string='Student Name',
+        compute='_compute_name',
+        store=True,
+        readonly=False,
+        required=False,
+        precompute=True  # Ensures computation happens BEFORE database insert during imports
+    )
+
+    # 1. LIVE COMPUTE (Works in UI & whenever fields change)
+    @api.onchange('first_name', 'last_name')
+    @api.depends('first_name', 'last_name')
+    def _compute_name(self):
+        for rec in self:
+            names = [part.strip() for part in [rec.first_name, rec.last_name] if part]
+            rec.name = " ".join(names) if names else (rec.name or "New Student")
+
+    # 2. CSV / EXCEL IMPORT & ORM CREATION SUPPORT
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            first = vals.get('first_name', '')
+            last = vals.get('last_name', '')
+            # If importing without 'name' column, construct it automatically
+            if (first or last) and not vals.get('name'):
+                vals['name'] = f"{first or ''} {last or ''}".strip()
+        return super(Student, self).create(vals_list)
+
+    # 3. CSV UPDATE & MASS WRITE SUPPORT
+    def write(self, vals):
+        res = super(Student, self).write(vals)
+        # If first_name or last_name is updated during import/write, re-sync name
+        if 'first_name' in vals or 'last_name' in vals:
+            for rec in self:
+                if not vals.get('name'):
+                    new_name = f"{rec.first_name or ''} {rec.last_name or ''}".strip()
+                    if new_name and rec.name != new_name:
+                        # Use update to avoid infinite recursion
+                        rec.write({'name': new_name})
+        return res
+
     acca_id = fields.Char(string='ACCA ID')
     course_pursuing = fields.Char(string='Course Pursuing')
     educational_qualification = fields.Text(string='Educational Qualification')
