@@ -50,7 +50,7 @@ class CreateStudentWizard(models.TransientModel):
     first_name = fields.Char(required=True)
     last_name = fields.Char("Last Name", required=1)
     phone = fields.Char("Phone", required=1)
-    email = fields.Char("Email", required=True)
+    email = fields.Char("Email", required=1)
 
     course_id = fields.Many2one("product.product", "Course", required=True)
     name = fields.Char(compute="_compute_name", store=True)

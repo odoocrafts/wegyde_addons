@@ -11,6 +11,7 @@ class StudentStudent(models.Model):
         string='KYC Form Link',
         compute='_compute_kyc_url'
     )
+    mobile = fields.Char(reqquired=False)
 
     kyc_status = fields.Selection([
         ('pending', 'Pending'),
@@ -44,3 +45,9 @@ class StudentStudent(models.Model):
             'res_id': kya.id,
             'target': 'current',
         }
+
+    def act_change_paid(self):
+        for rec in self:
+            rec.has_pending_amount = False
+            rec.paid_amount = rec.course_fee
+            rec.state = 'confirmed'
